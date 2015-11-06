@@ -24,19 +24,12 @@ import butterknife.ButterKnife;
 
 public class StartScreen extends Fragment implements OnDateSelectedListener, OnMonthChangedListener {
 
-
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
-
-    @Bind(R.id.calendar_view)
-    MaterialCalendarView calendarWidget;
-
-    @Bind(R.id.month)
-    TextView month;
+    @Bind(R.id.calendar_view) MaterialCalendarView calendarWidget;
+    @Bind(R.id.month) TextView month;
 
     View fragmentView;
-
-
     Activity that;
 
     public StartScreen() {
@@ -54,6 +47,7 @@ public class StartScreen extends Fragment implements OnDateSelectedListener, OnM
         fragmentView = inflater.inflate(R.layout.fragment_start_screen, container, false);
 
         ButterKnife.bind(this,fragmentView);
+
         calendarWidget.setOnDateChangedListener(this);
         calendarWidget.setOnMonthChangedListener(this);
         return fragmentView;
