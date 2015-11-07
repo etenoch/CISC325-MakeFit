@@ -63,7 +63,6 @@ public class StartScreen extends Fragment implements OnDateSelectedListener, OnM
 
     @Override
     public void onMonthChanged(MaterialCalendarView calendarWidget, CalendarDay date) {
-        //noinspection ConstantConditions
 //        getSupportActionBar().setTitle(FORMATTER.format(date.getDate()));
     }
 

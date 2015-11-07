@@ -1,8 +1,8 @@
 package com.enochtam.cisc325.makefit;
 
 import android.app.Fragment;
-import android.os.Bundle;
 import android.app.FragmentTransaction;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,13 +24,11 @@ public class MainActivity extends AppCompatActivity {
     // toolbar
     Toolbar toolbar;
 
-
     // hamburger menu
     private RecyclerView drawerRecyclerView;
     private RecyclerView.Adapter drawerAdapter;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle drawerToggle;
-
 
     // fragment stuff
     private Fragment pendingFragment;

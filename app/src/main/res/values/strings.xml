@@ -4,5 +4,10 @@
     <string name="open_drawer">Open Drawer</string>
     <string name="close_drawer">Close Drawer</string>
 
+    <string-array name="difficulty_spinner">
+        <item>Beginner Difficulty</item>
+        <item>Intermediate Difficulty</item>
+        <item>Experienced Difficulty</item>
+    </string-array>
 
 </resources>
