@@ -11,16 +11,16 @@
 
     <ImageView
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="1dp"
         android:id="@+id/navIcon"
-        android:layout_height="26dp"
-        android:layout_width="26dp"
+        android:layout_height="33dp"
+        android:layout_width="33dp"
         android:scaleType="fitXY"/>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="18dp"
+        android:paddingLeft="16dp"
         android:textColor="#555"
         android:paddingTop="4dp"
         android:textAppearance="?android:attr/textAppearanceMedium"

@@ -32,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
 
 
+    // fragment stuff
+    private Fragment pendingFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+                if(pendingFragment!=null) changeFramgent();
             }
         };
         drawer.setDrawerListener(drawerToggle);
@@ -65,11 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // load first fragment
-        Fragment nextFragment = new StartScreen();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.replace(R.id.fragment_container, nextFragment).commit();
-
+        pendingFragment = new StartScreen();
+        changeFramgent();
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -88,11 +89,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //==== Event Bus Handlers ====//
-    public void onEvent(FragmentChangeEvent event){
+    public void changeFramgent(){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.replace(R.id.fragment_container, event.nextFragment).commit();
+        ft.replace(R.id.fragment_container, pendingFragment).commit();
+        pendingFragment = null;
     }
+
+    //==== Event Bus Handlers ====//
+    public void onEvent(FragmentChangeEvent event){
+        pendingFragment = event.nextFragment;
+    }
+
+
 
 }
