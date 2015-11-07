@@ -3,8 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="168dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:andorid="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:weightSum="1">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_mat_background"
+        android:scaleType="centerCrop" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
@@ -13,12 +20,13 @@
         android:src="@drawable/ic_person_placeholder"
         android:layout_above="@+id/linearLayout"
         android:layout_marginLeft="16dp"
+        android:layout_marginBottom="4dp"
         app:civ_border_width="1dp"
-        app:civ_border_color="#FF727272"/>
+        app:civ_border_color="#FF555555"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="54dp"
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -31,8 +39,18 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:textColor="#fff"
-            android:text="Duncan Geffery"
-            android:textSize="18sp"
+            android:text="Name Here"
+            android:textSize="20sp"
+            style="@style/TextShadow"/>
+
+        <TextView
+            android:id="@+id/exercise_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:textColor="#fff"
+            android:text="Exercise Details"
+            android:textSize="16sp"
             style="@style/TextShadow"/>
 
     </LinearLayout>

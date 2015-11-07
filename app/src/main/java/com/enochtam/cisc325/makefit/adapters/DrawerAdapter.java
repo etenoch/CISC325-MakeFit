@@ -1,6 +1,9 @@
 package com.enochtam.cisc325.makefit.adapters;
 
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.enochtam.cisc325.makefit.R;
+import com.enochtam.cisc325.makefit.events.FragmentChangeEvent;
+import com.enochtam.cisc325.makefit.util.DrawerItem;
+
+import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 
 public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder> {
@@ -16,33 +25,61 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
-    private String mNavTitles[];
+    private List<DrawerItem> drawerItems;
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        int Holderid;
+        int holderID;
 
-        TextView textView;
-        ImageView imageView;
+        TextView itemTitleView;
+        ImageView iconView;
+
+        TextView nameTextView;
+        TextView exerciseDetails;
+        ImageView profileImageView;
+
 
         public ViewHolder(View itemView,int ViewType) {
             super(itemView);
+            itemView.setClickable(true);
 
             if(ViewType == TYPE_ITEM) {
                 itemView.setOnClickListener(this);
-                imageView = (ImageView) itemView.findViewById(R.id.navIcon);
-                textView = (TextView) itemView.findViewById(R.id.rowText);
-                Holderid = 1;
+                iconView = (ImageView) itemView.findViewById(R.id.navIcon);
+                itemTitleView = (TextView) itemView.findViewById(R.id.rowText);
+                holderID = 1;
+            }else if(ViewType == TYPE_HEADER) {
+                profileImageView = (ImageView) itemView.findViewById(R.id.profile_image);
+                nameTextView = (TextView) itemView.findViewById(R.id.name);
+                exerciseDetails = (TextView) itemView.findViewById(R.id.exercise_details);
+                holderID = 0;
             }
         }
 
         @Override public void onClick(View view) {
+            final Activity host = (Activity) view.getContext();
+            DrawerLayout dl = (DrawerLayout) host.findViewById(R.id.DrawerLayout);
+            dl.closeDrawers();
 
+            Object fragment = view.findViewById(R.id.rowText).getTag();
+
+            Fragment f;
+            try{
+                Class c =  Class.forName("com.enochtam.cisc325.makefit.fragments."+fragment.toString());
+                f = (Fragment) c.newInstance();
+                EventBus.getDefault().post(new FragmentChangeEvent(f));
+            }catch (ClassNotFoundException e){
+                System.out.println(e.getMessage());
+            }catch (InstantiationException e){
+                System.out.println(e.getMessage());
+            }catch (IllegalAccessException e){
+                System.out.println(e.getMessage());
+            }
         }
 
     }// class ViewHolder
 
-    public DrawerAdapter(String titles[]){
-        mNavTitles = titles;
+    public DrawerAdapter(List<DrawerItem> drawerItems){
+        this.drawerItems = drawerItems;
     }
 
     @Override public DrawerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -57,22 +94,19 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
     }
 
     @Override public void onBindViewHolder(DrawerAdapter.ViewHolder holder, int position) {
-        if(holder.Holderid ==1) {
-            try{
-                int id = R.string.class.getField(mNavTitles[position - 1]).getInt(null);
-                holder.textView.setText(id); // Setting the Text with the array of our Titles
-                holder.textView.setTag(mNavTitles[position - 1]);
-//                holder.imageView.setImageResource(icons[position - 1]);
-            }catch(NoSuchFieldException ex){
-                ex.printStackTrace();
-            }catch(IllegalAccessException ex){
-                ex.printStackTrace();
-            }
+        if(holder.holderID ==1) {
+            holder.itemTitleView.setText(drawerItems.get(position - 1).title); // Setting the Text with the array of our Titles
+            holder.itemTitleView.setTag(drawerItems.get(position - 1).fragmentClassName);
+            holder.iconView.setImageResource(drawerItems.get(position - 1).icon);
+        }else{
+            holder.nameTextView.setText("Duncan Geffery");
+            holder.exerciseDetails.setText("Some Exercise Stats");
+            holder.profileImageView.setImageResource(R.drawable.ic_person_placeholder);
         }
     }
 
     @Override public int getItemCount() {
-        return mNavTitles.length+1;
+        return drawerItems.size()+1;
     }
 
     @Override public int getItemViewType(int position) {

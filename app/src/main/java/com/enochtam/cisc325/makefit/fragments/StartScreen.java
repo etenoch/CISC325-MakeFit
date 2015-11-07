@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.enochtam.cisc325.makefit.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -27,7 +26,6 @@ public class StartScreen extends Fragment implements OnDateSelectedListener, OnM
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
     @Bind(R.id.calendar_view) MaterialCalendarView calendarWidget;
-    @Bind(R.id.month) TextView month;
 
     View fragmentView;
     Activity that;
@@ -61,7 +59,6 @@ public class StartScreen extends Fragment implements OnDateSelectedListener, OnM
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView calendarWidget, @Nullable CalendarDay date, boolean selected) {
-        month.setText(getSelectedDatesString());
     }
 
     @Override

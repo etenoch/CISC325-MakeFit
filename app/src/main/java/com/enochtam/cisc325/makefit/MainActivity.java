@@ -1,6 +1,8 @@
 package com.enochtam.cisc325.makefit;
 
+import android.app.Fragment;
 import android.os.Bundle;
+import android.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,11 @@ import android.view.Menu;
 import android.view.View;
 
 import com.enochtam.cisc325.makefit.adapters.DrawerAdapter;
+import com.enochtam.cisc325.makefit.events.FragmentChangeEvent;
+import com.enochtam.cisc325.makefit.fragments.StartScreen;
+import com.enochtam.cisc325.makefit.util.DrawerItem;
+
+import de.greenrobot.event.EventBus;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,13 +25,11 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
 
 
-
     // hamburger menu
     private RecyclerView drawerRecyclerView;
     private RecyclerView.Adapter drawerAdapter;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle drawerToggle;
-
 
 
 
@@ -42,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         // hamburger menu
         drawerRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
         drawerRecyclerView.setHasFixedSize(true);
-        drawerAdapter = new DrawerAdapter(new String[] {"First Thing","Second Thing"});
+        drawerAdapter = new DrawerAdapter(DrawerItem.drawerItems);
         drawerRecyclerView.setAdapter(drawerAdapter);
         drawerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -59,13 +64,35 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
 
 
+        // load first fragment
+        Fragment nextFragment = new StartScreen();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.replace(R.id.fragment_container, nextFragment).commit();
 
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-
         return true;
+    }
+
+
+    @Override public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+    @Override public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+
+    //==== Event Bus Handlers ====//
+    public void onEvent(FragmentChangeEvent event){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.replace(R.id.fragment_container, event.nextFragment).commit();
     }
 
 }
