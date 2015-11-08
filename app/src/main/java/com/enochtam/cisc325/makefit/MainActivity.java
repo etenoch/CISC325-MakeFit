@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Data.getInstance(this);
 
         // toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -69,6 +70,10 @@ public class MainActivity extends AppCompatActivity {
         // load first fragment
         pendingFragment = new StartScreen();
         changeFramgent();
+
+
+//        Data.getInstance().createTestData();
+
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
