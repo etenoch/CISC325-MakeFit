@@ -9,8 +9,8 @@
     card_view:cardElevation="2dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="2dp"
     android:clickable="true"
     android:background="?android:attr/selectableItemBackground"
     android:foreground="?android:attr/selectableItemBackground">
@@ -18,16 +18,24 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:paddingTop="0dp">
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/testText">
+            android:id="@+id/workout_name"
+            android:text="Workout Name"
+            android:textSize="20sp"/>
 
-        </TextView>
+        <TextView
+            android:layout_below="@+id/workout_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/workout_difficulty"
+            android:text="Workout Difficulty"/>
 
 
 

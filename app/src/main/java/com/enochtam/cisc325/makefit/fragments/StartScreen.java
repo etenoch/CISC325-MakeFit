@@ -1,6 +1,5 @@
 package com.enochtam.cisc325.makefit.fragments;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -28,7 +28,7 @@ public class StartScreen extends Fragment implements OnDateSelectedListener, OnM
     @Bind(R.id.calendar_view) MaterialCalendarView calendarWidget;
 
     View fragmentView;
-    Activity that;
+    MainActivity that;
 
     public StartScreen() {
         // Required empty public constructor
@@ -37,7 +37,8 @@ public class StartScreen extends Fragment implements OnDateSelectedListener, OnM
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        that = getActivity();
+        that = (MainActivity) getActivity();
+        that.setToolbarTitle("MakeFit");
     }
 
     @Override

@@ -65,12 +65,17 @@ public class Data {
                 sortOrder                                 // The sort order
         );
 
-        c.moveToFirst();
-        String name = c.getString(
-                c.getColumnIndexOrThrow(WorkoutEntry.C_WORKOUT_NAME)
-        );
 
-        result.add(new Workout(name));
+
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            String name = c.getString(c.getColumnIndexOrThrow(WorkoutEntry.C_WORKOUT_NAME));
+            String details = c.getString(c.getColumnIndexOrThrow(WorkoutEntry.C_DETAILS));
+            String difficulty = c.getString(c.getColumnIndexOrThrow(WorkoutEntry.C_DIFFICULTY));
+
+            result.add(new Workout(name,details,difficulty));
+            c.moveToNext();
+        }
 
         c.close();
 
@@ -120,9 +125,6 @@ public class Data {
         c.put(Workout_ExerciseEntry.C_WORKOUT_ID,w_id_1);
         c.put(Workout_ExerciseEntry.C_ORDER,2);
         insert(Workout_ExerciseEntry.T_NAME, c);
-
-
-
 
     }
 

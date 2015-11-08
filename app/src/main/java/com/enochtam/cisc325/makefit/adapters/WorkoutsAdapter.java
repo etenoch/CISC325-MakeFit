@@ -19,13 +19,15 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView testTextView;
+        TextView workoutName;
+        TextView workoutDifficulty;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setClickable(true);
             itemView.setOnClickListener(this);
-            testTextView = (TextView) itemView.findViewById(R.id.testText);
+            workoutName = (TextView) itemView.findViewById(R.id.workout_name);
+            workoutDifficulty = (TextView) itemView.findViewById(R.id.workout_difficulty);
         }
 
         @Override public void onClick(View view) {
@@ -51,7 +53,8 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
     }
 
     @Override public void onBindViewHolder(WorkoutsAdapter.ViewHolder holder, int position) {
-        holder.testTextView.setText(workoutItems.get(position).name);
+        holder.workoutName.setText(workoutItems.get(position).name);
+        holder.workoutDifficulty.setText(workoutItems.get(position).difficulty);
 //        holder.itemTitleView.setTag(workoutItems.get(position - 1).fragmentClassName);
 
     }

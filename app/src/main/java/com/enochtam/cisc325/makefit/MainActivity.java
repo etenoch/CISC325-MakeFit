@@ -92,16 +92,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void setToolbarTitle(String title){
+        toolbar.setTitle(title);
+    }
+
+
+
     public void changeFramgent(){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.replace(R.id.fragment_container, pendingFragment).commit();
         pendingFragment = null;
     }
+    public void changeFramgent(boolean addToBackStack){
+        if(!addToBackStack) changeFramgent();
+
+    }
 
     //==== Event Bus Handlers ====//
     public void onEvent(FragmentChangeEvent event){
         pendingFragment = event.nextFragment;
+        if (event.changeNow) changeFramgent();
+
     }
 
 
