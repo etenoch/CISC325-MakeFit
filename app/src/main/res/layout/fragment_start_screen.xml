@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             app:mcv_showOtherDates="all"
-            app:mcv_selectionColor="@color/primary"/>
+            app:mcv_selectionColor="@color/accent"/>
 
     </LinearLayout>
 

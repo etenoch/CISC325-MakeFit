@@ -38,6 +38,10 @@ public class StartScreen extends Fragment implements OnDateSelectedListener, OnM
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         that = (MainActivity) getActivity();
+    }
+
+    @Override public void onStart() {
+        super.onStart();
         that.setToolbarTitle("MakeFit");
     }
 

@@ -1,16 +1,22 @@
 package com.enochtam.cisc325.makefit;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import com.enochtam.cisc325.makefit.adapters.DrawerAdapter;
 import com.enochtam.cisc325.makefit.events.FragmentChangeEvent;
@@ -22,13 +28,14 @@ import de.greenrobot.event.EventBus;
 public class MainActivity extends AppCompatActivity {
 
     // toolbar
-    Toolbar toolbar;
+    public Toolbar toolbar;
+    public ActionBar actionBar;
 
     // hamburger menu
-    private RecyclerView drawerRecyclerView;
-    private RecyclerView.Adapter drawerAdapter;
-    private DrawerLayout drawer;
-    private ActionBarDrawerToggle drawerToggle;
+    public RecyclerView drawerRecyclerView;
+    public RecyclerView.Adapter drawerAdapter;
+    public DrawerLayout drawer;
+    public ActionBarDrawerToggle drawerToggle;
 
     // fragment stuff
     private Fragment pendingFragment;
@@ -44,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         // toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        actionBar = getSupportActionBar();
 
         // hamburger menu
         drawerRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
@@ -60,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                if(pendingFragment!=null) changeFramgent();
+                if(pendingFragment!=null) changeFragment();
             }
         };
         drawer.setDrawerListener(drawerToggle);
@@ -69,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         // load first fragment
         pendingFragment = new StartScreen();
-        changeFramgent();
+        changeFragment();
 
 
 //        Data.getInstance().createTestData();
@@ -97,22 +104,51 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    public void changeFramgent(){
+    // change fragments
+    public void changeFragment(){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.replace(R.id.fragment_container, pendingFragment).commit();
         pendingFragment = null;
     }
-    public void changeFramgent(boolean addToBackStack){
-        if(!addToBackStack) changeFramgent();
+
+
+    // functions that close keyboard
+    public void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager)  getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    }
+    public void setupCloseKeyboard(View view) {
+        //Set up touch listener for non-text box views to hide keyboard.
+        if(!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard();
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupCloseKeyboard(innerView);
+            }
+        }
+    }
+
+
+    @Override public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) getFragmentManager().popBackStack();
+        else super.onBackPressed();
 
     }
 
     //==== Event Bus Handlers ====//
     public void onEvent(FragmentChangeEvent event){
         pendingFragment = event.nextFragment;
-        if (event.changeNow) changeFramgent();
+        if (event.changeNow) changeFragment();
 
     }
 

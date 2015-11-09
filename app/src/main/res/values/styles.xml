@@ -28,6 +28,14 @@
         <item name="android:textColor">@color/primary_text</item>
     </style>
 
+    <style name="MyToolbarStyle">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="theme">@style/MyToolbarTheme</item>
+    </style>
+
+    <style name="MyToolbarTheme">
+        <item name="colorControlNormal">@color/white</item>
+    </style>
 
     <style name="TextShadow">
         <item name="android:shadowColor">#000000</item>

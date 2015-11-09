@@ -1,6 +1,7 @@
 package com.enochtam.cisc325.makefit.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,17 +15,16 @@ import com.enochtam.cisc325.makefit.Data;
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
 import com.enochtam.cisc325.makefit.adapters.WorkoutsAdapter;
-import com.enochtam.cisc325.makefit.events.FragmentChangeEvent;
 import com.enochtam.cisc325.makefit.models.Workout;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
 
 public class WorkoutList extends Fragment{
 
+    Fragment thisInstance;
     View fragmentView;
     MainActivity that;
 
@@ -36,12 +36,17 @@ public class WorkoutList extends Fragment{
 
     public WorkoutList() {
         // Required empty public constructor
+        thisInstance = this;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         that = (MainActivity) getActivity();
+    }
+
+    @Override public void onResume() {
+        super.onStart();
         that.setToolbarTitle("Workouts");
     }
 
@@ -54,7 +59,15 @@ public class WorkoutList extends Fragment{
         addWorkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 Fragment newWorkoutFragment =  new NewWorkout();
-                EventBus.getDefault().post(new FragmentChangeEvent(newWorkoutFragment,true));
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.hide(thisInstance);
+                ft.add(R.id.fragment_container, newWorkoutFragment);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.addToBackStack(null);
+                ft.commit();
+                that.getFragmentManager().executePendingTransactions();
+
             }
         });
 
