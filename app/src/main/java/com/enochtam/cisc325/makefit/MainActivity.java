@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         pendingFragment = new StartScreen();
         changeFragment();
 
-
+        setupCloseKeyboard(findViewById(R.id.DrawerLayout));
 //        Data.getInstance().createTestData();
 
     }
@@ -101,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void setToolbarTitle(String title){
         toolbar.setTitle(title);
+    }
+    public String getToolbarTitle(){
+        return (String) actionBar.getTitle();
     }
 
 

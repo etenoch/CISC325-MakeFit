@@ -4,6 +4,8 @@ package com.enochtam.cisc325.makefit.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.enochtam.cisc325.makefit.Data;
 import com.enochtam.cisc325.makefit.db.DbSchema.*;
 
 

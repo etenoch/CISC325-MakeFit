@@ -91,13 +91,15 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Pick Exercise"
-                    android:textColor="@color/secondary_text"/>
+                    android:textColor="@color/secondary_text"
+                    android:id="@+id/pick_exercise_button"/>
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Custom Exercise"
-                    android:textColor="@color/secondary_text"/>
+                    android:textColor="@color/secondary_text"
+                    android:id="@+id/add_custom_button"/>
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
