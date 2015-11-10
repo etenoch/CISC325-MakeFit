@@ -10,6 +10,7 @@ import com.enochtam.cisc325.makefit.db.DbHelper;
 import com.enochtam.cisc325.makefit.db.DbSchema.ExerciseEntry;
 import com.enochtam.cisc325.makefit.db.DbSchema.WorkoutEntry;
 import com.enochtam.cisc325.makefit.db.DbSchema.Workout_ExerciseEntry;
+import com.enochtam.cisc325.makefit.models.Exercise;
 import com.enochtam.cisc325.makefit.models.Workout;
 
 import java.util.ArrayList;
@@ -45,14 +46,12 @@ public class Data {
     public List<Workout> getWorkouts(){
         ArrayList<Workout> result = new ArrayList<>();
 
-
         String[] projection = {
             WorkoutEntry._ID,
             WorkoutEntry.C_WORKOUT_NAME,
             WorkoutEntry.C_DETAILS,
             WorkoutEntry.C_DIFFICULTY
         };
-
         String sortOrder = WorkoutEntry._ID + " ASC";
 
         Cursor c = db.query(
@@ -65,21 +64,55 @@ public class Data {
                 sortOrder               // The sort order
         );
 
-
         c.moveToFirst();
         while (!c.isAfterLast()) {
+            long workoutID = c.getLong(c.getColumnIndexOrThrow(WorkoutEntry._ID));
             String name = c.getString(c.getColumnIndexOrThrow(WorkoutEntry.C_WORKOUT_NAME));
             String details = c.getString(c.getColumnIndexOrThrow(WorkoutEntry.C_DETAILS));
             String difficulty = c.getString(c.getColumnIndexOrThrow(WorkoutEntry.C_DIFFICULTY));
 
-            result.add(new Workout(name,details,difficulty));
+            result.add(new Workout(workoutID,name,details,difficulty));
             c.moveToNext();
         }
-
         c.close();
-
         return result;
     }
+
+    public List<Exercise> getExercises(){
+        ArrayList<Exercise> result = new ArrayList<>();
+
+        String[] projection = {
+                ExerciseEntry._ID,
+                ExerciseEntry.C_EXERCISE_NAME,
+                ExerciseEntry.C_DETAILS,
+                ExerciseEntry.C_TIME
+        };
+        String sortOrder = ExerciseEntry._ID + " ASC";
+
+        Cursor c = db.query(
+                ExerciseEntry.T_NAME,    // The table to query
+                projection,             // The columns to return
+                null,                   // The columns for the WHERE clause
+                null,                   // The values for the WHERE clause
+                null,                   // don't group the rows
+                null,                   // don't filter by row groups
+                sortOrder               // The sort order
+        );
+
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            long id = c.getLong(c.getColumnIndexOrThrow(ExerciseEntry._ID));
+            String name = c.getString(c.getColumnIndexOrThrow(ExerciseEntry.C_EXERCISE_NAME));
+            String details = c.getString(c.getColumnIndexOrThrow(ExerciseEntry.C_DETAILS));
+            int time = c.getInt(c.getColumnIndexOrThrow(ExerciseEntry.C_TIME));
+
+            result.add(new Exercise(id,name,details,time));
+            c.moveToNext();
+        }
+        c.close();
+        return result;
+    }
+
 
 
 
@@ -101,15 +134,13 @@ public class Data {
         c = new ContentValues();
         c.put(ExerciseEntry.C_EXERCISE_NAME,"Test Exercise Name 1");
         c.put(ExerciseEntry.C_DETAILS,"Details for exercise 1. Reps5");
-        c.put(ExerciseEntry.C_REP_TIME, 0);
-        c.put(ExerciseEntry.C_REP_TIME_VALUE, 5);
+        c.put(ExerciseEntry.C_TIME, 60);
         long e_id_1 = insert(ExerciseEntry.T_NAME, c);
 
         c = new ContentValues();
         c.put(ExerciseEntry.C_EXERCISE_NAME,"Test Exercise Name 2");
         c.put(ExerciseEntry.C_DETAILS,"Details for exercise 2. Time5mins");
-        c.put(ExerciseEntry.C_REP_TIME, 1);
-        c.put(ExerciseEntry.C_REP_TIME_VALUE, 300);
+        c.put(ExerciseEntry.C_TIME, 300);
         long e_id_2 = insert(ExerciseEntry.T_NAME, c);
 
 
@@ -126,7 +157,6 @@ public class Data {
         insert(Workout_ExerciseEntry.T_NAME, c);
 
     }
-
 
     public static Data getInstance(Context context){
         if(instance == null) instance = new Data(context);

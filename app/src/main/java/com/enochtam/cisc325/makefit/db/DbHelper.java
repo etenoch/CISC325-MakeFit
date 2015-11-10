@@ -5,13 +5,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.enochtam.cisc325.makefit.Data;
-import com.enochtam.cisc325.makefit.db.DbSchema.*;
+import com.enochtam.cisc325.makefit.db.DbSchema.ExerciseEntry;
+import com.enochtam.cisc325.makefit.db.DbSchema.WorkoutEntry;
+import com.enochtam.cisc325.makefit.db.DbSchema.Workout_ExerciseEntry;
+import com.enochtam.cisc325.makefit.db.DbSchema.Workout_HistoryEntry;
 
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "MakeFit.db";
 
     private static final String SQL_CREATE_T1 =
@@ -25,8 +27,7 @@ public class DbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + ExerciseEntry.T_NAME + " (" +
                 ExerciseEntry._ID + " INTEGER PRIMARY KEY," +
                 ExerciseEntry.C_EXERCISE_NAME +" TEXT,"+
-                ExerciseEntry.C_REP_TIME +" INTEGER,"+
-                ExerciseEntry.C_REP_TIME_VALUE +" INTEGER,"+
+                ExerciseEntry.C_TIME +" INTEGER,"+
                 ExerciseEntry.C_DETAILS +" TEXT,"+
                 ExerciseEntry.C_PHOTO +" BLOB"+
             " )";
@@ -46,8 +47,14 @@ public class DbHelper extends SQLiteOpenHelper {
                 Workout_HistoryEntry.C_WORKOUT_NAME +" TEXT"+
             " )";
 
-    private static final String SQL_DELETE_ENTRIES =
+    private static final String SQL_DELETE_1 =
             "DROP TABLE IF EXISTS " + WorkoutEntry.T_NAME;
+    private static final String SQL_DELETE_2 =
+            "DROP TABLE IF EXISTS " + ExerciseEntry.T_NAME;
+    private static final String SQL_DELETE__3 =
+            "DROP TABLE IF EXISTS " + Workout_ExerciseEntry.T_NAME;
+    private static final String SQL_DELETE_4 =
+            "DROP TABLE IF EXISTS " + Workout_HistoryEntry.T_NAME;
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -59,7 +66,10 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_T4);
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_DELETE_ENTRIES);
+        db.execSQL(SQL_DELETE_1);
+        db.execSQL(SQL_DELETE_2);
+        db.execSQL(SQL_DELETE__3);
+        db.execSQL(SQL_DELETE_4);
         onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {

@@ -17,8 +17,7 @@ public final class DbSchema {
     public static abstract class ExerciseEntry implements BaseColumns {
         public static final String T_NAME = "Exercise";
         public static final String C_EXERCISE_NAME = "Exercise_Name";
-        public static final String C_REP_TIME = "Rep_Time";
-        public static final String C_REP_TIME_VALUE = "Rep_Time_Value";
+        public static final String C_TIME = "Time";
         public static final String C_DETAILS = "DETAILS";
         public static final String C_PHOTO = "PHOTO";
     }

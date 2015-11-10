@@ -24,7 +24,7 @@ public class NewExercise extends Fragment {
     MainActivity that;
 
     @Bind(R.id.exercise_name) EditText exerciseName;
-    @Bind(R.id.instructions_details) EditText instructions;
+    @Bind(R.id.instructions) EditText instructions;
 
     public static WorkoutScreen newInstance(String param1, String param2) {
         WorkoutScreen fragment = new WorkoutScreen();
