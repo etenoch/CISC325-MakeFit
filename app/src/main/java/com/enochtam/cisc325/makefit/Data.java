@@ -12,6 +12,7 @@ import com.enochtam.cisc325.makefit.db.DbSchema.WorkoutEntry;
 import com.enochtam.cisc325.makefit.db.DbSchema.Workout_ExerciseEntry;
 import com.enochtam.cisc325.makefit.models.Exercise;
 import com.enochtam.cisc325.makefit.models.Workout;
+import com.enochtam.cisc325.makefit.models.WorkoutExerciseLink;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,8 +60,8 @@ public class Data {
                 projection,             // The columns to return
                 null,                   // The columns for the WHERE clause
                 null,                   // The values for the WHERE clause
-                null,                   // don't group the rows
-                null,                   // don't filter by row groups
+                null,                   // group the rows
+                null,                   // filter by row groups
                 sortOrder               // The sort order
         );
 
@@ -71,33 +72,44 @@ public class Data {
             String details = c.getString(c.getColumnIndexOrThrow(WorkoutEntry.C_DETAILS));
             String difficulty = c.getString(c.getColumnIndexOrThrow(WorkoutEntry.C_DIFFICULTY));
 
-            result.add(new Workout(workoutID,name,details,difficulty));
+            // get exercises
+            List<WorkoutExerciseLink> exercises = getExercisesForWorkout((int) workoutID);
+
+            result.add(new Workout(workoutID,name,details,difficulty,exercises));
             c.moveToNext();
         }
         c.close();
         return result;
     }
 
-    public List<Exercise> getExercises(){
-        ArrayList<Exercise> result = new ArrayList<>();
 
+    // Exercise Table
+    public List<Exercise> getExercises(){
+        return getExercises(null);
+    }
+
+    public List<Exercise> getExercises(List<Integer> exerciseIDs){
         String[] projection = {
                 ExerciseEntry._ID,
                 ExerciseEntry.C_EXERCISE_NAME,
                 ExerciseEntry.C_DETAILS,
                 ExerciseEntry.C_TIME
         };
-        String sortOrder = ExerciseEntry._ID + " ASC";
 
-        Cursor c = db.query(
-                ExerciseEntry.T_NAME,    // The table to query
-                projection,             // The columns to return
-                null,                   // The columns for the WHERE clause
-                null,                   // The values for the WHERE clause
-                null,                   // don't group the rows
-                null,                   // don't filter by row groups
-                sortOrder               // The sort order
-        );
+        String sortOrder = ExerciseEntry._ID + " ASC";
+        Cursor c;
+        if(exerciseIDs == null){
+            c = db.query(ExerciseEntry.T_NAME,projection,null,null,null,null,sortOrder);
+        }else{
+            String listAsString="(";
+            for(Integer x:exerciseIDs){
+                listAsString+=Integer.toString(x)+", ";
+            }
+            listAsString+=")";
+            c = db.query(ExerciseEntry.T_NAME,projection,ExerciseEntry._ID+" IN "+listAsString,null,null,null,sortOrder);
+        }
+
+        ArrayList<Exercise> result = new ArrayList<>();
 
         c.moveToFirst();
         while (!c.isAfterLast()) {
@@ -107,6 +119,43 @@ public class Data {
             int time = c.getInt(c.getColumnIndexOrThrow(ExerciseEntry.C_TIME));
 
             result.add(new Exercise(id,name,details,time));
+            c.moveToNext();
+        }
+        c.close();
+        return result;
+    }
+
+
+    // Workout<->Exercise Table
+    public List<WorkoutExerciseLink> getExercisesForWorkout(int workoutID){
+
+        Cursor c = db.rawQuery(
+                "SELECT " +"A."+Workout_ExerciseEntry._ID+", "
+                        +"A."+Workout_ExerciseEntry.C_WORKOUT_ID+", "
+                        +"A."+Workout_ExerciseEntry.C_EXERCISE_ID+", "
+                        +"A."+Workout_ExerciseEntry.C_ORDER+", "
+                        +"B."+ExerciseEntry.C_EXERCISE_NAME+", "
+                        +"B."+ExerciseEntry.C_TIME+", "
+                        +"B."+ExerciseEntry.C_DETAILS+" "+
+                "FROM "+Workout_ExerciseEntry.T_NAME+" AS A " +
+                "JOIN "+ExerciseEntry.T_NAME+" AS B " +
+                "ON A."+Workout_ExerciseEntry.C_EXERCISE_ID+" = B._ID " +
+                "WHERE A."+Workout_ExerciseEntry.C_WORKOUT_ID+" = "+workoutID, new String[]{});
+
+        List<WorkoutExerciseLink> result = new ArrayList<>();
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            int link_ID = c.getInt(0);
+            int workout_ID = c.getInt(1);
+            int exercise_ID = c.getInt(2);
+            int order = c.getInt(3);
+
+            String exercisename = c.getString(4);
+            int time = c.getInt(5);
+            String details = c.getString(6);
+
+            Exercise e = new Exercise(exercise_ID,exercisename,details,time);
+            result.add(new WorkoutExerciseLink(link_ID, workout_ID, exercise_ID, order,e));
             c.moveToNext();
         }
         c.close();
