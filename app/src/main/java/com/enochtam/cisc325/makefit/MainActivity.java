@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         Data.getInstance(this);
 
-        if(getResources().getBoolean(R.bool.portrait_only))
+        if(getResources().getBoolean(R.bool.portrait_only))   // if phone: portrait only
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 

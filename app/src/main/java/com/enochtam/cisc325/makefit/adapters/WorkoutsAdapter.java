@@ -1,13 +1,16 @@
 package com.enochtam.cisc325.makefit.adapters;
 
 
+import android.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
+import com.enochtam.cisc325.makefit.fragments.WorkoutDetails;
 import com.enochtam.cisc325.makefit.models.Workout;
 
 import java.util.List;
@@ -15,9 +18,13 @@ import java.util.List;
 
 public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHolder> {
 
-    private List<Workout> workoutItems;
+    public List<Workout> workoutItems;
+
+    public static MainActivity that;
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        public Workout workout;
 
         TextView workoutName;
         TextView workoutDifficulty;
@@ -30,14 +37,34 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
             workoutDifficulty = (TextView) itemView.findViewById(R.id.workout_difficulty);
         }
 
-        @Override public void onClick(View view) {
+        public void setWorkout(Workout w){
+            workout = w;
+        }
 
+        @Override public void onClick(View view) {
+            WorkoutDetails fragment = new WorkoutDetails();
+            fragment.setWorkout(workout);
+
+            FragmentTransaction ft = that.getFragmentManager().beginTransaction();
+//            ft.hide(thisInstance);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
+            if (that.findViewById(R.id.fragment_container_2)!=null){ // tablet, second container exists
+                ft.replace(R.id.fragment_container_2,fragment);
+            }else{
+                ft.add(R.id.fragment_container,fragment);
+            }
+            ft.addToBackStack(null);
+            ft.commit();
+            that.getFragmentManager().executePendingTransactions();
+            fragment.populateViews();
         }
 
     }// class ViewHolder
 
-    public WorkoutsAdapter(List<Workout> workoutItems){
+    public WorkoutsAdapter(List<Workout> workoutItems, MainActivity context){
         this.workoutItems = workoutItems;
+        that = context;
     }
 
 //    public void setData(List<Workout> workoutItems){
@@ -55,8 +82,7 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
     @Override public void onBindViewHolder(WorkoutsAdapter.ViewHolder holder, int position) {
         holder.workoutName.setText(workoutItems.get(position).name);
         holder.workoutDifficulty.setText(workoutItems.get(position).difficulty);
-//        holder.itemTitleView.setTag(workoutItems.get(position - 1).fragmentClassName);
-
+        holder.setWorkout(workoutItems.get(position));
     }
 
     @Override public int getItemCount() {

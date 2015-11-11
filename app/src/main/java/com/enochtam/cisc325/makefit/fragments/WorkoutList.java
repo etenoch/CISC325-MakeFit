@@ -85,7 +85,7 @@ public class WorkoutList extends Fragment{
 
     public void dataLoaded(List<Workout> workouts){
         // setup recycler view
-        workoutsAdatper = new WorkoutsAdapter(workouts);
+        workoutsAdatper = new WorkoutsAdapter(workouts,that);
 //        workoutsAdatper.setHasStableIds(true);
         workoutsLayoutManager = new LinearLayoutManager(that);
 
