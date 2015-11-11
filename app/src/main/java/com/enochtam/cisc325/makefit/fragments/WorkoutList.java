@@ -35,7 +35,6 @@ public class WorkoutList extends Fragment{
     WorkoutsAdapter workoutsAdatper;
 
     public WorkoutList() {
-        // Required empty public constructor
         thisInstance = this;
     }
 

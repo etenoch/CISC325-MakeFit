@@ -43,7 +43,6 @@ public class NewWorkout extends Fragment {
     }
 
     public NewWorkout() {
-        // Required empty public constructor
         thisInstance = this;
     }
 
