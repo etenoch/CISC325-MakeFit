@@ -29,4 +29,13 @@ public class Workout {
     public void addExercise(WorkoutExerciseLink e){
         exercises.add(e);
     }
+
+    public int getTotalTime(){ // return time in minutes
+        int seconds=0;
+        for (WorkoutExerciseLink e:exercises){
+            seconds+=e.theExercise.time;
+        }
+        return seconds/60;
+    }
+
 }

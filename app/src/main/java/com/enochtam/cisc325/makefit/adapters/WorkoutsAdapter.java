@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enochtam.cisc325.makefit.MainActivity;
@@ -48,14 +49,18 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
             fragment.setWorkout(workout);
 
             FragmentTransaction ft = workoutListFragment.getFragmentManager().beginTransaction();
-//            ft.hide(thisInstance);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-
-            if (that.findViewById(R.id.fragment_container_2)!=null){ // tablet, second container exists
-                ft.add(R.id.fragment_container_2,fragment);
-            }else{
-                ft.add(R.id.fragment_container,fragment);
+            LinearLayout ll = (LinearLayout)workoutListFragment.fragmentView.findViewById(R.id.container_2);
+            if (ll!=null) { // tablet, second container exists
+                if (ll.getChildCount() > 0) ll.removeAllViews();
+                ft.replace(R.id.container_2, fragment);
+                fragment.changeToolbar = false;
+            }else {
+                ft.hide(workoutListFragment.thisInstance);
+                ft.add(R.id.fragment_container, fragment);
+                fragment.changeToolbar = true;
             }
+
             ft.addToBackStack(null);
             ft.commit();
             workoutListFragment.getFragmentManager().executePendingTransactions();

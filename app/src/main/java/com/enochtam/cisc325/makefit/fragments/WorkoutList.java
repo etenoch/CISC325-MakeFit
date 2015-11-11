@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.enochtam.cisc325.makefit.Data;
 import com.enochtam.cisc325.makefit.MainActivity;
@@ -24,8 +27,8 @@ import butterknife.ButterKnife;
 
 public class WorkoutList extends Fragment{
 
-    Fragment thisInstance;
-    View fragmentView;
+    public Fragment thisInstance;
+    public View fragmentView;
     MainActivity that;
 
     @Bind(R.id.workouts_rv) RecyclerView workoutsRecyclerView;
@@ -56,8 +59,9 @@ public class WorkoutList extends Fragment{
 
         addWorkoutButton.setClickable(true);
         addWorkoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                Fragment newWorkoutFragment =  new NewWorkout();
+            @Override
+            public void onClick(View v) {
+                Fragment newWorkoutFragment = new NewWorkout();
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.hide(thisInstance);
@@ -65,7 +69,7 @@ public class WorkoutList extends Fragment{
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.addToBackStack(null);
                 ft.commit();
-                that.getFragmentManager().executePendingTransactions();
+                getFragmentManager().executePendingTransactions();
 
             }
         });
@@ -79,6 +83,21 @@ public class WorkoutList extends Fragment{
                 WorkoutList.this.dataLoaded(result);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+
+
+        if (fragmentView.findViewById(R.id.container_2)!=null){ // tablet, second container exists
+            TextView tv = new TextView(that);
+            tv.setText("No Workout Selected");
+            tv.setLayoutParams(new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.FILL_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+            ));
+            tv.setGravity(Gravity.CENTER);
+
+            View container_2 = fragmentView.findViewById(R.id.container_2);
+            ((LinearLayout)container_2).addView(tv);
+        }
+
 
         return fragmentView;
     }

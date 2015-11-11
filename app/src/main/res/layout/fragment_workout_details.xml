@@ -3,7 +3,100 @@
     android:layout_height="match_parent"
     tools:context="com.enochtam.cisc325.makefit.fragments.WorkoutDetails">
 
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:id="@+id/workout_name"/>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="@dimen/custom_padding"
+        android:background="@color/almost_white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:text="Test"
+            android:id="@+id/workout_name"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="difficulty"
+            android:id="@+id/workout_difficulty"
+            android:layout_below="@+id/workout_name"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="2dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Workout Details:"
+            android:id="@+id/workout_details_label"
+            android:layout_below="@+id/workout_difficulty"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="details"
+            android:id="@+id/workout_details"
+            android:layout_below="@+id/workout_details_label"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/light_grey_bckgrnd"
+            android:layout_marginTop="-2dp"
+            android:padding="4dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="emistamted time"
+            android:id="@+id/workout_estimated_time"
+            android:layout_below="@+id/workout_details"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="4dp"/>
+
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true">
+            <Button
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textSize="@dimen/font_size_1"
+                android:text="Edit Workout"
+                android:id="@+id/edit_workout_buttom"
+                android:textColor="@color/secondary_text">
+            </Button>
+            <Button
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textSize="@dimen/font_size_1"
+                android:text="Start Workout"
+                android:id="@+id/start_workout_button"
+                android:textColor="@color/secondary_text">
+            </Button>
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
 
 </FrameLayout>

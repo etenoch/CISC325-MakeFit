@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.enochtam.cisc325.makefit.fragments.WorkoutList">
+
+    <FrameLayout
+        android:layout_width="350dp"
+        android:layout_height="fill_parent"
+        android:id="@+id/container_1">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/workouts_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_workout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_plus"
+            android:layout_gravity="bottom|end"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp"
+            android:layout_margin="16dp"
+            android:clickable="true"/>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/container_2"
+        android:background="@color/almost_white"
+        android:layout_toRightOf="@+id/container_1"
+        android:layout_toEndOf="@+id/container_1">
+    </LinearLayout>
+
+</RelativeLayout>

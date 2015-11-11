@@ -1,6 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.enochtam.cisc325.makefit.fragments.StartScreen"
     android:padding="14dp">
 
@@ -64,16 +66,19 @@
     <LinearLayout
         android:layout_below="@+id/ll_1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        <com.imanoweb.calendarview.CustomCalendarView
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            app:mcv_showOtherDates="all"
-            app:mcv_selectionColor="@color/accent"/>
+            android:background="#ffffff"
+            android:layout_marginTop="4dp"
+            app:currentDayOfMonthColor="@color/accent_green"
+            app:selectedDayBackgroundColor="@color/primary">
+        </com.imanoweb.calendarview.CustomCalendarView>
 
     </LinearLayout>
 

@@ -28,31 +28,11 @@
             android:foreground="?android:windowContentOverlay">
 
             <LinearLayout
-                android:layout_width="350dp"
+                android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:id="@+id/fragment_container"
                 android:orientation="horizontal"
-                android:layout_gravity="end"
-                android:background="@color/almost_white">
-            </LinearLayout>
-
-            <LinearLayout
-                android:background="@color/light_grey_bckgrnd"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/fragment_container_2"
-                android:orientation="horizontal"
-                android:layout_gravity="end"
-                android:layout_toRightOf="@+id/fragment_container"
-                android:layout_toEndOf="@+id/fragment_container" >
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="No Workout Selected"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:textSize="20sp">
-                </TextView>
+                android:layout_gravity="end">
             </LinearLayout>
 
         </RelativeLayout>

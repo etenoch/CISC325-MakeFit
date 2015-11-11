@@ -22,7 +22,6 @@ import android.widget.EditText;
 import com.enochtam.cisc325.makefit.adapters.DrawerAdapter;
 import com.enochtam.cisc325.makefit.events.FragmentChangeEvent;
 import com.enochtam.cisc325.makefit.fragments.StartScreen;
-import com.enochtam.cisc325.makefit.fragments.WorkoutList;
 import com.enochtam.cisc325.makefit.util.DrawerItem;
 
 import de.greenrobot.event.EventBus;
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         // load first fragment
-        pendingFragment = new WorkoutList();
+        pendingFragment = new StartScreen();
         changeFragment();
 
         setupCloseKeyboard(findViewById(R.id.DrawerLayout));
