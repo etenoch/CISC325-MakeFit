@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
 import com.enochtam.cisc325.makefit.fragments.WorkoutDetails;
+import com.enochtam.cisc325.makefit.fragments.WorkoutList;
 import com.enochtam.cisc325.makefit.models.Workout;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
     public List<Workout> workoutItems;
 
     public static MainActivity that;
+    public static WorkoutList workoutListFragment;
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -45,26 +47,27 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
             WorkoutDetails fragment = new WorkoutDetails();
             fragment.setWorkout(workout);
 
-            FragmentTransaction ft = that.getFragmentManager().beginTransaction();
+            FragmentTransaction ft = workoutListFragment.getFragmentManager().beginTransaction();
 //            ft.hide(thisInstance);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
             if (that.findViewById(R.id.fragment_container_2)!=null){ // tablet, second container exists
-                ft.replace(R.id.fragment_container_2,fragment);
+                ft.add(R.id.fragment_container_2,fragment);
             }else{
                 ft.add(R.id.fragment_container,fragment);
             }
             ft.addToBackStack(null);
             ft.commit();
-            that.getFragmentManager().executePendingTransactions();
+            workoutListFragment.getFragmentManager().executePendingTransactions();
             fragment.populateViews();
         }
 
     }// class ViewHolder
 
-    public WorkoutsAdapter(List<Workout> workoutItems, MainActivity context){
+    public WorkoutsAdapter(List<Workout> workoutItems, MainActivity context, WorkoutList fragment){
         this.workoutItems = workoutItems;
         that = context;
+        workoutListFragment = fragment;
     }
 
 //    public void setData(List<Workout> workoutItems){
