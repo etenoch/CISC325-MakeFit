@@ -6,6 +6,6 @@
 
     <bool name="portrait_only">true</bool>
 
-    <dimen name="font_size_1">20sp</dimen>
+    <dimen name="font_size_1">18sp</dimen>
 
 </resources>

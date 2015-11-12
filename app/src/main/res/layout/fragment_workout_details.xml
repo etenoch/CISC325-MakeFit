@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="emistamted time"
+            android:text="estimated time"
             android:id="@+id/workout_estimated_time"
             android:layout_below="@+id/workout_details"
             android:layout_alignParentLeft="true"
@@ -80,8 +80,7 @@
                 android:layout_height="fill_parent"
                 android:textSize="@dimen/font_size_1"
                 android:text="Edit Workout"
-                android:id="@+id/edit_workout_buttom"
-                android:textColor="@color/secondary_text">
+                android:id="@+id/edit_workout_btn">
             </Button>
             <Button
                 android:layout_weight="1"
@@ -89,8 +88,7 @@
                 android:layout_height="fill_parent"
                 android:textSize="@dimen/font_size_1"
                 android:text="Start Workout"
-                android:id="@+id/start_workout_button"
-                android:textColor="@color/secondary_text">
+                android:id="@+id/start_workout_btn">
             </Button>
         </LinearLayout>
 

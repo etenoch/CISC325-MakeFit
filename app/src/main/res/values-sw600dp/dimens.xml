@@ -8,6 +8,6 @@
     <bool name="portrait_only">false</bool>
 
 
-    <dimen name="font_size_1">36sp</dimen>
+    <dimen name="font_size_1">26sp</dimen>
 
 </resources>

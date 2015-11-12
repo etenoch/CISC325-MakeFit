@@ -3,7 +3,170 @@
     android:layout_height="match_parent"
     tools:context="com.enochtam.cisc325.makefit.fragments.WorkoutScreen">
 
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="Hello World From Fragment" />
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/workout_name"
+            android:text="Workout name"
+            android:gravity="center"></TextView>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingRight="8dp"
+            android:layout_below="@+id/workout_name"
+            android:id="@+id/linearLayout2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:text="Time:"
+                android:layout_gravity="center">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="50sp"
+                android:textStyle="bold"
+                android:id="@+id/time_counter"
+                android:text="0:05">
+            </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:text=""
+                android:layout_gravity="center">
+            </TextView>
+        </LinearLayout>
+
+
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="2dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:id="@+id/exercise_card"
+            android:layout_below="@+id/linearLayout2">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Push Ups"
+                    android:textSize="58sp"
+                    android:textStyle="bold"
+                    android:id="@+id/exercise_name"
+                    android:gravity="center"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:textColor="@color/primary_text"
+                    android:layout_margin="4dp">
+                </TextView>
+                <ImageView
+                    android:id="@+id/exercise_image"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:scaleType="centerCrop"
+                    android:layout_below="@+id/exercise_name"
+                    android:src="@drawable/exercise_placehodler">
+                </ImageView>
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="5 minutes"
+                    android:textSize="38sp"
+                    android:id="@+id/exercise_time"
+                    android:gravity="center"
+                    android:layout_below="@+id/exercise_image"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_margin="4dp">
+                </TextView>
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/exercise_card"
+            android:layout_centerHorizontal="true">
+            <Button
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textSize="20sp"
+                android:text="Previous Exercise"
+                android:id="@+id/prev_exercise_btn"
+                android:drawableLeft="@drawable/ic_prev_arrow">
+            </Button>
+            <Button
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textSize="20sp"
+                android:text="Next Exercise"
+                android:id="@+id/next_exercise_btn"
+                android:drawableRight="@drawable/ic_next_arrow">
+            </Button>
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true">
+            <Button
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textSize="20sp"
+                android:text="Pause Workout"
+                android:id="@+id/pause_workout_btn"
+                >
+
+            </Button>
+            <Button
+
+                android:layout_weight="1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textSize="20sp"
+                android:text="End Workout"
+                android:id="@+id/end_workout_btn"
+                >
+            </Button>
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
+
 
 </FrameLayout>

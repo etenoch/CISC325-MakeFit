@@ -41,8 +41,7 @@ public class WorkoutList extends Fragment{
         thisInstance = this;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         that = (MainActivity) getActivity();
     }
@@ -52,8 +51,7 @@ public class WorkoutList extends Fragment{
         that.setToolbarTitle("Workouts");
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_workout_list, container, false);
         ButterKnife.bind(this, fragmentView);
 

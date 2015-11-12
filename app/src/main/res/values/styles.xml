@@ -15,6 +15,8 @@
 
         <item name="drawerArrowStyle">@style/WhiteDrawerIconStyle</item>
 
+        <item name="android:buttonStyle">@style/ButtonStyle</item>
+
 
     </style>
 
@@ -35,6 +37,11 @@
 
     <style name="MyToolbarTheme">
         <item name="colorControlNormal">@color/white</item>
+    </style>
+
+    <style name="ButtonStyle" parent="android:Widget.Button" >
+        <item name="android:background">@color/primary</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="TextShadow">
