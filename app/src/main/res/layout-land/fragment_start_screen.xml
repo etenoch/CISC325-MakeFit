@@ -70,7 +70,8 @@
             android:layout_marginTop="14dp"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="4dp">
 
             <TextView
                 android:layout_width="fill_parent"
@@ -159,6 +160,7 @@
         </com.imanoweb.calendarview.CustomCalendarView>
 
         <Button
+            android:layout_marginTop="12dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Start Workout"
