@@ -146,18 +146,23 @@
         android:orientation="vertical"
         android:layout_toRightOf="@+id/ll_1"
         android:layout_toEndOf="@+id/ll_1"
-        android:padding="10dp">
+        android:padding="8dp">
 
 
-    <com.imanoweb.calendarview.CustomCalendarView
+        <com.imanoweb.calendarview.CustomCalendarView
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#ffffff"
             app:selectedDayBackgroundColor="@color/primary"
             app:currentDayOfMonthColor="@color/accent_green">
+        </com.imanoweb.calendarview.CustomCalendarView>
 
-    </com.imanoweb.calendarview.CustomCalendarView>
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Workout"
+            android:id="@+id/start_workout_btn"/>
 
     </LinearLayout>
 

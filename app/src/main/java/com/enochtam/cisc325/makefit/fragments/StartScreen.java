@@ -5,14 +5,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
+import com.enochtam.cisc325.makefit.events.FragmentChangeEvent;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 public class StartScreen extends Fragment {
 
@@ -21,6 +25,8 @@ public class StartScreen extends Fragment {
 
     View fragmentView;
     MainActivity that;
+
+    @Bind(R.id.start_workout_btn) Button startWorkoutButton;
 
     public StartScreen() {
         // Required empty public constructor
@@ -42,6 +48,13 @@ public class StartScreen extends Fragment {
         fragmentView = inflater.inflate(R.layout.fragment_start_screen, container, false);
 
         ButterKnife.bind(this,fragmentView);
+
+        startWorkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                Fragment f = new WorkoutList();
+                EventBus.getDefault().post(new FragmentChangeEvent(f,true));
+            }
+        });
 
 
         return fragmentView;
