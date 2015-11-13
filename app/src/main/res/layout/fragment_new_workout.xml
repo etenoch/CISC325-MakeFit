@@ -56,13 +56,28 @@
                     android:textSize="20sp"/>
             </android.support.design.widget.TextInputLayout>
 
-            <Spinner
-                android:layout_marginTop="6dp"
-                style="@style/SpinnerItemStyle"
+            <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/workout_difficulty"
-                android:textColor="@color/primary_text" />
+                android:layout_marginTop="6dp"
+                android:padding="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Difficulty: "
+                    android:textSize="20sp"
+                    android:id="@+id/textView2"
+                    android:layout_centerVertical="true">
+                </TextView>
+                <Spinner
+                    style="@style/SpinnerItemStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/workout_difficulty"
+                    android:textColor="@color/primary_text"
+                    android:layout_toRightOf="@+id/textView2"
+                    android:layout_toEndOf="@+id/textView2" />
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -107,7 +122,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_gravity="left"
-                android:background="#ffffff">
+                android:layout_margin="4dp"
+                android:background="@color/white">
             </android.support.v7.widget.RecyclerView>
 
 

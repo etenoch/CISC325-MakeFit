@@ -86,7 +86,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             card_view:cardCornerRadius="2dp"
-            android:layout_marginTop="6dp">
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp">
             <RelativeLayout
                 android:padding="8dp"
                 android:layout_width="wrap_content"
@@ -113,7 +115,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             card_view:cardCornerRadius="2dp"
-            android:layout_marginTop="6dp">
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="6dp">
             <RelativeLayout
                 android:padding="8dp"
                 android:layout_width="wrap_content"

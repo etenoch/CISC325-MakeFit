@@ -8,13 +8,6 @@
         android:layout_height="fill_parent"
         android:padding="8dp">
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/workout_name"
-            android:text="Workout name"
-            android:gravity="center"/>
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -54,8 +47,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             card_view:cardCornerRadius="2dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:layout_marginBottom="4dp"
             android:layout_marginTop="4dp"
             android:id="@+id/exercise_card"
@@ -68,7 +61,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="Push Ups"
-                    android:textSize="58sp"
+                    android:textSize="56sp"
                     android:textStyle="bold"
                     android:id="@+id/exercise_name"
                     android:gravity="center"
@@ -88,7 +81,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="5 minutes"
-                    android:textSize="38sp"
+                    android:textSize="34sp"
                     android:id="@+id/exercise_time"
                     android:gravity="center"
                     android:layout_below="@+id/exercise_image"

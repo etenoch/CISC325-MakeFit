@@ -5,9 +5,9 @@
     <string name="close_drawer">Close Drawer</string>
 
     <string-array name="difficulty_spinner">
-        <item>Beginner Difficulty</item>
-        <item>Intermediate Difficulty</item>
-        <item>Experienced Difficulty</item>
+        <item>Beginner</item>
+        <item>Intermediate</item>
+        <item>Experienced</item>
     </string-array>
 
 <!-- TODO: Remove or change this placeholder text -->

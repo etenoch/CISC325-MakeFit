@@ -21,6 +21,8 @@
 
         <item name="android:buttonStyle">@style/ButtonStyle</item>
 
+        <item name="android:actionMenuTextAppearance">@style/ActionBarStyle</item>
+
     </style>
 
     <style name="ButtonStyle" parent="@style/Widget.AppCompat.Button.Colored">

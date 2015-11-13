@@ -1,0 +1,171 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.enochtam.cisc325.makefit.fragments.NewWorkout">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_weight="3">
+
+            <TextView
+                android:layout_gravity="center"
+                android:text="New Workout Details"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:textSize="26sp"
+                android:textColor="@color/accent"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:id="@+id/text_header">
+            </TextView>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_header"
+                android:id="@+id/nw_ll_1">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:inputType="text"
+                        android:hint="Workout Name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/workout_name"
+                        android:textColor="@color/primary_text"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="14dp"
+                        android:textSize="20sp"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_marginTop="-1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:hint="Workout Details"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/workout_details"
+                        android:textColor="@color/primary_text"
+                        android:inputType="textMultiLine"
+                        android:minLines="2"
+                        android:maxLines="4"
+                        android:scrollbars="vertical"
+                        android:gravity="top|left"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="14dp"
+                        android:textSize="20sp"/>
+                </android.support.design.widget.TextInputLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:padding="4dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Difficulty: "
+                        android:textSize="20sp"
+                        android:id="@+id/textView2"
+                        android:layout_centerVertical="true">
+                    </TextView>
+                    <Spinner
+                        style="@style/SpinnerItemStyle"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/workout_difficulty"
+                        android:textColor="@color/primary_text"
+                        android:layout_toRightOf="@+id/textView2"
+                        android:layout_toEndOf="@+id/textView2" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:background="@color/almost_white"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:elevation="8dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/nw_ll_1">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:text="Exercises"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="26sp"
+                    android:textColor="@color/accent"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp">
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <Button
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Pick Exercise"
+                        android:id="@+id/pick_exercise_button"
+                        android:drawableLeft="@drawable/ic_add_plus"/>
+                    <Button
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Custom Exercise"
+                        android:id="@+id/add_custom_button"
+                        android:drawableLeft="@drawable/ic_add_plus"/>
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/add_exercise_rv"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="left"
+                    android:layout_margin="4dp"
+                    android:background="@color/white">
+                </android.support.v7.widget.RecyclerView>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

@@ -29,7 +29,6 @@ public class WorkoutScreen extends Fragment {
 
     private MainActivity that;
 
-    @Bind(R.id.workout_name) TextView workoutName;
     @Bind(R.id.time_counter) TextView timeCounter;
     @Bind(R.id.exercise_card) CardView exerciseCard;
     @Bind(R.id.exercise_name) TextView exerciseName;
@@ -63,7 +62,7 @@ public class WorkoutScreen extends Fragment {
         that.setToolbarTitle("MakeFit Workout");
 
         if(workout!= null){
-            workoutName.setText(workout.name);
+            that.setToolbarTitle("MakeFit: "+workout.name);
 //            timeCounter
 //            exerciseCard
 //            exerciseName

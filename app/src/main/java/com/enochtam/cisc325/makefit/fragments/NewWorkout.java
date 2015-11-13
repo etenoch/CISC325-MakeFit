@@ -5,6 +5,9 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -27,6 +30,8 @@ public class NewWorkout extends Fragment {
 
     View fragmentView;
     MainActivity that;
+
+    Menu fragmentMenu;
 
     @Bind(R.id.workout_difficulty) Spinner difficultySpinner;
     @Bind(R.id.pick_exercise_button) Button pickExerciseButton;
@@ -79,17 +84,16 @@ public class NewWorkout extends Fragment {
         super.onDetach();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
         }
         that = (MainActivity) getActivity();
+        setHasOptionsMenu(true);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentView= inflater.inflate(R.layout.fragment_new_workout, container, false);
         ButterKnife.bind(this, fragmentView);
 //        that.setupCloseKeyboard(fragmentView);
@@ -99,8 +103,9 @@ public class NewWorkout extends Fragment {
         difficultySpinner.setAdapter(spinnerAdapter);
 
         addCustomButton.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                Fragment newWorkoutFragment =  new NewExercise();
+            @Override
+            public void onClick(View v) {
+                Fragment newWorkoutFragment = new NewExercise();
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.hide(thisInstance);
@@ -117,6 +122,22 @@ public class NewWorkout extends Fragment {
         return fragmentView;
     }
 
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.new_workout_menu, menu);
+        fragmentMenu = menu;
+    }
+
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.save_btn:
+                // save stuff
+                getFragmentManager().popBackStackImmediate();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }
 

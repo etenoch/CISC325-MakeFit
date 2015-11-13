@@ -17,6 +17,8 @@
 
         <item name="android:buttonStyle">@style/ButtonStyle</item>
 
+        <item name="android:actionMenuTextAppearance">@style/ActionBarStyle</item>
+
 
     </style>
 
@@ -42,6 +44,13 @@
     <style name="ButtonStyle" parent="android:Widget.Button" >
         <item name="android:background">@color/primary</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ActionBarStyle"
+        parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="TextShadow">
