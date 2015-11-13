@@ -43,6 +43,39 @@ public class Data {
         return db.insert(tableName,null,c);
     }
 
+    // workouts
+    public long addWorkout(Workout w){
+        ContentValues c = new ContentValues();
+        c.put(WorkoutEntry.C_WORKOUT_NAME, w.name);
+        c.put(WorkoutEntry.C_DETAILS,w.details);
+        c.put(WorkoutEntry.C_DIFFICULTY,w.difficulty);
+        long workoutID = insert(WorkoutEntry.T_NAME, c);
+
+        long exerciseID;
+        Exercise e;
+        if(w.exercises!=null){
+            for(WorkoutExerciseLink we:w.exercises){
+                if (we.theExercise.exerciseID!=0) exerciseID = addExercise(we.theExercise);
+                else exerciseID = we.theExercise.exerciseID;
+
+                c = new ContentValues();
+                c.put(Workout_ExerciseEntry.C_EXERCISE_ID,exerciseID);
+                c.put(Workout_ExerciseEntry.C_WORKOUT_ID,workoutID);
+                c.put(Workout_ExerciseEntry.C_ORDER, we.order);
+                insert(Workout_ExerciseEntry.T_NAME, c);
+            }
+        }
+
+        return workoutID;
+    }
+
+    public void deleteWorkout(Workout w){
+        deleteWorkout((int)w.workoutID);
+    }
+
+    public void deleteWorkout(int id){
+        db.delete(WorkoutEntry.T_NAME, WorkoutEntry._ID+" = ?", new String[]{ String.valueOf(id) });
+    }
 
     public List<Workout> getWorkouts(){
         ArrayList<Workout> result = new ArrayList<>();
@@ -84,6 +117,15 @@ public class Data {
 
 
     // Exercise Table
+
+    public long addExercise(Exercise e){
+        ContentValues c = new ContentValues();
+        c.put(ExerciseEntry.C_EXERCISE_NAME,e.name);
+        c.put(ExerciseEntry.C_DETAILS, e.details);
+        c.put(ExerciseEntry.C_TIME, e.time);
+        return insert(ExerciseEntry.T_NAME, c);
+    }
+
     public List<Exercise> getExercises(){
         return getExercises(null);
     }

@@ -25,6 +25,11 @@ public class Workout {
         this.details = details;
         this.difficulty = difficulty;
     }
+    public Workout(String name, String details, String difficulty) {
+        this.name = name;
+        this.details = details;
+        this.difficulty = difficulty;
+    }
 
     public void addExercise(WorkoutExerciseLink e){
         exercises.add(e);
@@ -32,8 +37,10 @@ public class Workout {
 
     public int getTotalTime(){ // return time in minutes
         int seconds=0;
-        for (WorkoutExerciseLink e:exercises){
-            seconds+=e.theExercise.time;
+        if (exercises != null) {
+            for (WorkoutExerciseLink e:exercises){
+                seconds+=e.theExercise.time;
+            }
         }
         return seconds/60;
     }

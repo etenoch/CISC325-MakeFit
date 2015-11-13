@@ -14,6 +14,11 @@ public class Exercise {
         this.details = details;
         this.time = time;
     }
+    public Exercise(String name, String details, int time) {
+        this.name = name;
+        this.details = details;
+        this.time = time;
+    }
 }
 
 

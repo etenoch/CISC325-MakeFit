@@ -18,12 +18,14 @@ import com.enochtam.cisc325.makefit.Data;
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
 import com.enochtam.cisc325.makefit.adapters.WorkoutsAdapter;
+import com.enochtam.cisc325.makefit.events.NewWorkoutEvent;
 import com.enochtam.cisc325.makefit.models.Workout;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 public class WorkoutList extends Fragment{
 
@@ -49,6 +51,15 @@ public class WorkoutList extends Fragment{
     @Override public void onResume() {
         super.onStart();
         that.setToolbarTitle("Workouts");
+    }
+
+    @Override public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+    @Override public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -109,6 +120,10 @@ public class WorkoutList extends Fragment{
         workoutsRecyclerView.setLayoutManager(workoutsLayoutManager);
         workoutsRecyclerView.setAdapter(workoutsAdatper);
 
+    }
+
+    public void onEvent(NewWorkoutEvent newWorkout){
+        workoutsAdatper.addDataItem(newWorkout.workout);
     }
 
 }

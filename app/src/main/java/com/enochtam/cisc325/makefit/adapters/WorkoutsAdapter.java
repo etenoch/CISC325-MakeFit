@@ -79,6 +79,11 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
 //        this.workoutItems = workoutItems;
 //    }
 
+    public void addDataItem(Workout workout){
+        this.workoutItems.add(workout);
+        notifyDataSetChanged();
+    }
+
     @Override public WorkoutsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.workout_card_view,parent,false);
 

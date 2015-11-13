@@ -24,4 +24,9 @@ public class WorkoutExerciseLink {
         this.order = order;
         this.theExercise = e;
     }
+
+    public WorkoutExerciseLink(int order, Exercise e) {
+        this.order = order;
+        this.theExercise = e;
+    }
 }

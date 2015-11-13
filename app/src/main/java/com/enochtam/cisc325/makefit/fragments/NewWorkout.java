@@ -2,6 +2,7 @@ package com.enochtam.cisc325.makefit.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
@@ -12,13 +13,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.enochtam.cisc325.makefit.Data;
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
+import com.enochtam.cisc325.makefit.events.NewExerciseEvent;
+import com.enochtam.cisc325.makefit.events.NewWorkoutEvent;
+import com.enochtam.cisc325.makefit.models.Exercise;
+import com.enochtam.cisc325.makefit.models.Workout;
+import com.enochtam.cisc325.makefit.models.WorkoutExerciseLink;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.greenrobot.event.EventBus;
 
 public class NewWorkout extends Fragment {
 
@@ -31,13 +43,16 @@ public class NewWorkout extends Fragment {
     View fragmentView;
     MainActivity that;
 
-    Menu fragmentMenu;
+    ArrayAdapter spinnerAdapter;
 
-    @Bind(R.id.workout_difficulty) Spinner difficultySpinner;
     @Bind(R.id.pick_exercise_button) Button pickExerciseButton;
     @Bind(R.id.add_custom_button) Button addCustomButton;
 
-    ArrayAdapter spinnerAdapter;
+    @Bind(R.id.workout_name) EditText workoutName;
+    @Bind(R.id.workout_details) EditText workoutDetails;
+    @Bind(R.id.workout_difficulty) Spinner difficultySpinner;
+
+    List<Exercise> currentExercises;
 
     public static WorkoutScreen newInstance(String param1, String param2) {
         WorkoutScreen fragment = new WorkoutScreen();
@@ -69,6 +84,12 @@ public class NewWorkout extends Fragment {
         }
         that.drawerToggle.syncState();
         that.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override public void onDetach() {
@@ -118,25 +139,52 @@ public class NewWorkout extends Fragment {
             }
         });
 
-
+        currentExercises = new ArrayList<>();
         return fragmentView;
     }
 
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.new_workout_menu, menu);
-        fragmentMenu = menu;
     }
 
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_btn:
-                // save stuff
-                getFragmentManager().popBackStackImmediate();
+                final Workout newWorkout = new Workout(
+                        workoutName.getText().toString(),
+                        workoutDetails.getText().toString(),
+                        difficultySpinner.getSelectedItem().toString()
+                );
+                // add exercises
+                List<WorkoutExerciseLink> exerciseLinks = new ArrayList<>();
+                for (Exercise e : currentExercises){
+                    exerciseLinks.add(new WorkoutExerciseLink(1,e));
+                }
+
+                new AsyncTask<Void, Void, Long>() {
+                    @Override protected Long doInBackground(Void... params) {
+                        return Data.getInstance(that).addWorkout(newWorkout);
+                    }
+                    @Override protected void onPostExecute(Long newWorkoutID) {
+                        newWorkout.workoutID = newWorkoutID;
+                        NewWorkout.this.workoutSaved(newWorkout);
+                    }
+                }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void workoutSaved(Workout newWorkout){
+        EventBus.getDefault().post(new NewWorkoutEvent(newWorkout));
+        getFragmentManager().popBackStackImmediate();
+    }
+
+    public void onEvent(NewExerciseEvent exerciseEvent){
+        currentExercises.add(exerciseEvent.exercise);
     }
 
 }
