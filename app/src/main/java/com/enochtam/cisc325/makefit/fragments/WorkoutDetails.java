@@ -6,6 +6,8 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,15 @@ import android.widget.TextView;
 
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
+import com.enochtam.cisc325.makefit.adapters.WorkoutDetailsExercisesAdapter;
+import com.enochtam.cisc325.makefit.models.Exercise;
 import com.enochtam.cisc325.makefit.models.Workout;
+import com.enochtam.cisc325.makefit.models.WorkoutExerciseLink;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,6 +39,9 @@ public class WorkoutDetails extends Fragment {
 
     String prevFragmentTitle;
 
+    @Bind(R.id.exercises_rv) RecyclerView exercisesRecyclerView;
+    RecyclerView.LayoutManager exercisesLayoutManager;
+    WorkoutDetailsExercisesAdapter exercisesAdatper;
 
     @Bind(R.id.workout_name) TextView workoutName;
     @Bind(R.id.workout_difficulty) TextView workoutDifficulty;
@@ -107,7 +120,8 @@ public class WorkoutDetails extends Fragment {
             workoutDetails.setText(workout.details);
             estimatedTime.setText("Estimated Time: " + Integer.toString(workout.getTotalTime()) + " minutes");
             startButton.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
                     final WorkoutScreen workoutFrag = new WorkoutScreen();
                     workoutFrag.setWorkout(workout);
 
@@ -120,7 +134,8 @@ public class WorkoutDetails extends Fragment {
                         public void run() {
                             final Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
-                                @Override public void run() {
+                                @Override
+                                public void run() {
                                     FragmentTransaction ft = fm.beginTransaction();
                                     ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                                     ft.replace(R.id.fragment_container, workoutFrag).commit();
@@ -132,6 +147,25 @@ public class WorkoutDetails extends Fragment {
 
                 }
             });
+
+            // sort exercises items
+            Collections.sort(workout.exercises, new Comparator<WorkoutExerciseLink>() {
+                @Override public int compare(WorkoutExerciseLink one, WorkoutExerciseLink two) {
+                    if (one.order > two.order) return 1;
+                    else if (one.order < two.order) return 1;
+                    return 0;
+                }
+            });
+
+            List <Exercise> exercises = new ArrayList<>();
+            for (WorkoutExerciseLink wel:workout.exercises) exercises.add(wel.theExercise);
+
+            exercisesLayoutManager = new LinearLayoutManager(that);
+            exercisesAdatper = new WorkoutDetailsExercisesAdapter(exercises,that,this);
+
+            exercisesRecyclerView.setLayoutManager(exercisesLayoutManager);
+            exercisesRecyclerView.setAdapter(exercisesAdatper);
+
         }
     }
 

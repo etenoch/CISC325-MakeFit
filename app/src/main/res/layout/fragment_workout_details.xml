@@ -64,11 +64,43 @@
             android:layout_below="@+id/workout_details"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="4dp"/>
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"/>
+
+
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="26sp"
+            android:text="Exercises"
+            android:id="@+id/exercises_header"
+            android:layout_below="@+id/workout_estimated_time"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_below="@+id/exercises_header"
+            android:layout_above="@+id/ll_1"
+            android:id="@+id/exercises_rv"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="left"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/white">
+        </android.support.v7.widget.RecyclerView>
 
 
 
         <LinearLayout
+            android:id="@+id/ll_1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

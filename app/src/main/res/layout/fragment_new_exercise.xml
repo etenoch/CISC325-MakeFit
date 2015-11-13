@@ -71,7 +71,7 @@
                         android:hint="Time Estimate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/time"
+                        android:id="@+id/exercise_time"
                         android:textColor="@color/primary_text"
                         android:gravity="top|left"
                         android:paddingLeft="8dp"

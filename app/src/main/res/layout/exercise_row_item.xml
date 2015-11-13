@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/exercise_row_item_border"
+    android:padding="4dp">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Exercise Name"
+        android:id="@+id/exercise_name"
+        android:layout_toLeftOf="@+id/exercise_time"
+        android:layout_toStartOf="@+id/exercise_time" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/exercise_time"
+        android:layout_alignParentRight="true"
+        android:text="time"/>
+
+
+</RelativeLayout>
