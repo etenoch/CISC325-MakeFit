@@ -11,7 +11,7 @@ public class DrawerItem {
     public static List<DrawerItem> drawerItems = Arrays.asList(
             new DrawerItem(R.drawable.ic_profile,"MakeFit Profile","StartScreen"),
             new DrawerItem(R.drawable.ic_running_man,"Workouts","WorkoutList"),
-            new DrawerItem(R.drawable.ic_history_list,"History","StartScreen"),
+            new DrawerItem(R.drawable.ic_history_list,"History","WorkoutHistory"),
             new DrawerItem(R.drawable.ic_settings,"Settings","StartScreen")
     );
 
