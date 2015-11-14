@@ -5,6 +5,8 @@ import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +21,7 @@ import android.widget.Spinner;
 import com.enochtam.cisc325.makefit.Data;
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
+import com.enochtam.cisc325.makefit.adapters.NewWorkoutExercisesAdapter;
 import com.enochtam.cisc325.makefit.events.NewExerciseEvent;
 import com.enochtam.cisc325.makefit.events.NewWorkoutEvent;
 import com.enochtam.cisc325.makefit.models.Exercise;
@@ -52,7 +55,10 @@ public class NewWorkout extends Fragment {
     @Bind(R.id.workout_details) EditText workoutDetails;
     @Bind(R.id.workout_difficulty) Spinner difficultySpinner;
 
-    List<Exercise> currentExercises;
+    @Bind(R.id.add_exercise_rv) RecyclerView addExerciseRv;
+    RecyclerView.LayoutManager exercisesLayoutManager;
+    NewWorkoutExercisesAdapter exercisesAdatper;
+
 
     public static WorkoutScreen newInstance(String param1, String param2) {
         WorkoutScreen fragment = new WorkoutScreen();
@@ -139,7 +145,13 @@ public class NewWorkout extends Fragment {
             }
         });
 
-        currentExercises = new ArrayList<>();
+
+        exercisesLayoutManager = new LinearLayoutManager(that);
+        exercisesAdatper = new NewWorkoutExercisesAdapter(new ArrayList<Exercise>(),that,this);
+        addExerciseRv.setAdapter(exercisesAdatper);
+        addExerciseRv.setLayoutManager(exercisesLayoutManager);
+
+
         return fragmentView;
     }
 
@@ -158,9 +170,12 @@ public class NewWorkout extends Fragment {
                 );
                 // add exercises
                 List<WorkoutExerciseLink> exerciseLinks = new ArrayList<>();
-                for (Exercise e : currentExercises){
-                    exerciseLinks.add(new WorkoutExerciseLink(1,e));
+                int counter = 1;
+                for (Exercise e : exercisesAdatper.exerciseItems){
+                    exerciseLinks.add(new WorkoutExerciseLink(counter,e));
+                    counter+=1;
                 }
+                newWorkout.exercises = exerciseLinks;
 
                 new AsyncTask<Void, Void, Long>() {
                     @Override protected Long doInBackground(Void... params) {
@@ -184,7 +199,7 @@ public class NewWorkout extends Fragment {
     }
 
     public void onEvent(NewExerciseEvent exerciseEvent){
-        currentExercises.add(exerciseEvent.exercise);
+        exercisesAdatper.addDataItem(exerciseEvent.exercise);
     }
 
 }

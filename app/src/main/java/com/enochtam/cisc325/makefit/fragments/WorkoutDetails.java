@@ -148,17 +148,18 @@ public class WorkoutDetails extends Fragment {
                 }
             });
 
-            // sort exercises items
-            Collections.sort(workout.exercises, new Comparator<WorkoutExerciseLink>() {
-                @Override public int compare(WorkoutExerciseLink one, WorkoutExerciseLink two) {
-                    if (one.order > two.order) return 1;
-                    else if (one.order < two.order) return 1;
-                    return 0;
-                }
-            });
-
             List <Exercise> exercises = new ArrayList<>();
-            for (WorkoutExerciseLink wel:workout.exercises) exercises.add(wel.theExercise);
+            // sort exercises items
+            if(workout.exercises!=null){
+                Collections.sort(workout.exercises, new Comparator<WorkoutExerciseLink>() {
+                    @Override public int compare(WorkoutExerciseLink one, WorkoutExerciseLink two) {
+                        if (one.order > two.order) return 1;
+                        else if (one.order < two.order) return 1;
+                        return 0;
+                    }
+                });
+                for (WorkoutExerciseLink wel:workout.exercises) exercises.add(wel.theExercise);
+            }
 
             exercisesLayoutManager = new LinearLayoutManager(that);
             exercisesAdatper = new WorkoutDetailsExercisesAdapter(exercises,that,this);
