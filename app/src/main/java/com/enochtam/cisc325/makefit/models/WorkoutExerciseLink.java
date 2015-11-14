@@ -25,6 +25,12 @@ public class WorkoutExerciseLink {
         this.theExercise = e;
     }
 
+    public WorkoutExerciseLink(int exerciseID, int order, Exercise e) {
+        this.exerciseID = exerciseID;
+        this.order = order;
+        this.theExercise = e;
+    }
+
     public WorkoutExerciseLink(int order, Exercise e) {
         this.order = order;
         this.theExercise = e;

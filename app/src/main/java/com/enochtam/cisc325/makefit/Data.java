@@ -55,8 +55,8 @@ public class Data {
         Exercise e;
         if(w.exercises!=null){
             for(WorkoutExerciseLink we:w.exercises){
-                if (we.theExercise.exerciseID!=0) exerciseID = addExercise(we.theExercise);
-                else exerciseID = we.theExercise.exerciseID;
+                if (we.exerciseID==0) exerciseID = addExercise(we.theExercise);
+                else exerciseID = we.exerciseID;
 
                 c = new ContentValues();
                 c.put(Workout_ExerciseEntry.C_EXERCISE_ID,exerciseID);

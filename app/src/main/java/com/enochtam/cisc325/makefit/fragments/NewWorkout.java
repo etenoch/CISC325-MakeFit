@@ -172,7 +172,7 @@ public class NewWorkout extends Fragment {
                 List<WorkoutExerciseLink> exerciseLinks = new ArrayList<>();
                 int counter = 1;
                 for (Exercise e : exercisesAdatper.exerciseItems){
-                    exerciseLinks.add(new WorkoutExerciseLink(counter,e));
+                    exerciseLinks.add(new WorkoutExerciseLink((int)e.exerciseID,counter,e));
                     counter+=1;
                 }
                 newWorkout.exercises = exerciseLinks;
