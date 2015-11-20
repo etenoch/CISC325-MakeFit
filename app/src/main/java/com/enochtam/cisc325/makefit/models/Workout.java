@@ -10,6 +10,8 @@ public class Workout {
     public String details;
     public String difficulty;
 
+    public boolean selected =false;
+
     public List<WorkoutExerciseLink> exercises;
 
     public Workout(long workoutID,String name, String details, String difficulty,List<WorkoutExerciseLink> exercises) {

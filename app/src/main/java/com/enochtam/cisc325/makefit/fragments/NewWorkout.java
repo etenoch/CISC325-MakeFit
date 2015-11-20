@@ -2,9 +2,11 @@ package com.enochtam.cisc325.makefit.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,6 +31,7 @@ import com.enochtam.cisc325.makefit.models.Workout;
 import com.enochtam.cisc325.makefit.models.WorkoutExerciseLink;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -146,6 +149,16 @@ public class NewWorkout extends Fragment {
         });
 
 
+        new AsyncTask<Void, Void, List<Exercise>>() {
+            @Override protected List<Exercise> doInBackground(Void... params) {
+                return Data.getInstance(that).getExercises();
+            }
+            @Override protected void onPostExecute(List<Exercise> result) {
+                NewWorkout.this.dataLoaded(result);
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+
+
         exercisesLayoutManager = new LinearLayoutManager(that);
         exercisesAdatper = new NewWorkoutExercisesAdapter(new ArrayList<Exercise>(),that,this);
         addExerciseRv.setAdapter(exercisesAdatper);
@@ -153,6 +166,47 @@ public class NewWorkout extends Fragment {
 
 
         return fragmentView;
+    }
+
+    public void dataLoaded(final List<Exercise> data){
+
+        final CharSequence[] stringItems = new String[data.size()];
+        int index = 0;
+        for (Exercise x:data){
+            stringItems[index]=x.name;
+            index+=1;
+        }
+
+        pickExerciseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final HashMap<Integer, Exercise> itemsToAdd = new HashMap<>();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(that);
+                builder.setTitle("Exercises");
+                builder.setMultiChoiceItems(stringItems, new boolean[data.size()], new DialogInterface.OnMultiChoiceClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (isChecked) itemsToAdd.put(which, data.get(which));
+                        else itemsToAdd.remove(which);
+                    }
+                });
+                builder.setPositiveButton("Add Exercises", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (Integer x : itemsToAdd.keySet()) {
+                            EventBus.getDefault().post(new NewExerciseEvent(itemsToAdd.get(x)));
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", null);
+
+                final AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+
     }
 
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

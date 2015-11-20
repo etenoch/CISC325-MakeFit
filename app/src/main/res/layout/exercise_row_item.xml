@@ -3,7 +3,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/exercise_row_item_border"
-    android:padding="4dp">
+    android:paddingTop="8dp"
+    android:paddingBottom="10dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:layout_marginBottom="-2dp">
 
     <TextView
         android:layout_width="fill_parent"
@@ -11,13 +15,17 @@
         android:text="Exercise Name"
         android:id="@+id/exercise_name"
         android:layout_toLeftOf="@+id/exercise_time"
-        android:layout_toStartOf="@+id/exercise_time" />
+        android:layout_toStartOf="@+id/exercise_time"
+        android:textSize="24sp"
+        android:textStyle="bold"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/exercise_time"
+        android:textSize="20sp"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:text="time"/>
 
 

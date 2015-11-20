@@ -25,6 +25,8 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
     public static MainActivity that;
     public static WorkoutList workoutListFragment;
 
+    public static Workout previousWorkout;
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public Workout workout;
@@ -32,12 +34,20 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
         TextView workoutName;
         TextView workoutDifficulty;
 
+        public View thisView;
+
         public ViewHolder(View itemView) {
             super(itemView);
             itemView.setClickable(true);
             itemView.setOnClickListener(this);
             workoutName = (TextView) itemView.findViewById(R.id.workout_name);
             workoutDifficulty = (TextView) itemView.findViewById(R.id.workout_difficulty);
+            thisView = itemView;
+        }
+
+        public void setSelectedBackground(boolean selected){
+            if (selected) thisView.setBackgroundResource(R.drawable.selected_border_left);
+            else thisView.setBackgroundResource(0);
         }
 
         public void setWorkout(Workout w){
@@ -54,6 +64,12 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
             if (ll!=null) { // tablet, second container exists
                 if (ll.getChildCount() > 0) ll.removeAllViews();
                 ft.replace(R.id.container_2, fragment);
+
+                workout.selected = true;
+                if (previousWorkout!=null) previousWorkout.selected = false;
+                previousWorkout = workout;
+                workoutListFragment.workoutsAdatper.notifyDataSetChanged();
+
                 fragment.changeToolbar = false;
             }else {
                 ft.hide(workoutListFragment.thisInstance);
@@ -74,10 +90,7 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
         that = context;
         workoutListFragment = fragment;
     }
-
-//    public void setData(List<Workout> workoutItems){
-//        this.workoutItems = workoutItems;
-//    }
+    
 
     public void addDataItem(Workout workout){
         this.workoutItems.add(workout);
@@ -96,6 +109,11 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
         holder.workoutName.setText(workoutItems.get(position).name);
         holder.workoutDifficulty.setText(workoutItems.get(position).difficulty);
         holder.setWorkout(workoutItems.get(position));
+
+        if(workoutItems.get(position).selected) holder.setSelectedBackground(true);
+        else holder.setSelectedBackground(false);
+
+
     }
 
     @Override public int getItemCount() {

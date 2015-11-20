@@ -36,8 +36,8 @@ public class WorkoutList extends Fragment{
     @Bind(R.id.workouts_rv) RecyclerView workoutsRecyclerView;
     @Bind(R.id.add_workout_button) FloatingActionButton addWorkoutButton;
 
-    RecyclerView.LayoutManager workoutsLayoutManager;
-    WorkoutsAdapter workoutsAdatper;
+    public RecyclerView.LayoutManager workoutsLayoutManager;
+    public WorkoutsAdapter workoutsAdatper;
 
     public WorkoutList() {
         thisInstance = this;
@@ -96,11 +96,12 @@ public class WorkoutList extends Fragment{
 
         if (fragmentView.findViewById(R.id.container_2)!=null){ // tablet, second container exists
             TextView tv = new TextView(that);
-            tv.setText("No Workout Selected");
+            tv.setText("\n\n\n\n\nNo Workout Selected");
             tv.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.FILL_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
             ));
+            tv.setTextSize(30);
             tv.setGravity(Gravity.CENTER);
 
             View container_2 = fragmentView.findViewById(R.id.container_2);
