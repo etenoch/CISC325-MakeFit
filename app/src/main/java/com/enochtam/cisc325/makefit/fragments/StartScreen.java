@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
@@ -27,6 +28,8 @@ public class StartScreen extends Fragment {
     MainActivity that;
 
     @Bind(R.id.start_workout_btn) Button startWorkoutButton;
+    @Bind(R.id.first_name) TextView firstName;
+    @Bind(R.id.last_name) TextView lastName;
 
     public StartScreen() {
         // Required empty public constructor
@@ -50,12 +53,15 @@ public class StartScreen extends Fragment {
         ButterKnife.bind(this,fragmentView);
 
         startWorkoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 Fragment f = new WorkoutList();
-                EventBus.getDefault().post(new FragmentChangeEvent(f,true));
+                EventBus.getDefault().post(new FragmentChangeEvent(f, true));
             }
         });
 
+        firstName.setText(that.prefs.getString("firstname",null));
+        lastName.setText(that.prefs.getString("lastname",null));
 
         return fragmentView;
     }

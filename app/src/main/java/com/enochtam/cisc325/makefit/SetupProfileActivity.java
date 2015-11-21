@@ -42,11 +42,17 @@ public class SetupProfileActivity extends Activity {
         dao = Data.getInstance(this);
         prefs = getSharedPreferences("com.enochtam.cisc325.makefit", MODE_PRIVATE);
 
-//        prefs.edit().putBoolean("firstrun", false).commit();
 
 
         createProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
+
+                prefs.edit().putString("firstname", firstName.getText().toString()).apply();
+                prefs.edit().putString("lastname", lastName.getText().toString()).apply();
+
+                dao.createTestData();
+                prefs.edit().putBoolean("firstrun", false).commit();
+
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }

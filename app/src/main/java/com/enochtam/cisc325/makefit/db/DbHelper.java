@@ -51,7 +51,7 @@ public class DbHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + WorkoutEntry.T_NAME;
     private static final String SQL_DELETE_2 =
             "DROP TABLE IF EXISTS " + ExerciseEntry.T_NAME;
-    private static final String SQL_DELETE__3 =
+    private static final String SQL_DELETE_3 =
             "DROP TABLE IF EXISTS " + Workout_ExerciseEntry.T_NAME;
     private static final String SQL_DELETE_4 =
             "DROP TABLE IF EXISTS " + Workout_HistoryEntry.T_NAME;
@@ -67,11 +67,14 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_T4);
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        clearDb(db);
+        onCreate(db);
+    }
+    public void clearDb(SQLiteDatabase db) {
         db.execSQL(SQL_DELETE_1);
         db.execSQL(SQL_DELETE_2);
-        db.execSQL(SQL_DELETE__3);
+        db.execSQL(SQL_DELETE_3);
         db.execSQL(SQL_DELETE_4);
-        onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
 import com.enochtam.cisc325.makefit.events.FragmentChangeEvent;
 import com.enochtam.cisc325.makefit.util.DrawerItem;
@@ -26,6 +27,8 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
     private static final int TYPE_ITEM = 1;
 
     private List<DrawerItem> drawerItems;
+
+    private static MainActivity that;
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         int holderID;
@@ -78,8 +81,9 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
 
     }// class ViewHolder
 
-    public DrawerAdapter(List<DrawerItem> drawerItems){
+    public DrawerAdapter(List<DrawerItem> drawerItems,MainActivity that){
         this.drawerItems = drawerItems;
+        this.that = that;
     }
 
     @Override public DrawerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -99,7 +103,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
             holder.itemTitleView.setTag(drawerItems.get(position - 1).fragmentClassName);
             holder.iconView.setImageResource(drawerItems.get(position - 1).icon);
         }else{
-            holder.nameTextView.setText("Duncan Geffery");
+            holder.nameTextView.setText(that.prefs.getString("firstname", null)+" "+that.prefs.getString("lastname", null));
             holder.exerciseDetails.setText("Some Exercise Stats");
             holder.profileImageView.setImageResource(R.drawable.ic_person_placeholder);
         }

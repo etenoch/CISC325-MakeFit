@@ -48,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
     private Fragment pendingFragment;
 
     // notification
-    Intent notiIntent;
-    PendingIntent pendingIntent;
-    NotificationManager notificationManager;
-    Notification.Builder nBuilder;
+    public Intent notiIntent;
+    public PendingIntent pendingIntent;
+    public NotificationManager notificationManager;
+    public Notification.Builder nBuilder;
 
-    SharedPreferences prefs;
+    public SharedPreferences prefs;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         // hamburger menu
         drawerRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
         drawerRecyclerView.setHasFixedSize(true);
-        drawerAdapter = new DrawerAdapter(DrawerItem.drawerItems);
+        drawerAdapter = new DrawerAdapter(DrawerItem.drawerItems,this);
         drawerRecyclerView.setAdapter(drawerAdapter);
         drawerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
