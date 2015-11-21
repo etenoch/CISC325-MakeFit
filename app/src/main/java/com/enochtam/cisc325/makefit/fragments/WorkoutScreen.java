@@ -3,10 +3,6 @@ package com.enochtam.cisc325.makefit.fragments;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.widget.CardView;
@@ -72,28 +68,16 @@ public class WorkoutScreen extends Fragment {
         that.setToolbarTitle("MakeFit Workout");
 
         if(workout!= null){
-            that.setToolbarTitle("MakeFit: "+workout.name);
-
-
-            Intent intent = new Intent(that, MainActivity.class);
-            PendingIntent pIntent = PendingIntent.getActivity(that, 0, intent, 0);
-            Notification noti = new Notification.Builder(that)
-                    .setContentTitle("MakeFit: "+workout.name)
-                    .setContentText("MakeFit Workout").setSmallIcon(R.mipmap.ic_vector)
-                    .setContentIntent(pIntent)
-                    .setOngoing(true)
-                    .build();
-            NotificationManager notificationManager = (NotificationManager) that.getSystemService(that.NOTIFICATION_SERVICE);
-            notificationManager.notify(0, noti);
-
+            that.setToolbarTitle("MakeFit: " + workout.name);
 
             currentWorkout = CurrentWorkout.getInstance();
             currentWorkout.workoutActive = true;
             currentWorkout.startNewWorkout(workout);
 
-            newCountDown(currentWorkout.currentExercise.time*1000);
+            newCountDown(currentWorkout.currentExercise.time * 1000);
             exerciseName.setText(currentWorkout.currentExercise.name);
 
+            that.showNotification("MakeFit: "+workout.name, currentWorkout.currentExercise.name);
 
 //            timeCounter
 //            exerciseCard
@@ -101,7 +85,8 @@ public class WorkoutScreen extends Fragment {
 //            exerciseImage
 //            exerciseTime
             prevExerciseBtn.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
 
                 }
             });
@@ -123,6 +108,8 @@ public class WorkoutScreen extends Fragment {
                     FragmentTransaction ft = fm.beginTransaction();
                     ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                     ft.replace(R.id.fragment_container, startFrag).commit();
+
+                    that.hideNotification();
 
                 }
             });

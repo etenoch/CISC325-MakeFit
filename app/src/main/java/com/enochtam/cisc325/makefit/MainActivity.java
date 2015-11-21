@@ -3,6 +3,11 @@ package com.enochtam.cisc325.makefit;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -42,16 +47,28 @@ public class MainActivity extends AppCompatActivity {
     // fragment stuff
     private Fragment pendingFragment;
 
+    // notification
+    Intent notiIntent;
+    PendingIntent pendingIntent;
+    NotificationManager notificationManager;
+    Notification.Builder nBuilder;
+
+    SharedPreferences prefs;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Data.getInstance(this);
+        prefs = getSharedPreferences("com.enochtam.cisc325.makefit", MODE_PRIVATE);
 
         if(getResources().getBoolean(R.bool.portrait_only))   // if phone: portrait only
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        // notification
+        notiIntent = new Intent(this, MainActivity.class);
+        pendingIntent = PendingIntent.getActivity(this, 0, notiIntent, 0);
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         // toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -86,6 +103,19 @@ public class MainActivity extends AppCompatActivity {
         setupCloseKeyboard(findViewById(R.id.DrawerLayout));
 //        Data.getInstance().createTestData();
 
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+
+        if (prefs.getBoolean("firstrun", true)) {
+//            Toast.makeText(this,"First run",Toast.LENGTH_LONG).show();
+
+            Intent introAct = new Intent(this,IntroActivity.class);
+            startActivity(introAct);
+
+
+        }
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -150,8 +180,34 @@ public class MainActivity extends AppCompatActivity {
     @Override public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0) getFragmentManager().popBackStack();
         else super.onBackPressed();
-
     }
+
+
+    public boolean isFirstRun(){
+
+        return false;
+    }
+
+    // notifications
+    public void showNotification(String title, String subText){
+        if (nBuilder == null){
+            nBuilder = new Notification.Builder(this)
+                    .setContentTitle(title)
+                    .setContentText(subText)
+                    .setSmallIcon(R.mipmap.ic_vector)
+                    .setContentIntent(pendingIntent)
+                    .setOngoing(true);
+        }else{
+            nBuilder.setContentTitle(title);
+            nBuilder.setContentText(subText);
+        }
+        notificationManager.notify(0, nBuilder.build());
+    }
+    public void hideNotification(){
+        notificationManager.cancelAll();
+        nBuilder = null;
+    }
+
 
     //==== Event Bus Handlers ====//
     public void onEvent(FragmentChangeEvent event){

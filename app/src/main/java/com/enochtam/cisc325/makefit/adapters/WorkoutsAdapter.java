@@ -66,7 +66,7 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<WorkoutsAdapter.ViewHo
                 ft.replace(R.id.container_2, fragment);
 
                 workout.selected = true;
-                if (previousWorkout!=null) previousWorkout.selected = false;
+                if (previousWorkout!=null && previousWorkout!=workout) previousWorkout.selected = false;
                 previousWorkout = workout;
                 workoutListFragment.workoutsAdatper.notifyDataSetChanged();
 
