@@ -10,7 +10,6 @@ import com.github.paolorotolo.appintro.AppIntroFragment;
 
 public class IntroActivity extends AppIntro {
 
-    // Please DO NOT override onCreate. Use init
     @Override
     public void init(Bundle savedInstanceState) {
 
@@ -44,11 +43,6 @@ public class IntroActivity extends AppIntro {
         showDoneButton(true);
 
         setDoneText("Setup Profile");
-
-//        addSlide(new NewProfile());
-//        addSlide(second_fragment);
-//        addSlide(third_fragment);
-//        addSlide(fourth_fragment);
 
     }
 

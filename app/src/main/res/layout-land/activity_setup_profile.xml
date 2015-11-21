@@ -23,8 +23,8 @@
         android:id="@+id/first_name"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
+        android:layout_marginLeft="220dp"
+        android:layout_marginRight="220dp"
         android:layout_marginTop="20dp"
         android:textSize="20sp"
         android:maxLines="1"
@@ -43,8 +43,8 @@
         android:id="@+id/last_name"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
+        android:layout_marginLeft="220dp"
+        android:layout_marginRight="220dp"
         android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:maxLines="1"
@@ -55,6 +55,7 @@
         android:paddingTop="14dp"
         android:paddingBottom="14dp"
         android:singleLine="true"/>
+
 
     <Button
         android:layout_width="wrap_content"
