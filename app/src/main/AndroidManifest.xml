@@ -28,6 +28,9 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".WorkoutService"
+            android:exported="false"/>
 
     </application>
 

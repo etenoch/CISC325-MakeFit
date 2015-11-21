@@ -5,14 +5,17 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.enochtam.cisc325.makefit.CurrentWorkout;
 import com.enochtam.cisc325.makefit.MainActivity;
@@ -32,6 +35,7 @@ public class WorkoutScreen extends Fragment {
 
     private MainActivity that;
 
+    @Bind(R.id.chronometer) Chronometer chronometer;
     @Bind(R.id.time_counter) TextView timeCounter;
     @Bind(R.id.exercise_card) CardView exerciseCard;
     @Bind(R.id.exercise_name) TextView exerciseName;
@@ -52,6 +56,8 @@ public class WorkoutScreen extends Fragment {
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         that = (MainActivity)getActivity();
+        currentWorkout = CurrentWorkout.getInstance();
+
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,17 +73,30 @@ public class WorkoutScreen extends Fragment {
 
         that.setToolbarTitle("MakeFit Workout");
 
-        if(workout!= null){
+        if(workout!= null && !currentWorkout.workoutActive){
             that.setToolbarTitle("MakeFit: " + workout.name);
 
-            currentWorkout = CurrentWorkout.getInstance();
             currentWorkout.workoutActive = true;
             currentWorkout.startNewWorkout(workout);
+
+            chronometer.setBase(SystemClock.elapsedRealtime());
+            chronometer.start();
+
+            chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+                @Override
+                public void onChronometerTick(Chronometer chronometer) {
+                    timeCounter.setText(chronometer.getText());
+
+                }
+            });
 
             newCountDown(currentWorkout.currentExercise.time * 1000);
             exerciseName.setText(currentWorkout.currentExercise.name);
 
             that.showNotification("MakeFit: "+workout.name, currentWorkout.currentExercise.name);
+
+//            Intent i = new Intent(that, WorkoutService.class);
+//            that.startService(i);
 
 //            timeCounter
 //            exerciseCard
@@ -87,7 +106,8 @@ public class WorkoutScreen extends Fragment {
             prevExerciseBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
+                    Toast.makeText(that, "Elapsed milliseconds: " + elapsedMillis,Toast.LENGTH_SHORT).show();
                 }
             });
             nextExerciseBtn.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +121,8 @@ public class WorkoutScreen extends Fragment {
             endWorkoutBtn.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     StartScreen startFrag = new StartScreen();
+
+                    chronometer.stop();
 
                     currentWorkout.reset();
 

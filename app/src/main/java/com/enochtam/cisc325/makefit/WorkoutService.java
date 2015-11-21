@@ -1,7 +1,23 @@
 package com.enochtam.cisc325.makefit;
 
-/**
- * Created by Enoch on 2015-11-19.
- */
-public class WorkoutService {
+
+import android.app.IntentService;
+import android.content.Intent;
+
+public class WorkoutService extends IntentService {
+
+    public WorkoutService(){
+        super("workout-service");
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        
+    }
 }

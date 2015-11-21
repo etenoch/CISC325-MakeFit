@@ -42,7 +42,7 @@ public class IntroActivity extends AppIntro {
 
         showDoneButton(true);
 
-        setDoneText("Setup Profile");
+        setDoneText("Get Started");
 
     }
 
