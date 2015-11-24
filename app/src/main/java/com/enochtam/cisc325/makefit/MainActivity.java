@@ -55,9 +55,14 @@ public class MainActivity extends AppCompatActivity {
 
     public SharedPreferences prefs;
 
+
+    public boolean workoutActive;
+
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        workoutActive=false;
 
         Data.getInstance(this);
         prefs = getSharedPreferences("com.enochtam.cisc325.makefit", MODE_PRIVATE);
@@ -96,25 +101,19 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
 
 
-        if (CurrentWorkout.getInstance().workoutActive) pendingFragment = new WorkoutScreen();
+        if (workoutActive) pendingFragment = new WorkoutScreen();
         else pendingFragment = new StartScreen();
         changeFragment();
 
         setupCloseKeyboard(findViewById(R.id.DrawerLayout));
-//        Data.getInstance().createTestData();
 
     }
 
     @Override protected void onResume() {
         super.onResume();
-
         if (prefs.getBoolean("firstrun", true)) {
-//            Toast.makeText(this,"First run",Toast.LENGTH_LONG).show();
-
             Intent introAct = new Intent(this,IntroActivity.class);
             startActivity(introAct);
-
-
         }
     }
 

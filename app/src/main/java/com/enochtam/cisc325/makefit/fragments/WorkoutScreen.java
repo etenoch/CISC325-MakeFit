@@ -1,7 +1,6 @@
 package com.enochtam.cisc325.makefit.fragments;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -17,10 +16,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.enochtam.cisc325.makefit.CurrentWorkout;
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
+import com.enochtam.cisc325.makefit.models.Exercise;
 import com.enochtam.cisc325.makefit.models.Workout;
+import com.enochtam.cisc325.makefit.models.WorkoutExerciseLink;
+import com.enochtam.cisc325.makefit.models.WorkoutHistoryItem;
+
+import java.util.Collections;
+import java.util.Comparator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,11 +32,9 @@ import butterknife.ButterKnife;
 
 public class WorkoutScreen extends Fragment {
 
-
     private Workout workout;
 
     private View fragmentView;
-
     private MainActivity that;
 
     @Bind(R.id.chronometer) Chronometer chronometer;
@@ -47,7 +49,11 @@ public class WorkoutScreen extends Fragment {
     @Bind(R.id.end_workout_btn) Button endWorkoutBtn;
     @Bind(R.id.exercise_progress) ProgressBar exerciseProgress;
 
-    CurrentWorkout currentWorkout;
+    private CountDownTimer exerciseTimer;
+    private Exercise currentExercise;
+    private int currentIndex;
+
+    private WorkoutHistoryItem historyItem;
 
     public WorkoutScreen() {
         // Required empty public constructor
@@ -56,83 +62,49 @@ public class WorkoutScreen extends Fragment {
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         that = (MainActivity)getActivity();
-        currentWorkout = CurrentWorkout.getInstance();
 
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_workout_screen, container, false);
-        ButterKnife.bind(this,fragmentView);
+        ButterKnife.bind(this, fragmentView);
+        exerciseProgress.setScaleY(3f);
 
         return fragmentView;
     }
 
     @Override public void onStart() {
         super.onStart();
-        exerciseProgress.setScaleY(3f);
 
         that.setToolbarTitle("MakeFit Workout");
 
-        if(workout!= null && !currentWorkout.workoutActive){
+        if(workout!= null && !that.workoutActive){
             that.setToolbarTitle("MakeFit: " + workout.name);
 
-            currentWorkout.workoutActive = true;
-            currentWorkout.startNewWorkout(workout);
-
-            chronometer.setBase(SystemClock.elapsedRealtime());
-            chronometer.start();
-
-            chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-                @Override
-                public void onChronometerTick(Chronometer chronometer) {
-                    timeCounter.setText(chronometer.getText());
-
-                }
-            });
-
-            newCountDown(currentWorkout.currentExercise.time * 1000);
-            exerciseName.setText(currentWorkout.currentExercise.name);
-
-            that.showNotification("MakeFit: "+workout.name, currentWorkout.currentExercise.name);
+            startNewWorkout();
 
 //            Intent i = new Intent(that, WorkoutService.class);
 //            that.startService(i);
 
-//            timeCounter
-//            exerciseCard
-//            exerciseName
-//            exerciseImage
-//            exerciseTime
             prevExerciseBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
-                    Toast.makeText(that, "Elapsed milliseconds: " + elapsedMillis,Toast.LENGTH_SHORT).show();
+                @Override public void onClick(View v) {
+                    changeToPrevExercise();
                 }
             });
             nextExerciseBtn.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    currentWorkout.nextExercise();
-                    newCountDown(currentWorkout.currentExercise.time * 1000);
-                    exerciseName.setText(currentWorkout.currentExercise.name);
+                    changeToNextExercise();
                 }
             });
-//            pauseWorkoutBtn
+            pauseWorkoutBtn.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+
+
+                }
+            });
             endWorkoutBtn.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    StartScreen startFrag = new StartScreen();
-
-                    chronometer.stop();
-
-                    currentWorkout.reset();
-
-                    final FragmentManager fm = getFragmentManager();
-                    FragmentTransaction ft = fm.beginTransaction();
-                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                    ft.replace(R.id.fragment_container, startFrag).commit();
-
-                    that.hideNotification();
-
+                    endWorkout();
                 }
             });
         }else{
@@ -143,14 +115,82 @@ public class WorkoutScreen extends Fragment {
     }
 
 
-    public void newCountDown(long time){
-        if(currentWorkout.exerciseTimer!=null) currentWorkout.exerciseTimer.cancel();
-        currentWorkout.exerciseTimer =  new CountDownTimer(time, 1000) {
+    public void startNewWorkout(){
+
+        Collections.sort(workout.exercises, new Comparator<WorkoutExerciseLink>() {
+            @Override
+            public int compare(WorkoutExerciseLink lhs, WorkoutExerciseLink rhs) {
+                if (lhs.order > rhs.order) return 1;
+                if (lhs.order < rhs.order) return -1;
+                return 0;
+            }
+        });
+        currentIndex=-1;
+
+        historyItem = new WorkoutHistoryItem(workout.workoutID,getEpochTime());
+
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        chronometer.start();
+
+        chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            @Override
+            public void onChronometerTick(Chronometer chronometer) {
+                timeCounter.setText(chronometer.getText().toString());
+            }
+        });
+
+        changeToNextExercise();
+    }
+
+    public void changeToNextExercise(){
+        currentIndex++;
+        if (currentIndex < workout.exercises.size()){
+            currentExercise = workout.exercises.get(currentIndex).theExercise;
+            setExercise(currentExercise);
+        }else currentIndex = workout.exercises.size()-1;
+    }
+
+    public void changeToPrevExercise(){
+        currentIndex--;
+        if (currentIndex >= 0) {
+            currentExercise = workout.exercises.get(currentIndex).theExercise;
+            setExercise(currentExercise);
+        }else currentIndex = 0;
+    }
+
+    public void endWorkout(){
+        long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
+        Toast.makeText(that, "Elapsed milliseconds: " + elapsedMillis,Toast.LENGTH_SHORT).show();
+
+        chronometer.stop();
+        exerciseTimer.cancel();
+        workout = null;
+        currentExercise = null;
+        currentIndex = -1;
+        that.workoutActive = false;
+
+        that.hideNotification();
+
+        historyItem.totalTime  = elapsedMillis/1000;
+        // save to db
+
+        StartScreen startFrag = new StartScreen();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.replace(R.id.fragment_container, startFrag).commit();
+    }
+
+
+    public void setExercise(Exercise e){
+        that.showNotification("MakeFit: " + workout.name, e.name);
+
+        if(exerciseTimer!=null) exerciseTimer.cancel();
+        exerciseTimer = new CountDownTimer(e.time*1000,1000) {
             long total = -1;
             public void onTick(long millisUntilFinished) {
                 long secondsLeft = millisUntilFinished / 1000;
                 if (total == -1) total = secondsLeft + 1;
-                exerciseTime.setText("Time remaining: " + secondsLeft+" seconds");
+                exerciseTime.setText("Remaining: " + secondsLeft+" seconds");
                 exerciseProgress.setMax((int)total);
                 exerciseProgress.setProgress((int)secondsLeft);
             }
@@ -159,10 +199,17 @@ public class WorkoutScreen extends Fragment {
                 exerciseProgress.setProgress(0);
             }
         }.start();
+
+        exerciseName.setText(e.name);
     }
 
 
     public void setWorkout(Workout workout) {
         this.workout = workout;
     }
+
+    public long getEpochTime(){
+        return System.currentTimeMillis() / 1000L;
+    }
+
 }

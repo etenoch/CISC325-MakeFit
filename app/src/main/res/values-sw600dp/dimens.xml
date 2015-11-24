@@ -10,4 +10,7 @@
 
     <dimen name="font_size_1">26sp</dimen>
 
+    <dimen name="font_size_exercise_card_1">48sp</dimen>
+    <dimen name="font_size_exercise_card_2">30sp</dimen>
+
 </resources>
