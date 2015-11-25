@@ -7,12 +7,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.enochtam.cisc325.makefit.db.DbHelper;
+import com.enochtam.cisc325.makefit.db.DbSchema;
 import com.enochtam.cisc325.makefit.db.DbSchema.ExerciseEntry;
 import com.enochtam.cisc325.makefit.db.DbSchema.WorkoutEntry;
 import com.enochtam.cisc325.makefit.db.DbSchema.Workout_ExerciseEntry;
 import com.enochtam.cisc325.makefit.models.Exercise;
 import com.enochtam.cisc325.makefit.models.Workout;
 import com.enochtam.cisc325.makefit.models.WorkoutExerciseLink;
+import com.enochtam.cisc325.makefit.models.WorkoutHistoryItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +76,7 @@ public class Data {
     }
 
     public void deleteWorkout(int id){
-        db.delete(WorkoutEntry.T_NAME, WorkoutEntry._ID+" = ?", new String[]{ String.valueOf(id) });
+        db.delete(WorkoutEntry.T_NAME, WorkoutEntry._ID + " = ?", new String[]{String.valueOf(id)});
     }
 
     public List<Workout> getWorkouts(){
@@ -117,7 +119,6 @@ public class Data {
 
 
     // Exercise Table
-
     public long addExercise(Exercise e){
         ContentValues c = new ContentValues();
         c.put(ExerciseEntry.C_EXERCISE_NAME,e.name);
@@ -192,11 +193,11 @@ public class Data {
             int exercise_ID = c.getInt(2);
             int order = c.getInt(3);
 
-            String exercisename = c.getString(4);
+            String exerciseName = c.getString(4);
             int time = c.getInt(5);
             String details = c.getString(6);
 
-            Exercise e = new Exercise(exercise_ID,exercisename,details,time);
+            Exercise e = new Exercise(exercise_ID,exerciseName,details,time);
             result.add(new WorkoutExerciseLink(link_ID, workout_ID, exercise_ID, order,e));
             c.moveToNext();
         }
@@ -205,7 +206,21 @@ public class Data {
     }
 
 
-
+    // workout history
+    public long addWorkoutHistoryItem(WorkoutHistoryItem whi){
+        ContentValues cv = new ContentValues();
+        cv.put(DbSchema.Workout_HistoryEntry.C_DURATION,whi.duration);
+        cv.put(DbSchema.Workout_HistoryEntry.C_TIME_DATE,whi.startTime);
+        cv.put(DbSchema.Workout_HistoryEntry.C_WORKOUT_ID,whi.workoutID);
+        cv.put(DbSchema.Workout_HistoryEntry.C_WORKOUT_NAME,whi.workoutName);
+        return insert(DbSchema.Workout_HistoryEntry.T_NAME,cv);
+    }
+    public List<WorkoutHistoryItem> getWorkoutHistory(List<Integer> itemIDs){
+        return null;
+    }
+    public List<WorkoutHistoryItem> getWorkoutHistory(){
+        return getWorkoutHistory(null);
+    }
 
     public void createTestData(){
 

@@ -3,12 +3,16 @@ package com.enochtam.cisc325.makefit.models;
 
 public class WorkoutHistoryItem {
 
-    public long totalTime;
+    public long workoutHistoryItemID;
+
+    public long duration;
     public long startTime;
+    public long workoutID;
+    public String workoutName;
+
 
     public long timeTracker;
 
-    public long workoutID;
 
 
     public WorkoutHistoryItem(long workoutID, long startTime) {

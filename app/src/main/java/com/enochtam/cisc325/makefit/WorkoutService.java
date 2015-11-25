@@ -1,13 +1,23 @@
 package com.enochtam.cisc325.makefit;
 
 
-import android.app.IntentService;
+import android.app.Service;
 import android.content.Intent;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 
-public class WorkoutService extends IntentService {
+import com.enochtam.cisc325.makefit.fragments.WorkoutScreen;
+
+public class WorkoutService extends Service {
 
     public WorkoutService(){
-        super("workout-service");
+        super();
+    }
+
+    public WorkoutScreen screenInstance;
+
+    public void setScreenInstance(WorkoutScreen screenInstance) {
+        this.screenInstance = screenInstance;
     }
 
     @Override
@@ -16,8 +26,10 @@ public class WorkoutService extends IntentService {
 
     }
 
+
+    @Nullable
     @Override
-    protected void onHandleIntent(Intent intent) {
-        
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 }

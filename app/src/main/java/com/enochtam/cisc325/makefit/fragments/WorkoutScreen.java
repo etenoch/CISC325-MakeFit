@@ -2,6 +2,8 @@ package com.enochtam.cisc325.makefit.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
@@ -16,8 +18,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.enochtam.cisc325.makefit.Data;
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
+import com.enochtam.cisc325.makefit.WorkoutService;
 import com.enochtam.cisc325.makefit.models.Exercise;
 import com.enochtam.cisc325.makefit.models.Workout;
 import com.enochtam.cisc325.makefit.models.WorkoutExerciseLink;
@@ -83,8 +87,9 @@ public class WorkoutScreen extends Fragment {
 
             startNewWorkout();
 
-//            Intent i = new Intent(that, WorkoutService.class);
-//            that.startService(i);
+            Intent i = new Intent(that, WorkoutService.class);
+            that.startService(i);
+
 
             prevExerciseBtn.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
@@ -169,15 +174,17 @@ public class WorkoutScreen extends Fragment {
         currentIndex = -1;
         that.workoutActive = false;
 
-        that.hideNotification();
+        historyItem.duration  = elapsedMillis/1000;
+        new AsyncTask<Void, Void, Long>() {
+            @Override protected Long doInBackground(Void... params) {
+                return Data.getInstance(that).addWorkoutHistoryItem(historyItem);
+            }
+            @Override protected void onPostExecute(Long newID) {
+                historyItem.workoutHistoryItemID = newID;
+                WorkoutScreen.this.historyItemSaved(historyItem);
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
 
-        historyItem.totalTime  = elapsedMillis/1000;
-        // save to db
-
-        StartScreen startFrag = new StartScreen();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.replace(R.id.fragment_container, startFrag).commit();
     }
 
 
@@ -203,6 +210,15 @@ public class WorkoutScreen extends Fragment {
         exerciseName.setText(e.name);
     }
 
+
+    public void historyItemSaved(WorkoutHistoryItem whi){
+        that.hideNotification();
+
+        StartScreen startFrag = new StartScreen();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.replace(R.id.fragment_container, startFrag).commit();
+    }
 
     public void setWorkout(Workout workout) {
         this.workout = workout;
