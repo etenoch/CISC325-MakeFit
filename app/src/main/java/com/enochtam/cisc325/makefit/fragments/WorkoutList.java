@@ -64,6 +64,9 @@ public class WorkoutList extends Fragment{
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_workout_list, container, false);
+
+        setRetainInstance(true); // still trying to figure out how to handle configuration changes
+
         ButterKnife.bind(this, fragmentView);
 
         addWorkoutButton.setClickable(true);

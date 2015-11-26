@@ -14,6 +14,8 @@ public class WorkoutHistoryItem {
     public long timeTracker;
 
 
+    public boolean selected = false;
+
 
     public WorkoutHistoryItem(long workoutID, long startTime) {
         this.workoutID = workoutID;
@@ -21,5 +23,11 @@ public class WorkoutHistoryItem {
     }
 
 
-
+    public WorkoutHistoryItem(long workoutHistoryItemID, String workoutName, long workoutID, long duration, long startTime) {
+        this.workoutName = workoutName;
+        this.workoutHistoryItemID = workoutHistoryItemID;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.workoutID = workoutID;
+    }
 }

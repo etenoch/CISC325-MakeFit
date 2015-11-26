@@ -211,13 +211,52 @@ public class Data {
         ContentValues cv = new ContentValues();
         cv.put(DbSchema.Workout_HistoryEntry.C_DURATION,whi.duration);
         cv.put(DbSchema.Workout_HistoryEntry.C_TIME_DATE,whi.startTime);
-        cv.put(DbSchema.Workout_HistoryEntry.C_WORKOUT_ID,whi.workoutID);
-        cv.put(DbSchema.Workout_HistoryEntry.C_WORKOUT_NAME,whi.workoutName);
+        cv.put(DbSchema.Workout_HistoryEntry.C_WORKOUT_ID, whi.workoutID);
+        cv.put(DbSchema.Workout_HistoryEntry.C_WORKOUT_NAME, whi.workoutName);
         return insert(DbSchema.Workout_HistoryEntry.T_NAME,cv);
     }
     public List<WorkoutHistoryItem> getWorkoutHistory(List<Integer> itemIDs){
-        return null;
+        if (itemIDs ==  null){
+            ArrayList<WorkoutHistoryItem> result = new ArrayList<>();
+
+            String[] projection = {
+                    DbSchema.Workout_HistoryEntry._ID,
+                    DbSchema.Workout_HistoryEntry.C_WORKOUT_NAME,
+                    DbSchema.Workout_HistoryEntry.C_TIME_DATE,
+                    DbSchema.Workout_HistoryEntry.C_DURATION,
+                    DbSchema.Workout_HistoryEntry.C_WORKOUT_ID
+            };
+            String sortOrder = DbSchema.Workout_HistoryEntry._ID + " DESC";
+
+            Cursor c = db.query(
+                    DbSchema.Workout_HistoryEntry.T_NAME,    // The table to query
+                    projection,             // The columns to return
+                    null,                   // The columns for the WHERE clause
+                    null,                   // The values for the WHERE clause
+                    null,                   // group the rows
+                    null,                   // filter by row groups
+                    sortOrder               // The sort order
+            );
+
+            c.moveToFirst();
+            while (!c.isAfterLast()) {
+                long historyID = c.getLong(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry._ID));
+                String workoutName = c.getString(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry.C_WORKOUT_NAME));
+                long workoutID = c.getLong(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry.C_WORKOUT_ID));
+                long startTime = c.getLong(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry.C_TIME_DATE));
+                long duration = c.getLong(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry.C_DURATION));
+
+
+                result.add(new WorkoutHistoryItem( historyID, workoutName,workoutID, duration, startTime ));
+                c.moveToNext();
+            }
+            c.close();
+            return result;
+        }else{ // finish this
+            return null;
+        }
     }
+
     public List<WorkoutHistoryItem> getWorkoutHistory(){
         return getWorkoutHistory(null);
     }
