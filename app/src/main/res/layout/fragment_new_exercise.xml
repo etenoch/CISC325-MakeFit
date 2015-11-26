@@ -2,102 +2,136 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.enochtam.cisc325.makefit.fragments.NewExercise">
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:paddingLeft="14dp"
-        android:paddingRight="14dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
-
-        <LinearLayout
-            android:orientation="vertical"
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/nw_ll_1">
+            android:layout_height="fill_parent"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/new_exercise_container">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:inputType="text"
-                    android:hint="Exercise Name"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/exercise_name"
-                    android:textColor="@color/primary_text"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="14dp"
-                    android:textSize="20sp"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_marginTop="-1dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:hint="Instructions"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/instructions"
-                    android:textColor="@color/primary_text"
-                    android:inputType="textMultiLine"
-                    android:minLines="2"
-                    android:maxLines="4"
-                    android:scrollbars="vertical"
-                    android:gravity="top|left"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="14dp"
-                    android:textSize="20sp"/>
-            </android.support.design.widget.TextInputLayout>
-
-
-            <RelativeLayout
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/nw_ll_1">
 
                 <android.support.design.widget.TextInputLayout
-                    android:layout_marginTop="-1dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/textView"
-                    android:layout_toStartOf="@+id/textView">
+                    android:layout_height="wrap_content">
+
                     <EditText
-                        android:hint="Time Estimate"
-                        android:layout_width="match_parent"
+                        android:inputType="text"
+                        android:hint="Exercise Name"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/exercise_time"
+                        android:id="@+id/exercise_name"
                         android:textColor="@color/primary_text"
-                        android:gravity="top|left"
                         android:paddingLeft="8dp"
                         android:paddingTop="6dp"
                         android:paddingBottom="14dp"
-                        android:textSize="20sp"/>
+                        android:textSize="20sp"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/instructions"/>
+
                 </android.support.design.widget.TextInputLayout>
 
-                <TextView
+                <android.support.design.widget.TextInputLayout
+                    android:layout_marginTop="-2dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:hint="Instructions"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/instructions"
+                        android:textColor="@color/primary_text"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="14dp"
+                        android:textSize="20sp"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/exercise_time"/>
+                </android.support.design.widget.TextInputLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_marginTop="-1dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@+id/textView"
+                        android:layout_toStartOf="@+id/textView">
+                        <EditText
+                            android:hint="Time Estimate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/exercise_time"
+                            android:textColor="@color/primary_text"
+                            android:gravity="top|left"
+                            android:paddingLeft="8dp"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="14dp"
+                            android:textSize="20sp"
+                            android:inputType="number"
+                            android:imeOptions="actionDone"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Minutes "
+                        android:layout_gravity="center_vertical"
+                        android:textSize="20sp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:id="@+id/textView" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Minutes "
-                    android:layout_gravity="center_vertical"
-                    android:textSize="20sp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:id="@+id/textView" />
+                    android:layout_gravity="right"
+                    android:layout_marginTop="4dp">
 
-            </RelativeLayout>
+                    <Button
+                        style="?android:attr/borderlessButtonStyle"
+                        android:textColor="@color/primary_dark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:id="@+id/cancel_btn"
+                        android:text="Cancel">
+                    </Button>
+                    <Button
+                        style="?android:attr/borderlessButtonStyle"
+                        android:textColor="@color/primary_dark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:id="@+id/save_btn"
+                        android:text="Save">
+                    </Button>
+
+                </LinearLayout>
 
 
 
-        </LinearLayout>
+            </LinearLayout>
 
 
-    </RelativeLayout>
-
+        </RelativeLayout>
+    </ScrollView>
 </FrameLayout>

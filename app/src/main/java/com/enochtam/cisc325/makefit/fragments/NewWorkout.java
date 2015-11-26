@@ -1,10 +1,11 @@
 package com.enochtam.cisc325.makefit.fragments;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -135,15 +136,20 @@ public class NewWorkout extends Fragment {
         addCustomButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment newWorkoutFragment = new NewExercise();
+                DialogFragment newWorkoutFragment = new NewExercise();
 
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.hide(thisInstance);
-                ft.add(R.id.fragment_container, newWorkoutFragment);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.addToBackStack(null);
-                ft.commit();
-                that.getFragmentManager().executePendingTransactions();
+                FragmentManager fm = that.getSupportFragmentManager();
+
+//                FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                ft.hide(thisInstance);
+//                ft.add(R.id.fragment_container, newWorkoutFragment);
+//                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//                ft.addToBackStack(null);
+//                ft.commit();
+
+                newWorkoutFragment.show(fm,"new_exercise_fragment");
+
+                fm.executePendingTransactions();
 
             }
         });

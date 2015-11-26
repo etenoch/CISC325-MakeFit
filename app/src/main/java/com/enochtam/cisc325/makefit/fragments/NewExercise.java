@@ -1,15 +1,15 @@
 package com.enochtam.cisc325.makefit.fragments;
 
-import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.enochtam.cisc325.makefit.Data;
 import com.enochtam.cisc325.makefit.MainActivity;
@@ -21,7 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
-public class NewExercise extends Fragment {
+public class NewExercise extends DialogFragment {
 
     String prevFragmentTitle;
 
@@ -34,6 +34,9 @@ public class NewExercise extends Fragment {
     @Bind(R.id.exercise_name) EditText exerciseName;
     @Bind(R.id.instructions) EditText instructions;
     @Bind(R.id.exercise_time) EditText time;
+    @Bind(R.id.save_btn) Button saveBtn;
+    @Bind(R.id.cancel_btn) Button cancelBtn;
+    @Bind(R.id.new_exercise_container) RelativeLayout rl_container;
 
     public static WorkoutScreen newInstance(String param1, String param2) {
         WorkoutScreen fragment = new WorkoutScreen();
@@ -49,15 +52,20 @@ public class NewExercise extends Fragment {
 
     @Override public void onStart() {
         super.onStart();
-        prevFragmentTitle = that.getToolbarTitle();
-        that.setToolbarTitle("New Exercise");
+//        prevFragmentTitle = that.getToolbarTitle();
+//        that.setToolbarTitle("New Exercise");
     }
     @Override public void onDetach() {
-        that.setToolbarTitle(prevFragmentTitle);
+//        that.setToolbarTitle(prevFragmentTitle);
         super.onDetach();
     }
 
-        @Override
+    @Override public void onPause() {
+        that.hideSoftKeyboard(fragmentView);
+        super.onPause();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -67,42 +75,63 @@ public class NewExercise extends Fragment {
         setHasOptionsMenu(true);
     }
 
-    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.new_exercise_menu, menu);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().setTitle("New Exercise");
+
         fragmentView = inflater.inflate(R.layout.fragment_new_exercise, container, false);
         ButterKnife.bind(this, fragmentView);
+
+        that.setupCloseKeyboard(rl_container);
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                saveItem();
+                that.hideSoftKeyboard(v);
+                NewExercise.this.dismiss();
+            }
+        });
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                that.hideSoftKeyboard(v);
+                NewExercise.this.dismiss();
+            }
+        });
 
         return fragmentView;
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.save_btn:
-                int time_seconds = Integer.parseInt(time.getText().toString())*60;
-                final Exercise newExercise= new Exercise(
-                        exerciseName.getText().toString(),
-                        instructions.getText().toString(),
-                        time_seconds
-                );
+    public void saveItem() {
+        if (time.getText().toString().isEmpty() ||
+                exerciseName.getText().toString().isEmpty() ||
+                instructions.getText().toString().isEmpty()){
+            Toast.makeText(that,"Please fill in all fields",Toast.LENGTH_SHORT).show();
+        }else{
 
-                new AsyncTask<Void, Void, Long>() {
-                    @Override protected Long doInBackground(Void... params) {
-                        return Data.getInstance(that).addExercise(newExercise);
-                    }
-                    @Override protected void onPostExecute(Long newExerciseID) {
-                        newExercise.exerciseID = newExerciseID;
-                        NewExercise.this.exerciseSaved(newExercise);
-                    }
-                }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+            int time_seconds = Integer.parseInt(time.getText().toString()) * 60;
+            final Exercise newExercise = new Exercise(
+                    exerciseName.getText().toString(),
+                    instructions.getText().toString(),
+                    time_seconds
+            );
 
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+            new AsyncTask<Void, Void, Long>() {
+                @Override
+                protected Long doInBackground(Void... params) {
+                    return Data.getInstance(that).addExercise(newExercise);
+                }
+
+                @Override
+                protected void onPostExecute(Long newExerciseID) {
+                    newExercise.exerciseID = newExerciseID;
+                    NewExercise.this.exerciseSaved(newExercise);
+                }
+            }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+
         }
+
     }
 
     public void exerciseSaved(Exercise newExercise){

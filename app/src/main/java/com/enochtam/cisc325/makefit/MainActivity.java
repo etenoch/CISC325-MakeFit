@@ -32,7 +32,7 @@ import com.enochtam.cisc325.makefit.util.DrawerItem;
 
 import de.greenrobot.event.EventBus;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     // toolbar
     public Toolbar toolbar;
@@ -155,6 +155,10 @@ public class MainActivity extends AppCompatActivity {
         InputMethodManager inputMethodManager = (InputMethodManager)  getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
+    public void hideSoftKeyboard(View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
     public void setupCloseKeyboard(View view) {
         //Set up touch listener for non-text box views to hide keyboard.
         if(!(view instanceof EditText)) {
@@ -179,12 +183,6 @@ public class MainActivity extends AppCompatActivity {
     @Override public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0) getFragmentManager().popBackStack();
         else super.onBackPressed();
-    }
-
-
-    public boolean isFirstRun(){
-
-        return false;
     }
 
     // notifications

@@ -167,13 +167,7 @@ public class WorkoutScreen extends Fragment {
         long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
         Toast.makeText(that, "Elapsed milliseconds: " + elapsedMillis,Toast.LENGTH_SHORT).show();
 
-        chronometer.stop();
-        exerciseTimer.cancel();
-        workout = null;
-        currentExercise = null;
-        currentIndex = -1;
-        that.workoutActive = false;
-
+        historyItem.workoutName = workout.name;
         historyItem.duration  = elapsedMillis/1000;
         new AsyncTask<Void, Void, Long>() {
             @Override protected Long doInBackground(Void... params) {
@@ -184,6 +178,13 @@ public class WorkoutScreen extends Fragment {
                 WorkoutScreen.this.historyItemSaved(historyItem);
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+
+        chronometer.stop();
+        exerciseTimer.cancel();
+        workout = null;
+        currentExercise = null;
+        currentIndex = -1;
+        that.workoutActive = false;
 
     }
 
