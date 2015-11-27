@@ -1,6 +1,7 @@
 package com.enochtam.cisc325.makefit.fragments;
 
 import android.app.Fragment;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StartScreen extends Fragment {
 
@@ -30,6 +32,8 @@ public class StartScreen extends Fragment {
     @Bind(R.id.start_workout_btn) Button startWorkoutButton;
     @Bind(R.id.first_name) TextView firstName;
     @Bind(R.id.last_name) TextView lastName;
+    @Bind(R.id.profile_image) CircleImageView profileImage;
+
 
     public StartScreen() {
         // Required empty public constructor
@@ -50,7 +54,7 @@ public class StartScreen extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_start_screen, container, false);
 
-        ButterKnife.bind(this,fragmentView);
+        ButterKnife.bind(this, fragmentView);
 
         startWorkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,8 +64,17 @@ public class StartScreen extends Fragment {
             }
         });
 
-        firstName.setText(that.prefs.getString("firstname",null));
-        lastName.setText(that.prefs.getString("lastname",null));
+        firstName.setText(that.prefs.getString("firstname", null));
+        lastName.setText(that.prefs.getString("lastname", null));
+
+        String uriString = that.prefs.getString("imageuri", null);
+
+        if (uriString!=null && !uriString.isEmpty()){
+            Uri uri = Uri.parse(uriString);
+            profileImage.setImageURI(uri);
+        }else{
+            profileImage.setImageResource(R.drawable.ic_person_placeholder);
+        }
 
         return fragmentView;
     }

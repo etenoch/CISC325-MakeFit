@@ -173,9 +173,11 @@ public class NewExercise extends DialogFragment {
         switch(requestCode) {
             case 0:
                 if(resultCode == -1) NewExercise.this.imageUri = imageReturnedIntent.getData();
+                photoButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_mark, 0);
                 break;
             case 1:
                 if(resultCode == -1) NewExercise.this.imageUri = imageReturnedIntent.getData();
+                photoButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_mark, 0);
                 break;
         }
     }

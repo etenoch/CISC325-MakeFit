@@ -1,10 +1,14 @@
 package com.enochtam.cisc325.makefit;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +18,7 @@ import android.widget.EditText;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SetupProfileActivity extends Activity {
 
@@ -24,7 +29,10 @@ public class SetupProfileActivity extends Activity {
     @Bind(R.id.first_name) EditText firstName;
     @Bind(R.id.last_name) EditText lastName;
     @Bind(R.id.create_profile) Button createProfileButton;
+    @Bind(R.id.profile_image) CircleImageView profileImage;
 
+
+    Uri imageUri;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,12 +51,34 @@ public class SetupProfileActivity extends Activity {
         prefs = getSharedPreferences("com.enochtam.cisc325.makefit", MODE_PRIVATE);
 
 
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(SetupProfileActivity.this);
+                builder.setTitle("Set Profile Photo")
+                        .setItems(new String[]{"Pick Photo", "Take Photo"}, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (which == 1) {
+                                    Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(takePicture, 0);//zero can be replaced with any action code
+                                } else {
+                                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                    startActivityForResult(pickPhoto, 1);//one can be replaced with any action code
+                                }
+                            }
+                        });
+                builder.create().show();
+            }
+        });
+
 
         createProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
 
                 prefs.edit().putString("firstname", firstName.getText().toString()).apply();
                 prefs.edit().putString("lastname", lastName.getText().toString()).apply();
+
+                prefs.edit().putString("imageuri",imageUri.toString()).apply();
 
                 dao.createTestData();
                 prefs.edit().putBoolean("firstrun", false).commit();
@@ -59,6 +89,24 @@ public class SetupProfileActivity extends Activity {
         });
 
         setupCloseKeyboard(findViewById(R.id.profile_container));
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        Uri uri;
+        switch(requestCode) {
+            case 0:
+                uri =imageReturnedIntent.getData();
+                if(resultCode == -1) SetupProfileActivity.this.imageUri = uri;
+                profileImage.setImageURI(uri);
+                break;
+            case 1:
+                uri =imageReturnedIntent.getData();
+                if(resultCode == -1) SetupProfileActivity.this.imageUri = uri;
+                profileImage.setImageURI(uri);
+                break;
+        }
     }
 
 

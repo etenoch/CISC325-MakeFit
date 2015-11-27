@@ -3,6 +3,7 @@ package com.enochtam.cisc325.makefit.adapters;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.net.Uri;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -105,7 +106,15 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
         }else{
             holder.nameTextView.setText(that.prefs.getString("firstname", null)+" "+that.prefs.getString("lastname", null));
             holder.exerciseDetails.setText("Some Exercise Stats");
-            holder.profileImageView.setImageResource(R.drawable.ic_person_placeholder);
+
+            String uriString = that.prefs.getString("imageuri", null);
+
+            if (uriString!=null && !uriString.isEmpty()){
+                Uri uri = Uri.parse(uriString);
+                holder.profileImageView.setImageURI(uri);
+            }else{
+                holder.profileImageView.setImageResource(R.drawable.ic_person_placeholder);
+            }
         }
     }
 

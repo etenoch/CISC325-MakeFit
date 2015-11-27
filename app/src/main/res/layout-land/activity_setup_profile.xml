@@ -16,47 +16,76 @@
         android:textColor="@color/white">
     </TextView>
 
-
-    <EditText
-        android:theme="@style/WhiteEditTextStyle"
-        android:hint="First Name"
-        android:id="@+id/first_name"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:layout_marginLeft="220dp"
-        android:layout_marginRight="220dp"
-        android:layout_marginTop="20dp"
-        android:textSize="20sp"
-        android:maxLines="1"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
-        android:singleLine="true"/>
+        android:gravity="center">
 
 
-    <EditText
-        android:theme="@style/WhiteEditTextStyle"
-        android:hint="Last Name"
-        android:id="@+id/last_name"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:layout_marginLeft="220dp"
-        android:layout_marginRight="220dp"
-        android:layout_marginTop="10dp"
-        android:textSize="20sp"
-        android:maxLines="1"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
-        android:singleLine="true"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:clickable="true"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="-20dp"
+            android:layout_gravity="top"
+            android:src="@drawable/ic_select_image"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FF727272"
+            android:layout_weight="3"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="9">
+            <EditText
+                android:theme="@style/WhiteEditTextStyle"
+                android:hint="First Name"
+                android:id="@+id/first_name"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="220dp"
+                android:layout_marginTop="20dp"
+                android:textSize="20sp"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                android:singleLine="true"/>
 
 
+            <EditText
+                android:theme="@style/WhiteEditTextStyle"
+                android:hint="Last Name"
+                android:id="@+id/last_name"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="220dp"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                android:singleLine="true"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,7 +96,6 @@
         android:layout_marginTop="14dp"
         android:padding="18dp">
     </Button>
-
 
 
 </LinearLayout>

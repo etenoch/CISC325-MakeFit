@@ -16,6 +16,17 @@
         android:textColor="@color/white">
     </TextView>
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:clickable="true"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_select_image"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF727272"/>
 
     <EditText
         android:theme="@style/WhiteEditTextStyle"
@@ -25,7 +36,7 @@
         android:layout_width="fill_parent"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:textSize="20sp"
         android:maxLines="1"
         android:textColor="@color/white"
@@ -35,7 +46,6 @@
         android:paddingTop="14dp"
         android:paddingBottom="14dp"
         android:singleLine="true"/>
-
 
     <EditText
         android:theme="@style/WhiteEditTextStyle"
@@ -55,6 +65,7 @@
         android:paddingTop="14dp"
         android:paddingBottom="14dp"
         android:singleLine="true"/>
+
 
     <Button
         android:layout_width="wrap_content"
