@@ -1,6 +1,7 @@
 package com.enochtam.cisc325.makefit.adapters;
 
 
+import android.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
+import com.enochtam.cisc325.makefit.fragments.HistoryDetails;
 import com.enochtam.cisc325.makefit.fragments.WorkoutHistory;
 import com.enochtam.cisc325.makefit.models.WorkoutHistoryItem;
 
@@ -53,15 +55,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         }
 
         @Override public void onClick(View view) {
-//            WorkoutDetails fragment = new WorkoutDetails();
-//            fragment.setHistoryItem(workout);
+            HistoryDetails fragment = new HistoryDetails();
+            fragment.setHistoryItem(historyItem);
 
-//            FragmentTransaction ft = workoutListFragment.getFragmentManager().beginTransaction();
-//            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            FragmentTransaction ft = workoutHistoryFragment.getFragmentManager().beginTransaction();
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             LinearLayout ll = (LinearLayout)workoutHistoryFragment.fragmentView.findViewById(R.id.container_2);
             if (ll!=null) { // tablet, second container exists
-//                if (ll.getChildCount() > 0) ll.removeAllViews();
-//                ft.replace(R.id.container_2, fragment);
+                if (ll.getChildCount() > 0) ll.removeAllViews();
+                ft.replace(R.id.container_2, fragment);
 
                 historyItem.selected = true;
                 if (previousHistoryItem!=null && previousHistoryItem!=historyItem) previousHistoryItem.selected = false;
@@ -70,15 +72,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
 //                fragment.changeToolbar = false;
             }else {
-//                ft.hide(workoutListFragment.thisInstance);
-//                ft.add(R.id.fragment_container, fragment);
+                ft.hide(workoutHistoryFragment.thisInstance);
+                ft.add(R.id.fragment_container, fragment);
 //                fragment.changeToolbar = true;
             }
 
-//            ft.addToBackStack(null);
-//            ft.commit();
+            ft.addToBackStack(null);
+            ft.commit();
             workoutHistoryFragment.getFragmentManager().executePendingTransactions();
-//            fragment.populateViews();
+            fragment.populateViews();
         }
 
     }// class ViewHolder
