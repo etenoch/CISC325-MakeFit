@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.enochtam.cisc325.makefit.Data;
 import com.enochtam.cisc325.makefit.MainActivity;
@@ -223,33 +224,42 @@ public class NewWorkout extends Fragment {
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save_btn:
-                final Workout newWorkout = new Workout(
-                        workoutName.getText().toString(),
-                        workoutDetails.getText().toString(),
-                        difficultySpinner.getSelectedItem().toString()
-                );
-                // add exercises
-                List<WorkoutExerciseLink> exerciseLinks = new ArrayList<>();
-                int counter = 1;
-                for (Exercise e : exercisesAdatper.exerciseItems){
-                    exerciseLinks.add(new WorkoutExerciseLink((int)e.exerciseID,counter,e));
-                    counter+=1;
+                if (workoutName.getText().toString().isEmpty() ||
+                        workoutDetails.getText().toString().isEmpty()){
+                    Toast.makeText(that, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                }else {
+
+                    final Workout newWorkout = new Workout(
+                            workoutName.getText().toString(),
+                            workoutDetails.getText().toString(),
+                            difficultySpinner.getSelectedItem().toString()
+                    );
+                    // add exercises
+                    List<WorkoutExerciseLink> exerciseLinks = new ArrayList<>();
+                    int counter = 1;
+                    for (Exercise e : exercisesAdatper.exerciseItems) {
+                        exerciseLinks.add(new WorkoutExerciseLink((int) e.exerciseID, counter, e));
+                        counter += 1;
+                    }
+                    newWorkout.exercises = exerciseLinks;
+
+                    new AsyncTask<Void, Void, Long>() {
+                        @Override
+                        protected Long doInBackground(Void... params) {
+                            return Data.getInstance(that).addWorkout(newWorkout);
+                        }
+
+                        @Override
+                        protected void onPostExecute(Long newWorkoutID) {
+                            newWorkout.workoutID = newWorkoutID;
+                            NewWorkout.this.workoutSaved(newWorkout);
+                        }
+                    }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
                 }
-                newWorkout.exercises = exerciseLinks;
-
-                new AsyncTask<Void, Void, Long>() {
-                    @Override protected Long doInBackground(Void... params) {
-                        return Data.getInstance(that).addWorkout(newWorkout);
-                    }
-                    @Override protected void onPostExecute(Long newWorkoutID) {
-                        newWorkout.workoutID = newWorkoutID;
-                        NewWorkout.this.workoutSaved(newWorkout);
-                    }
-                }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+
         }
     }
 

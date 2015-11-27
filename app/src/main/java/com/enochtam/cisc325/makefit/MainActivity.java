@@ -206,6 +206,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
+
     //==== Event Bus Handlers ====//
     public void onEvent(FragmentChangeEvent event){
         pendingFragment = event.nextFragment;

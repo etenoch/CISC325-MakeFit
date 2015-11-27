@@ -209,6 +209,7 @@ public class WorkoutScreen extends Fragment {
         }.start();
 
         exerciseName.setText(e.name);
+        exerciseImage.setImageURI(e.imageUri);
     }
 
 

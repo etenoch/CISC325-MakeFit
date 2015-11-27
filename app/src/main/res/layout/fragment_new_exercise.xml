@@ -99,6 +99,14 @@
 
                 </RelativeLayout>
 
+                <Button
+                    style="@style/ButtonStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/photo_btn"
+                    android:text="Set Photo">
+                </Button>
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"

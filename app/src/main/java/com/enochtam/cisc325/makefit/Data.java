@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
 import com.enochtam.cisc325.makefit.db.DbHelper;
 import com.enochtam.cisc325.makefit.db.DbSchema;
@@ -124,6 +125,7 @@ public class Data {
         c.put(ExerciseEntry.C_EXERCISE_NAME,e.name);
         c.put(ExerciseEntry.C_DETAILS, e.details);
         c.put(ExerciseEntry.C_TIME, e.time);
+        if(e.imageUri!= null) c.put(ExerciseEntry.C_PHOTO, e.imageUri.toString());
         return insert(ExerciseEntry.T_NAME, c);
     }
 
@@ -179,7 +181,8 @@ public class Data {
                         +"A."+Workout_ExerciseEntry.C_ORDER+", "
                         +"B."+ExerciseEntry.C_EXERCISE_NAME+", "
                         +"B."+ExerciseEntry.C_TIME+", "
-                        +"B."+ExerciseEntry.C_DETAILS+" "+
+                        +"B."+ExerciseEntry.C_DETAILS+", "
+                        +"B."+ExerciseEntry.C_PHOTO+" "+
                 "FROM "+Workout_ExerciseEntry.T_NAME+" AS A " +
                 "JOIN "+ExerciseEntry.T_NAME+" AS B " +
                 "ON A."+Workout_ExerciseEntry.C_EXERCISE_ID+" = B._ID " +
@@ -196,8 +199,12 @@ public class Data {
             String exerciseName = c.getString(4);
             int time = c.getInt(5);
             String details = c.getString(6);
+            String photoUri = c.getString(7);
+            Uri imageUri;
+            if(photoUri!= null && !photoUri.isEmpty()) imageUri = Uri.parse(photoUri);
+            else imageUri= null;
 
-            Exercise e = new Exercise(exercise_ID,exerciseName,details,time);
+            Exercise e = new Exercise(exercise_ID,exerciseName,details,time,imageUri);
             result.add(new WorkoutExerciseLink(link_ID, workout_ID, exercise_ID, order,e));
             c.moveToNext();
         }

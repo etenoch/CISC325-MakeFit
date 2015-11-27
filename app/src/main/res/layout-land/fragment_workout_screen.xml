@@ -114,8 +114,7 @@
                             android:adjustViewBounds="true"
                             android:minHeight="200dp"
                             android:maxHeight="320dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_exercise_placeholder">
+                            android:scaleType="centerCrop">
                         </ImageView>
                         <TextView
                             android:layout_width="fill_parent"
