@@ -71,7 +71,8 @@ public class StartScreen extends Fragment {
 
         if (uriString!=null && !uriString.isEmpty()){
             Uri uri = Uri.parse(uriString);
-            profileImage.setImageURI(uri);
+            if(that.profileBitmap==null)that.setProfileBitmap(uri);
+            profileImage.setImageBitmap(that.profileBitmap);
         }else{
             profileImage.setImageResource(R.drawable.ic_person_placeholder);
         }

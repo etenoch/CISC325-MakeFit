@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,11 +18,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SetupProfileActivity extends Activity {
+
+    private static final String CAPTURE_IMAGE_FILE_PROVIDER = "com.enochtam.cisc325.makefit.fileprovider";
 
     Data dao;
     SharedPreferences prefs;
@@ -58,8 +66,19 @@ public class SetupProfileActivity extends Activity {
                         .setItems(new String[]{"Pick Photo", "Take Photo"}, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 if (which == 1) {
-                                    Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                    startActivityForResult(takePicture, 0);//zero can be replaced with any action code
+
+                                    File path = new File(getFilesDir(), "images/");
+                                    if (!path.exists()) path.mkdirs();
+                                    File image = new File(path, "image.jpg");
+                                    image.delete();
+                                    image = new File(path, "image.jpg");
+                                    Uri imageUri = FileProvider.getUriForFile(getApplicationContext(), CAPTURE_IMAGE_FILE_PROVIDER, image);
+                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                                    startActivityForResult(intent, 0);
+
+//                                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                                    startActivityForResult(takePicture, 0);//zero can be replaced with any action code
                                 } else {
                                     Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -98,18 +117,33 @@ public class SetupProfileActivity extends Activity {
         switch(requestCode) {
             case 0:
                 if(resultCode == -1) {
-                    uri =imageReturnedIntent.getData();
-                    SetupProfileActivity.this.imageUri = uri;
-                    profileImage.setImageURI(uri);
+//                    uri = imageReturnedIntent.getData();
+                    File path = new File(getFilesDir(), "images/");
+                    if (!path.exists()) path.mkdirs();
+                    File imageFile = new File(path, "image.jpg");
+                    Uri imageUri = FileProvider.getUriForFile(getApplicationContext(), CAPTURE_IMAGE_FILE_PROVIDER, imageFile);
+                    SetupProfileActivity.this.imageUri = imageUri;
+                    setProfileImage(imageUri);
                 }
                 break;
             case 1:
                 if(resultCode == -1) {
-                    uri =imageReturnedIntent.getData();
+                    uri = imageReturnedIntent.getData();
                     SetupProfileActivity.this.imageUri = uri;
-                    profileImage.setImageURI(uri);
+                    setProfileImage(uri);
                 }
                 break;
+        }
+    }
+
+    public void setProfileImage(Uri uri){
+        try{
+            Bitmap bm = MainActivity.getBitmapFromUri(this,uri);
+            profileImage.setImageBitmap(MainActivity.scaleBitmap(bm));
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
         }
     }
 

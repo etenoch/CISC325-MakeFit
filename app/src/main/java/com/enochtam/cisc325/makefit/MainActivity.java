@@ -6,10 +6,15 @@ import android.app.FragmentTransaction;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,6 +34,10 @@ import com.enochtam.cisc325.makefit.events.FragmentChangeEvent;
 import com.enochtam.cisc325.makefit.fragments.StartScreen;
 import com.enochtam.cisc325.makefit.fragments.WorkoutScreen;
 import com.enochtam.cisc325.makefit.util.DrawerItem;
+
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
 
@@ -55,6 +64,7 @@ public class MainActivity extends AppCompatActivity{
 
     public SharedPreferences prefs;
 
+    public Bitmap profileBitmap;
 
     public boolean workoutActive;
 
@@ -140,6 +150,54 @@ public class MainActivity extends AppCompatActivity{
         return (String) actionBar.getTitle();
     }
 
+
+    public void setProfileBitmap(Uri uri){
+        try{
+//            BitmapFactory.Options o = new BitmapFactory.Options();
+//            o.inJustDecodeBounds = true;
+//            Bitmap bm = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, o);
+            Bitmap bm = getBitmapFromUri(this,uri);
+
+            profileBitmap = scaleBitmap(bm);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static Bitmap scaleBitmap(Bitmap bm){
+        int maxWidth = 300;
+        int maxHeight = 300;
+
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+
+        if (width > height) {
+            // landscape
+            float ratio = (float) width / maxWidth;
+            width = maxWidth;
+            height = (int)(height / ratio);
+        } else if (height > width) {
+            // portrait
+            float ratio = (float) height / maxHeight;
+            height = maxHeight;
+            width = (int)(width / ratio);
+        } else {
+            // square
+            height = maxHeight;
+            width = maxWidth;
+        }
+        return Bitmap.createScaledBitmap(bm, width, height, true);
+    }
+
+    public static Bitmap getBitmapFromUri(Context c, Uri uri) throws IOException {
+        ParcelFileDescriptor parcelFileDescriptor = c.getContentResolver().openFileDescriptor(uri, "r");
+        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        parcelFileDescriptor.close();
+        return image;
+    }
 
     // change fragments
     public void changeFragment(){

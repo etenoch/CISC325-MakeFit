@@ -111,7 +111,8 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
 
             if (uriString!=null && !uriString.isEmpty()){
                 Uri uri = Uri.parse(uriString);
-                holder.profileImageView.setImageURI(uri);
+                if(that.profileBitmap==null)that.setProfileBitmap(uri);
+                holder.profileImageView.setImageBitmap(that.profileBitmap);
             }else{
                 holder.profileImageView.setImageResource(R.drawable.ic_person_placeholder);
             }
