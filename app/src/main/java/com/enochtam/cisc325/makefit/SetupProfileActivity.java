@@ -78,7 +78,7 @@ public class SetupProfileActivity extends Activity {
                 prefs.edit().putString("firstname", firstName.getText().toString()).apply();
                 prefs.edit().putString("lastname", lastName.getText().toString()).apply();
 
-                prefs.edit().putString("imageuri",imageUri.toString()).apply();
+                if (imageUri!=null) prefs.edit().putString("imageuri",imageUri.toString()).apply();
 
                 dao.createTestData();
                 prefs.edit().putBoolean("firstrun", false).commit();
@@ -97,14 +97,18 @@ public class SetupProfileActivity extends Activity {
         Uri uri;
         switch(requestCode) {
             case 0:
-                uri =imageReturnedIntent.getData();
-                if(resultCode == -1) SetupProfileActivity.this.imageUri = uri;
-                profileImage.setImageURI(uri);
+                if(resultCode == -1) {
+                    uri =imageReturnedIntent.getData();
+                    SetupProfileActivity.this.imageUri = uri;
+                    profileImage.setImageURI(uri);
+                }
                 break;
             case 1:
-                uri =imageReturnedIntent.getData();
-                if(resultCode == -1) SetupProfileActivity.this.imageUri = uri;
-                profileImage.setImageURI(uri);
+                if(resultCode == -1) {
+                    uri =imageReturnedIntent.getData();
+                    SetupProfileActivity.this.imageUri = uri;
+                    profileImage.setImageURI(uri);
+                }
                 break;
         }
     }

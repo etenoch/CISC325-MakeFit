@@ -19,30 +19,34 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:gravity="center">
+        android:layout_width="fill_parent">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image"
-            android:clickable="true"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="-20dp"
-            android:layout_gravity="top"
-            android:src="@drawable/ic_select_image"
-            app:civ_border_width="2dp"
-            app:civ_border_color="#FF727272"
-            android:layout_weight="3"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_image"
+                android:clickable="true"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_gravity="top|right"
+                android:src="@drawable/ic_select_image"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FF727272" />
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="9">
+            android:layout_weight="3">
             <EditText
                 android:theme="@style/WhiteEditTextStyle"
                 android:hint="First Name"
@@ -50,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="220dp"
+                android:layout_marginRight="100dp"
                 android:layout_marginTop="20dp"
                 android:textSize="20sp"
                 android:maxLines="1"
@@ -70,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="fill_parent"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="220dp"
+                android:layout_marginRight="100dp"
                 android:layout_marginTop="10dp"
                 android:textSize="20sp"
                 android:maxLines="1"
