@@ -32,7 +32,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         public WorkoutHistoryItem historyItem;
 
         TextView workoutName;
-        TextView workoutDifficulty;
+        TextView startTime;
+        TextView duration;
 
         public View thisView;
 
@@ -41,7 +42,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             itemView.setClickable(true);
             itemView.setOnClickListener(this);
             workoutName = (TextView) itemView.findViewById(R.id.workout_name);
-            workoutDifficulty = (TextView) itemView.findViewById(R.id.workout_difficulty);
+            startTime = (TextView) itemView.findViewById(R.id.workout_date_time);
+            duration = (TextView) itemView.findViewById(R.id.workout_duration);
             thisView = itemView;
         }
 
@@ -107,6 +109,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @Override public void onBindViewHolder(HistoryAdapter.ViewHolder holder, int position) {
         holder.workoutName.setText(historyItems.get(position).workoutName);
+        holder.startTime.setText(Long.toString(historyItems.get(position).startTime));
+        holder.duration.setText(Long.toString(historyItems.get(position).duration));
+
         holder.setHistoryItem(historyItems.get(position));
 
         if(historyItems.get(position).selected) holder.setSelectedBackground(true);

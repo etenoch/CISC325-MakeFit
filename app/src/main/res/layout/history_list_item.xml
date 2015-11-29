@@ -24,7 +24,35 @@
             android:text="Workout Name"
             android:textSize="20sp"/>
 
+        <TextView
+            android:layout_marginTop="4dp"
+            android:layout_below="@id/workout_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/workout_date_time"
+            android:text="Date Time"
+            android:textSize="18sp"/>
+        <TextView
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/workout_date_time"
+            android:layout_marginTop="4dp"
+            android:layout_below="@id/workout_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/separator"
+            android:text="-"
+            android:textSize="18sp"/>
 
+        <TextView
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/separator"
+            android:layout_marginTop="4dp"
+            android:layout_below="@id/workout_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/workout_duration"
+            android:text="Duration"
+            android:textSize="18sp"/>
 
     </RelativeLayout>
 </LinearLayout>
