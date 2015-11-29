@@ -1,20 +1,34 @@
 package com.enochtam.cisc325.makefit.fragments;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.enochtam.cisc325.makefit.Data;
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
 import com.enochtam.cisc325.makefit.events.FragmentChangeEvent;
+import com.enochtam.cisc325.makefit.models.WorkoutHistoryItem;
+import com.imanoweb.calendarview.CalendarListener;
+import com.imanoweb.calendarview.CustomCalendarView;
+import com.imanoweb.calendarview.DayDecorator;
+import com.imanoweb.calendarview.DayView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,6 +39,7 @@ public class StartScreen extends Fragment {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
+    List<WorkoutHistoryItem> historyItems;
 
     View fragmentView;
     MainActivity that;
@@ -33,10 +48,9 @@ public class StartScreen extends Fragment {
     @Bind(R.id.first_name) TextView firstName;
     @Bind(R.id.last_name) TextView lastName;
     @Bind(R.id.profile_image) CircleImageView profileImage;
-
+    @Bind(R.id.calendar_view) CustomCalendarView calendarView;
 
     public StartScreen() {
-        // Required empty public constructor
     }
 
     @Override
@@ -77,7 +91,69 @@ public class StartScreen extends Fragment {
             profileImage.setImageResource(R.drawable.ic_person_placeholder);
         }
 
+        new AsyncTask<Void, Void, List<WorkoutHistoryItem> >() {
+            @Override protected List<WorkoutHistoryItem>  doInBackground(Void... params) {
+                return Data.getInstance(that).getWorkoutHistory();
+            }
+
+            @Override
+            protected void onPostExecute(List<WorkoutHistoryItem> historyItems) {
+                StartScreen.this.dataLoaded(historyItems);
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+
+
+
         return fragmentView;
+    }
+
+    private class ColorDecorator implements DayDecorator {
+        @Override public void decorate(DayView cell) {
+
+            long start_day = cell.getDate().getTime()/1000-86400;
+            long end_day = cell.getDate().getTime()/1000;
+
+
+            for(WorkoutHistoryItem item : historyItems){
+                if( start_day <= item.startTime && item.startTime <=end_day ){
+                    int color = Color.argb(255, 0, 200, 0);
+                    cell.setBackgroundResource(R.drawable.calendar_marker);
+                }
+            }
+
+        }
+    }
+
+
+    public void dataLoaded(List<WorkoutHistoryItem> historyItems){
+        // index history items
+        this.historyItems = historyItems;
+
+        // calendar stuff
+        final Calendar currentCalendar = Calendar.getInstance(Locale.getDefault());
+
+        final List<DayDecorator> decorators = new ArrayList<>();
+        decorators.add(new ColorDecorator());
+        calendarView.setDecorators(decorators);
+        calendarView.refreshCalendar(currentCalendar);
+
+        calendarView.setCalendarListener(new CalendarListener() {
+            @Override
+            public void onDateSelected(Date date) {
+                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                Toast.makeText(getActivity(), df.format(date), Toast.LENGTH_SHORT).show();
+
+                calendarView.setDecorators(decorators);
+                calendarView.refreshCalendar(currentCalendar);
+            }
+
+            @Override
+            public void onMonthChanged(Date date) {
+//                SimpleDateFormat df = new SimpleDateFormat("MM-yyyy");
+//                Toast.makeText(getActivity(), df.format(date), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override

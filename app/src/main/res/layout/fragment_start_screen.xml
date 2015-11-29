@@ -83,7 +83,6 @@
             android:layout_height="wrap_content"
             android:background="#ffffff"
             android:layout_marginTop="4dp"
-            app:currentDayOfMonthColor="@color/accent_green"
             app:selectedDayBackgroundColor="@color/primary">
         </com.imanoweb.calendarview.CustomCalendarView>
 
