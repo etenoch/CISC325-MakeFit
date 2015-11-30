@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +21,11 @@ import android.widget.Toast;
 import com.enochtam.cisc325.makefit.Data;
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
+import com.enochtam.cisc325.makefit.SetupProfileActivity;
 import com.enochtam.cisc325.makefit.events.NewExerciseEvent;
 import com.enochtam.cisc325.makefit.models.Exercise;
+
+import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,6 +50,9 @@ public class NewExercise extends DialogFragment {
     @Bind(R.id.photo_btn) Button photoButton;
 
     Uri imageUri;
+
+    private static final String CAPTURE_IMAGE_FILE_PROVIDER = "com.enochtam.cisc325.makefit.fileprovider";
+    public String imagePath;
 
     public static WorkoutScreen newInstance(String param1, String param2) {
         WorkoutScreen fragment = new WorkoutScreen();
@@ -103,8 +110,14 @@ public class NewExercise extends DialogFragment {
                         .setItems(new String[]{"Pick Photo", "Take Photo"}, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 if (which == 1) {
-                                    Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                    startActivityForResult(takePicture, 0);//zero can be replaced with any action code
+                                    File path = new File(getActivity().getFilesDir(), "images/");
+                                    if (!path.exists()) path.mkdirs();
+                                    imagePath = "image"+java.util.UUID.randomUUID().toString()+".jpg";
+                                    File image = new File(path, imagePath);
+                                    Uri imageUri = FileProvider.getUriForFile(getActivity(), CAPTURE_IMAGE_FILE_PROVIDER, image);
+                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                                    startActivityForResult(intent, 0);
                                 } else {
                                     Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -172,12 +185,20 @@ public class NewExercise extends DialogFragment {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
         switch(requestCode) {
             case 0:
-                if(resultCode == -1) NewExercise.this.imageUri = imageReturnedIntent.getData();
-                photoButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_mark, 0);
+                if(resultCode == -1){
+                    File path = new File(that.getFilesDir(), "images/");
+                    if (!path.exists()) path.mkdirs();
+                    File imageFile = new File(path, imagePath);
+                    Uri imageUri = FileProvider.getUriForFile(that, CAPTURE_IMAGE_FILE_PROVIDER, imageFile);
+                    NewExercise.this.imageUri = imageUri;
+                    photoButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_mark, 0);
+                }
                 break;
             case 1:
-                if(resultCode == -1) NewExercise.this.imageUri = imageReturnedIntent.getData();
-                photoButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_mark, 0);
+                if(resultCode == -1) {
+                    NewExercise.this.imageUri = imageReturnedIntent.getData();
+                    photoButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check_mark, 0);
+                }
                 break;
         }
     }

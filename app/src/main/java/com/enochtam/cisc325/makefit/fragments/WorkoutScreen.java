@@ -205,6 +205,7 @@ public class WorkoutScreen extends Fragment {
             public void onFinish() {
                 exerciseTime.setText("Next Exercise");
                 exerciseProgress.setProgress(0);
+                changeToNextExercise();
             }
         }.start();
 

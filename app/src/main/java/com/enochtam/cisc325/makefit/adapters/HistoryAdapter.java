@@ -85,11 +85,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                     previousHistoryItem = historyItem;
                     HistoryAdapter.this.notifyDataSetChanged();
 
-    //                fragment.changeToolbar = false;
+                    fragment.changeToolbar = false;
                 }else {
                     ft.hide(workoutHistoryFragment.getThis());
                     ft.add(R.id.fragment_container, fragment);
-    //                fragment.changeToolbar = true;
+                    fragment.changeToolbar = true;
                 }
 
                 ft.addToBackStack(null);
@@ -126,7 +126,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.workoutName.setText(historyItems.get(position).workoutName);
 
         Date date = new Date(historyItems.get(position).startTime*1000L);
-        SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd");
 
         if (type == FULL_LIST){
             holder.startTime.setText(sdf.format(date));

@@ -3,6 +3,7 @@ package com.enochtam.cisc325.makefit.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,9 @@ public class HistoryDetails extends Fragment{
     @Bind(R.id.start_time) TextView startTime;
     @Bind(R.id.duration) TextView duration;
 //    @Bind(R.id.to_workout_btn) Button toWorkoutBtn;
+
+    public boolean changeToolbar = false; // true if NOT on tablet/embedded
+    public String prevFragmentTitle;
 
     public HistoryDetails(){
         // empty
@@ -71,6 +75,43 @@ public class HistoryDetails extends Fragment{
 //            });
 
         }
+    }
+
+    @Override public void onStart() {
+        super.onStart();
+        if(changeToolbar){
+            prevFragmentTitle = that.getToolbarTitle();
+            that.setToolbarTitle("Workout Details");
+
+            that.drawerToggle.setDrawerIndicatorEnabled(false);
+            that.drawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().getFragmentManager().popBackStackImmediate();
+                }
+            });
+            if (that.actionBar != null) {
+                that.actionBar.setDisplayHomeAsUpEnabled(true);
+                that.actionBar.setHomeButtonEnabled(true);
+            }
+            that.drawerToggle.syncState();
+            that.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
+    }
+
+    @Override public void onDetach() {
+        if(changeToolbar) {
+            if (that.actionBar != null) {
+                that.actionBar.setDisplayHomeAsUpEnabled(false);
+                that.actionBar.setHomeButtonEnabled(false);
+            }
+            that.drawerToggle.setDrawerIndicatorEnabled(true);
+            that.drawerToggle.setToolbarNavigationClickListener(null);
+            that.drawerToggle.syncState();
+            that.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            that.setToolbarTitle(prevFragmentTitle);
+        }
+        super.onDetach();
     }
 
 }

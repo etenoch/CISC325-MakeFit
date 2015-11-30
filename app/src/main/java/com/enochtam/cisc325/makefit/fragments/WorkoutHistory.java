@@ -87,7 +87,6 @@ public class WorkoutHistory extends Fragment implements AdapterLink {
     public RecyclerView getRecyclerView(){
         return historyRecyclerview;
     }
-
     public RecyclerView.LayoutManager getLayoutManager(){
         return historyLayoutManager;
     }

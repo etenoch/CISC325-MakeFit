@@ -41,6 +41,7 @@ public class SetupProfileActivity extends Activity {
 
 
     Uri imageUri;
+    String imagePath;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,19 +67,14 @@ public class SetupProfileActivity extends Activity {
                         .setItems(new String[]{"Pick Photo", "Take Photo"}, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 if (which == 1) {
-
                                     File path = new File(getFilesDir(), "images/");
                                     if (!path.exists()) path.mkdirs();
-                                    File image = new File(path, "image.jpg");
-                                    image.delete();
-                                    image = new File(path, "image.jpg");
+                                    imagePath = "image"+java.util.UUID.randomUUID().toString()+".jpg";
+                                    File image = new File(path, imagePath);
                                     Uri imageUri = FileProvider.getUriForFile(getApplicationContext(), CAPTURE_IMAGE_FILE_PROVIDER, image);
                                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                                     startActivityForResult(intent, 0);
-
-//                                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                                    startActivityForResult(takePicture, 0);//zero can be replaced with any action code
                                 } else {
                                     Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -120,7 +116,7 @@ public class SetupProfileActivity extends Activity {
 //                    uri = imageReturnedIntent.getData();
                     File path = new File(getFilesDir(), "images/");
                     if (!path.exists()) path.mkdirs();
-                    File imageFile = new File(path, "image.jpg");
+                    File imageFile = new File(path, imagePath);
                     Uri imageUri = FileProvider.getUriForFile(getApplicationContext(), CAPTURE_IMAGE_FILE_PROVIDER, imageFile);
                     SetupProfileActivity.this.imageUri = imageUri;
                     setProfileImage(imageUri);

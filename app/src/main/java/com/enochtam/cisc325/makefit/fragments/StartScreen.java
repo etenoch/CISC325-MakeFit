@@ -33,6 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,7 +57,7 @@ public class StartScreen extends Fragment implements AdapterLink {
 
     public RecyclerView historyRecyclerView;
     public RecyclerView.LayoutManager historyLayoutManager;
-    public HistoryAdapter historyAdatper;
+    public HistoryAdapter historyAdapter;
 
     public StartScreen() {
     }
@@ -118,11 +119,17 @@ public class StartScreen extends Fragment implements AdapterLink {
     private class ColorDecorator implements DayDecorator {
         @Override public void decorate(DayView cell) {
 
-            long start_day = cell.getDate().getTime()/1000;
-            long end_day = cell.getDate().getTime()/1000+86400;
+            int start_day = cell.getDate().getDate();
+            int start_year = cell.getDate().getYear();
+            int start_month = cell.getDate().getMonth();
 
             for(WorkoutHistoryItem item : historyItems){
-                if( start_day <= item.startTime && item.startTime <=end_day ){
+                Date history = new Date(item.startTime*1000L);
+                int history_day = history.getDate();
+                int history_year = history.getYear();
+                int history_month = history.getMonth();
+
+                if( start_day == history_day && start_year == history_year && start_month == history_month ){
                     int color = Color.argb(255, 0, 200, 0);
                     cell.setBackgroundResource(R.drawable.calendar_marker);
                 }
@@ -164,15 +171,12 @@ public class StartScreen extends Fragment implements AdapterLink {
 
         historyRecyclerView = (RecyclerView) fragmentView.findViewById(R.id.history_rv);
         if (historyRecyclerView!= null){
-            HistoryAdapter historyAdatper = new HistoryAdapter(historyItems,that,this);
-            historyAdatper.type = HistoryAdapter.SMALL_CARDS;
+            historyAdapter = new HistoryAdapter(historyItems,that,this);
+            historyAdapter.type = HistoryAdapter.SMALL_CARDS;
             LinearLayoutManager historyLayoutManager = new LinearLayoutManager(that);
 
             historyRecyclerView.setLayoutManager(historyLayoutManager);
-            historyRecyclerView.setAdapter(historyAdatper);
-
-
-
+            historyRecyclerView.setAdapter(historyAdapter);
         }
 
 
@@ -182,6 +186,19 @@ public class StartScreen extends Fragment implements AdapterLink {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    public RecyclerView getRecyclerView(){
+        return historyRecyclerView;
+    }
+    public RecyclerView.LayoutManager getLayoutManager(){
+        return historyLayoutManager;
+    }
+    public View getFragmentView(){
+        return fragmentView;
+    }
+    public Fragment getThis(){
+        return this;
     }
 
 

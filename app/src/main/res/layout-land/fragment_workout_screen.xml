@@ -113,7 +113,7 @@
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
                             android:minHeight="200dp"
-                            android:maxHeight="320dp"
+                            android:maxHeight="310dp"
                             android:scaleType="centerCrop">
                         </ImageView>
                         <TextView
@@ -178,8 +178,6 @@
                 android:drawableRight="@drawable/ic_next_arrow">
             </Button>
         </LinearLayout>
-
-
 
 
 
