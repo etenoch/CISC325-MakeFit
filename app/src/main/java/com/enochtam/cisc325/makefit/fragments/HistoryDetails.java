@@ -12,6 +12,9 @@ import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
 import com.enochtam.cisc325.makefit.models.WorkoutHistoryItem;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -25,6 +28,7 @@ public class HistoryDetails extends Fragment{
     @Bind(R.id.workout_name) TextView workoutName;
     @Bind(R.id.start_time) TextView startTime;
     @Bind(R.id.duration) TextView duration;
+//    @Bind(R.id.to_workout_btn) Button toWorkoutBtn;
 
     public HistoryDetails(){
         // empty
@@ -51,9 +55,20 @@ public class HistoryDetails extends Fragment{
     public void populateViews(){
         if (historyItem!=null){
             workoutName.setText(historyItem.workoutName);
-            startTime.setText("Start time: "+Long.toString(historyItem.startTime)+" unix");
-            duration.setText("Duration: "+Long.toString(historyItem.duration)+" seconds");
 
+            Date date = new Date(historyItem.startTime*1000L);
+            SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd - h:ma");
+
+
+            startTime.setText("Started at: "+sdf.format(date));
+            duration.setText("Duration: "+Long.toString(historyItem.duration)+" seconds");
+//
+//            toWorkoutBtn.setOnClickListener(new View.OnClickListener() {
+//                @Override public void onClick(View v) {
+//
+//
+//                }
+//            });
 
         }
     }

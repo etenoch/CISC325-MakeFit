@@ -15,6 +15,7 @@ import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
 import com.enochtam.cisc325.makefit.adapters.HistoryAdapter;
 import com.enochtam.cisc325.makefit.models.WorkoutHistoryItem;
+import com.enochtam.cisc325.makefit.util.AdapterLink;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class WorkoutHistory extends Fragment {
+public class WorkoutHistory extends Fragment implements AdapterLink {
 
     public Fragment thisInstance;
     public View fragmentView;
@@ -81,6 +82,20 @@ public class WorkoutHistory extends Fragment {
         historyRecyclerview.setAdapter(historyAdatper);
 
 
+    }
+
+    public RecyclerView getRecyclerView(){
+        return historyRecyclerview;
+    }
+
+    public RecyclerView.LayoutManager getLayoutManager(){
+        return historyLayoutManager;
+    }
+    public View getFragmentView(){
+        return fragmentView;
+    }
+    public Fragment getThis(){
+        return this;
     }
 
 

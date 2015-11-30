@@ -22,5 +22,15 @@
         android:id="@+id/duration">
     </TextView>
 
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/to_workout_btn"-->
+        <!--android:text="Go to Workout"-->
+        <!--android:paddingRight="8dp"-->
+        <!--android:paddingLeft="8dp">-->
+
+    <!--</Button>-->
+
 
 </LinearLayout>

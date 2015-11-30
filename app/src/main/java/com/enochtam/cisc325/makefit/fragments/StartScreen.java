@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +17,10 @@ import android.widget.Toast;
 import com.enochtam.cisc325.makefit.Data;
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
+import com.enochtam.cisc325.makefit.adapters.HistoryAdapter;
 import com.enochtam.cisc325.makefit.events.FragmentChangeEvent;
 import com.enochtam.cisc325.makefit.models.WorkoutHistoryItem;
+import com.enochtam.cisc325.makefit.util.AdapterLink;
 import com.imanoweb.calendarview.CalendarListener;
 import com.imanoweb.calendarview.CustomCalendarView;
 import com.imanoweb.calendarview.DayDecorator;
@@ -35,7 +39,7 @@ import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class StartScreen extends Fragment {
+public class StartScreen extends Fragment implements AdapterLink {
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
 
@@ -49,6 +53,10 @@ public class StartScreen extends Fragment {
     @Bind(R.id.last_name) TextView lastName;
     @Bind(R.id.profile_image) CircleImageView profileImage;
     @Bind(R.id.calendar_view) CustomCalendarView calendarView;
+
+    public RecyclerView historyRecyclerView;
+    public RecyclerView.LayoutManager historyLayoutManager;
+    public HistoryAdapter historyAdatper;
 
     public StartScreen() {
     }
@@ -110,9 +118,8 @@ public class StartScreen extends Fragment {
     private class ColorDecorator implements DayDecorator {
         @Override public void decorate(DayView cell) {
 
-            long start_day = cell.getDate().getTime()/1000-86400;
-            long end_day = cell.getDate().getTime()/1000;
-
+            long start_day = cell.getDate().getTime()/1000;
+            long end_day = cell.getDate().getTime()/1000+86400;
 
             for(WorkoutHistoryItem item : historyItems){
                 if( start_day <= item.startTime && item.startTime <=end_day ){
@@ -153,6 +160,21 @@ public class StartScreen extends Fragment {
 //                Toast.makeText(getActivity(), df.format(date), Toast.LENGTH_SHORT).show();
             }
         });
+
+
+        historyRecyclerView = (RecyclerView) fragmentView.findViewById(R.id.history_rv);
+        if (historyRecyclerView!= null){
+            HistoryAdapter historyAdatper = new HistoryAdapter(historyItems,that,this);
+            historyAdatper.type = HistoryAdapter.SMALL_CARDS;
+            LinearLayoutManager historyLayoutManager = new LinearLayoutManager(that);
+
+            historyRecyclerView.setLayoutManager(historyLayoutManager);
+            historyRecyclerView.setAdapter(historyAdatper);
+
+
+
+        }
+
 
     }
 

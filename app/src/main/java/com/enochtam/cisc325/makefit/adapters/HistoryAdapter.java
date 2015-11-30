@@ -12,9 +12,11 @@ import android.widget.TextView;
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
 import com.enochtam.cisc325.makefit.fragments.HistoryDetails;
-import com.enochtam.cisc325.makefit.fragments.WorkoutHistory;
 import com.enochtam.cisc325.makefit.models.WorkoutHistoryItem;
+import com.enochtam.cisc325.makefit.util.AdapterLink;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -23,17 +25,23 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public List<WorkoutHistoryItem> historyItems;
 
     public static MainActivity that;
-    public static WorkoutHistory workoutHistoryFragment;
+    public final AdapterLink workoutHistoryFragment;
 
     public static WorkoutHistoryItem previousHistoryItem;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public int type = 0;
+    public final static int FULL_LIST = 0;
+    public final static int SMALL_CARDS = 1;
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public WorkoutHistoryItem historyItem;
 
         TextView workoutName;
         TextView startTime;
         TextView duration;
+
+        TextView dateDuration;
 
         public View thisView;
 
@@ -44,12 +52,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             workoutName = (TextView) itemView.findViewById(R.id.workout_name);
             startTime = (TextView) itemView.findViewById(R.id.workout_date_time);
             duration = (TextView) itemView.findViewById(R.id.workout_duration);
+            dateDuration = (TextView) itemView.findViewById(R.id.date_duration);
             thisView = itemView;
         }
 
         public void setSelectedBackground(boolean selected){
-            if (selected) thisView.setBackgroundResource(R.drawable.selected_border_left);
-            else thisView.setBackgroundResource(0);
+            if (type == FULL_LIST){
+                if (selected) thisView.setBackgroundResource(R.drawable.selected_border_left);
+                else thisView.setBackgroundResource(0);
+            }
         }
 
         public void setHistoryItem(WorkoutHistoryItem h){
@@ -57,37 +68,40 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         }
 
         @Override public void onClick(View view) {
-            HistoryDetails fragment = new HistoryDetails();
-            fragment.setHistoryItem(historyItem);
+            if (type == FULL_LIST) {
 
-            FragmentTransaction ft = workoutHistoryFragment.getFragmentManager().beginTransaction();
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            LinearLayout ll = (LinearLayout)workoutHistoryFragment.fragmentView.findViewById(R.id.container_2);
-            if (ll!=null) { // tablet, second container exists
-                if (ll.getChildCount() > 0) ll.removeAllViews();
-                ft.replace(R.id.container_2, fragment);
+                HistoryDetails fragment = new HistoryDetails();
+                fragment.setHistoryItem(historyItem);
 
-                historyItem.selected = true;
-                if (previousHistoryItem!=null && previousHistoryItem!=historyItem) previousHistoryItem.selected = false;
-                previousHistoryItem = historyItem;
-                workoutHistoryFragment.historyAdatper.notifyDataSetChanged();
+                FragmentTransaction ft = workoutHistoryFragment.getFragmentManager().beginTransaction();
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                LinearLayout ll = (LinearLayout)workoutHistoryFragment.getFragmentView().findViewById(R.id.container_2);
+                if (ll!=null) { // tablet, second container exists
+                    if (ll.getChildCount() > 0) ll.removeAllViews();
+                    ft.replace(R.id.container_2, fragment);
 
-//                fragment.changeToolbar = false;
-            }else {
-                ft.hide(workoutHistoryFragment.thisInstance);
-                ft.add(R.id.fragment_container, fragment);
-//                fragment.changeToolbar = true;
+                    historyItem.selected = true;
+                    if (previousHistoryItem!=null && previousHistoryItem!=historyItem) previousHistoryItem.selected = false;
+                    previousHistoryItem = historyItem;
+                    HistoryAdapter.this.notifyDataSetChanged();
+
+    //                fragment.changeToolbar = false;
+                }else {
+                    ft.hide(workoutHistoryFragment.getThis());
+                    ft.add(R.id.fragment_container, fragment);
+    //                fragment.changeToolbar = true;
+                }
+
+                ft.addToBackStack(null);
+                ft.commit();
+                workoutHistoryFragment.getFragmentManager().executePendingTransactions();
+                fragment.populateViews();
             }
-
-            ft.addToBackStack(null);
-            ft.commit();
-            workoutHistoryFragment.getFragmentManager().executePendingTransactions();
-            fragment.populateViews();
         }
 
     }// class ViewHolder
 
-    public HistoryAdapter(List<WorkoutHistoryItem> historyItems, MainActivity context, WorkoutHistory fragment){
+    public HistoryAdapter(List<WorkoutHistoryItem> historyItems, MainActivity context, AdapterLink fragment){
         this.historyItems = historyItems;
         that = context;
         workoutHistoryFragment = fragment;
@@ -100,22 +114,31 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     }
 
     @Override public HistoryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_list_item,parent,false);
+        View v;
+        if (type==FULL_LIST) v = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_list_item,parent,false);
+        else v = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_small_card,parent,false);
 
         ViewHolder viewHolder = new ViewHolder(v);
-//        viewHolder.setIsRecyclable(false);
         return viewHolder;
     }
 
     @Override public void onBindViewHolder(HistoryAdapter.ViewHolder holder, int position) {
         holder.workoutName.setText(historyItems.get(position).workoutName);
-        holder.startTime.setText(Long.toString(historyItems.get(position).startTime));
-        holder.duration.setText(Long.toString(historyItems.get(position).duration));
 
-        holder.setHistoryItem(historyItems.get(position));
+        Date date = new Date(historyItems.get(position).startTime*1000L);
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd");
 
-        if(historyItems.get(position).selected) holder.setSelectedBackground(true);
-        else holder.setSelectedBackground(false);
+        if (type == FULL_LIST){
+            holder.startTime.setText(sdf.format(date));
+            holder.duration.setText(Long.toString(historyItems.get(position).duration)+"s");
+
+            holder.setHistoryItem(historyItems.get(position));
+
+            if(historyItems.get(position).selected) holder.setSelectedBackground(true);
+            else holder.setSelectedBackground(false);
+        }else{
+            holder.dateDuration.setText(sdf.format(date)+" - "+Long.toString(historyItems.get(position).duration)+"s");
+        }
 
 
     }

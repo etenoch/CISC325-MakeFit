@@ -90,59 +90,15 @@
                 android:textStyle="bold"
                 android:gravity="center"/>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_gravity="center"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/history_rv"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="2dp"
-                android:layout_marginTop="6dp">
-                <RelativeLayout
-                    android:padding="8dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:text="Workout Name 1"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="18sp"
-                        android:text="NOV 9TH - 0:21"
-                        android:layout_alignParentRight="true"/>
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_gravity="center"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="2dp"
-                android:layout_marginTop="6dp">
-                <RelativeLayout
-                    android:padding="8dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:text="Some other workout"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="18sp"
-                        android:text="NOV 7TH - 0:14"
-                        android:layout_alignParentRight="true"/>
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
+                android:layout_height="fill_parent"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginBottom="4dp">
+            </android.support.v7.widget.RecyclerView>
 
         </LinearLayout>
 
