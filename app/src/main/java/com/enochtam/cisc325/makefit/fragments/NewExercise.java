@@ -33,7 +33,7 @@ import de.greenrobot.event.EventBus;
 
 public class NewExercise extends DialogFragment {
 
-    String prevFragmentTitle;
+//    String prevFragmentTitle;
 
     private static final String ARG_PARAM1 = "param1";
     private String mParam1;

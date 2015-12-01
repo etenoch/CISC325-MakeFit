@@ -153,9 +153,6 @@ public class MainActivity extends AppCompatActivity{
 
     public void setProfileBitmap(Uri uri){
         try{
-//            BitmapFactory.Options o = new BitmapFactory.Options();
-//            o.inJustDecodeBounds = true;
-//            Bitmap bm = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, o);
             Bitmap bm = getBitmapFromUri(this,uri);
 
             profileBitmap = scaleBitmap(bm);
@@ -173,18 +170,15 @@ public class MainActivity extends AppCompatActivity{
         int width = bm.getWidth();
         int height = bm.getHeight();
 
-        if (width > height) {
-            // landscape
+        if (width > height) { // landscape
             float ratio = (float) width / maxWidth;
             width = maxWidth;
             height = (int)(height / ratio);
-        } else if (height > width) {
-            // portrait
+        } else if (height > width) { // portrait
             float ratio = (float) height / maxHeight;
             height = maxHeight;
             width = (int)(width / ratio);
-        } else {
-            // square
+        } else { // square
             height = maxHeight;
             width = maxWidth;
         }
@@ -228,7 +222,7 @@ public class MainActivity extends AppCompatActivity{
             });
         }
 
-        //If a layout container, iterate over children and seed recursion.
+        //If a layout container, iterate over children
         if (view instanceof ViewGroup) {
             for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
                 View innerView = ((ViewGroup) view).getChildAt(i);
