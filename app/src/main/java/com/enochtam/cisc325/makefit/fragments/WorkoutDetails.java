@@ -121,6 +121,7 @@ public class WorkoutDetails extends Fragment {
             workoutDifficulty.setText(workout.difficulty);
             workoutDetails.setText(workout.details);
 
+            //TODO doesn't work
             int minutes = workout.getTotalTime()/60;  // very approx, users should just be able to enter numbers anyways
             Spanned html = Html.fromHtml("Estimated Time: <b>"+Integer.toString(minutes)+"</b>");
             estimatedTime.setText(html);
