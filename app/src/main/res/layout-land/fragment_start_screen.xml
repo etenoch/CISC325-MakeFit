@@ -3,7 +3,8 @@
     android:layout_height="match_parent"
     tools:context="com.enochtam.cisc325.makefit.fragments.StartScreen"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="14dp">
+    android:padding="14dp"
+    android:background="@color/almost_white">
 
     <LinearLayout
         android:id="@+id/ll_1"
@@ -80,7 +81,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical"
-            android:padding="6dp">
+            android:padding="6dp"
+            android:background="@color/light_grey_bckgrnd">
 
             <TextView
                 android:layout_width="fill_parent"
@@ -127,7 +129,7 @@
             android:layout_marginTop="12dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Start Workout"
+            android:text="Start New Workout"
             android:id="@+id/start_workout_btn"/>
 
     </LinearLayout>

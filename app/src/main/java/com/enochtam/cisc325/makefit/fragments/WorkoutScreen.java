@@ -16,7 +16,6 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.enochtam.cisc325.makefit.Data;
 import com.enochtam.cisc325.makefit.MainActivity;
@@ -165,7 +164,7 @@ public class WorkoutScreen extends Fragment {
 
     public void endWorkout(){
         long elapsedMillis = SystemClock.elapsedRealtime() - chronometer.getBase();
-        Toast.makeText(that, "Elapsed milliseconds: " + elapsedMillis,Toast.LENGTH_SHORT).show();
+//        Toast.makeText(that, "Elapsed milliseconds: " + elapsedMillis,Toast.LENGTH_SHORT).show();
 
         historyItem.workoutName = workout.name;
         historyItem.duration  = elapsedMillis/1000;
@@ -210,7 +209,11 @@ public class WorkoutScreen extends Fragment {
         }.start();
 
         exerciseName.setText(e.name);
-        exerciseImage.setImageURI(e.imageUri);
+        if (e.imageUri!=null) {
+            exerciseImage.setImageURI(e.imageUri);
+        } else {
+            exerciseImage.setImageResource(R.drawable.ic_workout_placeholder);
+        }
     }
 
 

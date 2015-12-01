@@ -64,7 +64,8 @@
                 android:paddingRight="10dp"
                 android:paddingTop="14dp"
                 android:paddingBottom="14dp"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:inputType="textCapSentences"/>
 
 
             <EditText
@@ -84,7 +85,8 @@
                 android:paddingRight="10dp"
                 android:paddingTop="14dp"
                 android:paddingBottom="14dp"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:inputType="textCapSentences"/>
 
 
         </LinearLayout>

@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,7 +120,11 @@ public class WorkoutDetails extends Fragment {
             workoutName.setText(workout.name);
             workoutDifficulty.setText(workout.difficulty);
             workoutDetails.setText(workout.details);
-            estimatedTime.setText("Estimated Time: " + Integer.toString(workout.getTotalTime()) + " minutes");
+
+            int minutes = workout.getTotalTime()/60;  // very approx, users should just be able to enter numbers anyways
+            Spanned html = Html.fromHtml("Estimated Time: <b>"+Integer.toString(minutes)+"</b>");
+            estimatedTime.setText(html);
+
             startButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

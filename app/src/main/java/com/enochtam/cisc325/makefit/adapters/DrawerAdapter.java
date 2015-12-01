@@ -105,7 +105,9 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
             holder.iconView.setImageResource(drawerItems.get(position - 1).icon);
         }else{
             holder.nameTextView.setText(that.prefs.getString("firstname", null)+" "+that.prefs.getString("lastname", null));
-            holder.exerciseDetails.setText("Some Exercise Stats");
+
+            holder.exerciseDetails.setVisibility(View.INVISIBLE);
+//            holder.exerciseDetails.setText("Some Exercise Stats");
 
             String uriString = that.prefs.getString("imageuri", null);
 
