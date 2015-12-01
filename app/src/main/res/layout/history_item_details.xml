@@ -7,20 +7,51 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/workout_name">
+        android:id="@+id/workout_name"
+        android:text="Workoutname"
+        android:textSize="30sp"
+        android:textStyle="bold">
     </TextView>
 
     <TextView
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/start_time">
+        android:id="@+id/start_time"
+        android:text="start time"
+        android:textSize="20sp">
     </TextView>
 
     <TextView
+        android:layout_marginTop="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/duration">
+        android:id="@+id/duration"
+        android:text="Duration"
+        android:textSize="20sp">
     </TextView>
+
+    <TextView
+        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Workout Preview"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:id="@+id/workout_preview_label">
+    </TextView>
+
+
+    <LinearLayout
+        android:background="@drawable/thin_border"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/workout_details_fragment_container">
+    </LinearLayout>
+
+
 
     <!--<Button-->
         <!--android:layout_width="wrap_content"-->

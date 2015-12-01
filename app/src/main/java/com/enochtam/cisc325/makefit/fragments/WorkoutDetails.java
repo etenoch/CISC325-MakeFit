@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.enochtam.cisc325.makefit.MainActivity;
@@ -51,6 +53,10 @@ public class WorkoutDetails extends Fragment {
     @Bind(R.id.workout_estimated_time) TextView estimatedTime;
     @Bind(R.id.start_workout_btn) Button startButton;
     @Bind(R.id.edit_workout_btn) Button editButton;
+
+    @Bind(R.id.ll_1) LinearLayout buttonContainer;
+
+    @Bind(R.id.the_container) RelativeLayout theContainer;
 
     public boolean changeToolbar = false; // true if NOT on tablet/embedded
 
@@ -118,12 +124,11 @@ public class WorkoutDetails extends Fragment {
     public void populateViews(){
         if(workout!=null){
             workoutName.setText(workout.name);
-            workoutDifficulty.setText(workout.difficulty);
+            workoutDifficulty.setText(Html.fromHtml("Difficulty: <b>"+workout.difficulty+"</b>"));
             workoutDetails.setText(workout.details);
 
             //TODO doesn't work
-            int minutes = workout.getTotalTime()/60;  // very approx, users should just be able to enter numbers anyways
-            Spanned html = Html.fromHtml("Estimated Time: <b>"+Integer.toString(minutes)+"</b>");
+            Spanned html = Html.fromHtml("Estimated Time: <b>"+Integer.toString(workout.getTotalTime())+"</b> minutes");
             estimatedTime.setText(html);
 
             startButton.setOnClickListener(new View.OnClickListener() {
@@ -175,6 +180,11 @@ public class WorkoutDetails extends Fragment {
             exercisesRecyclerView.setAdapter(exercisesAdatper);
 
         }
+    }
+
+    public void hideViewsForPreview(){
+        workoutName.setVisibility(View.GONE);
+        buttonContainer.setVisibility(View.GONE);
     }
 
 }

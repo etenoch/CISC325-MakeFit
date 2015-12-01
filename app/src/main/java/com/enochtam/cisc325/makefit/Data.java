@@ -80,7 +80,7 @@ public class Data {
         db.delete(WorkoutEntry.T_NAME, WorkoutEntry._ID + " = ?", new String[]{String.valueOf(id)});
     }
 
-    public List<Workout> getWorkouts(){
+    public List<Workout> getWorkouts(List<Integer> workoutIDs){
         ArrayList<Workout> result = new ArrayList<>();
 
         String[] projection = {
@@ -91,15 +91,20 @@ public class Data {
         };
         String sortOrder = WorkoutEntry._ID + " ASC";
 
-        Cursor c = db.query(
-                WorkoutEntry.T_NAME,    // The table to query
-                projection,             // The columns to return
-                null,                   // The columns for the WHERE clause
-                null,                   // The values for the WHERE clause
-                null,                   // group the rows
-                null,                   // filter by row groups
-                sortOrder               // The sort order
-        );
+        Cursor c;
+
+        if(workoutIDs == null){
+            c = db.query(WorkoutEntry.T_NAME,projection,null,null,null,null,sortOrder);
+        }else{
+            String listAsString="(";
+            for(Integer x:workoutIDs){
+                listAsString+=Integer.toString(x)+", ";
+            }
+            listAsString = listAsString.substring(0, listAsString.length() - 2);
+            listAsString+=")";
+            c = db.query(WorkoutEntry.T_NAME,projection,ExerciseEntry._ID+" IN "+listAsString,null,null,null,sortOrder);
+        }
+
 
         c.moveToFirst();
         while (!c.isAfterLast()) {
@@ -118,6 +123,9 @@ public class Data {
         return result;
     }
 
+    public List<Workout> getWorkouts() {
+        return getWorkouts(null);
+    }
 
     // Exercise Table
     public long addExercise(Exercise e){
@@ -150,6 +158,7 @@ public class Data {
             for(Integer x:exerciseIDs){
                 listAsString+=Integer.toString(x)+", ";
             }
+            listAsString = listAsString.substring(0, listAsString.length() - 2);
             listAsString+=")";
             c = db.query(ExerciseEntry.T_NAME,projection,ExerciseEntry._ID+" IN "+listAsString,null,null,null,sortOrder);
         }
@@ -223,45 +232,46 @@ public class Data {
         return insert(DbSchema.Workout_HistoryEntry.T_NAME,cv);
     }
     public List<WorkoutHistoryItem> getWorkoutHistory(List<Integer> itemIDs){
-        if (itemIDs ==  null){
-            ArrayList<WorkoutHistoryItem> result = new ArrayList<>();
+        ArrayList<WorkoutHistoryItem> result = new ArrayList<>();
 
-            String[] projection = {
-                    DbSchema.Workout_HistoryEntry._ID,
-                    DbSchema.Workout_HistoryEntry.C_WORKOUT_NAME,
-                    DbSchema.Workout_HistoryEntry.C_TIME_DATE,
-                    DbSchema.Workout_HistoryEntry.C_DURATION,
-                    DbSchema.Workout_HistoryEntry.C_WORKOUT_ID
-            };
-            String sortOrder = DbSchema.Workout_HistoryEntry._ID + " DESC";
+        String[] projection = {
+                DbSchema.Workout_HistoryEntry._ID,
+                DbSchema.Workout_HistoryEntry.C_WORKOUT_NAME,
+                DbSchema.Workout_HistoryEntry.C_TIME_DATE,
+                DbSchema.Workout_HistoryEntry.C_DURATION,
+                DbSchema.Workout_HistoryEntry.C_WORKOUT_ID
+        };
+        String sortOrder = DbSchema.Workout_HistoryEntry._ID + " DESC";
 
-            Cursor c = db.query(
-                    DbSchema.Workout_HistoryEntry.T_NAME,    // The table to query
-                    projection,             // The columns to return
-                    null,                   // The columns for the WHERE clause
-                    null,                   // The values for the WHERE clause
-                    null,                   // group the rows
-                    null,                   // filter by row groups
-                    sortOrder               // The sort order
-            );
+        Cursor c;
 
-            c.moveToFirst();
-            while (!c.isAfterLast()) {
-                long historyID = c.getLong(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry._ID));
-                String workoutName = c.getString(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry.C_WORKOUT_NAME));
-                long workoutID = c.getLong(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry.C_WORKOUT_ID));
-                long startTime = c.getLong(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry.C_TIME_DATE));
-                long duration = c.getLong(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry.C_DURATION));
-
-
-                result.add(new WorkoutHistoryItem( historyID, workoutName,workoutID, duration, startTime ));
-                c.moveToNext();
+        if(itemIDs == null){
+            c = db.query(DbSchema.Workout_HistoryEntry.T_NAME,projection,null,null,null,null,sortOrder);
+        }else{
+            String listAsString="(";
+            for(Integer x:itemIDs){
+                listAsString+=Integer.toString(x)+", ";
             }
-            c.close();
-            return result;
-        }else{ // finish this
-            return null;
+            listAsString = listAsString.substring(0, listAsString.length() - 2);
+            listAsString+=")";
+            c = db.query(DbSchema.Workout_HistoryEntry.T_NAME,projection,ExerciseEntry._ID+" IN "+listAsString,null,null,null,sortOrder);
         }
+
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            long historyID = c.getLong(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry._ID));
+            String workoutName = c.getString(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry.C_WORKOUT_NAME));
+            long workoutID = c.getLong(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry.C_WORKOUT_ID));
+            long startTime = c.getLong(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry.C_TIME_DATE));
+            long duration = c.getLong(c.getColumnIndexOrThrow(DbSchema.Workout_HistoryEntry.C_DURATION));
+
+
+            result.add(new WorkoutHistoryItem( historyID, workoutName,workoutID, duration, startTime ));
+            c.moveToNext();
+        }
+        c.close();
+        return result;
+
     }
 
     public List<WorkoutHistoryItem> getWorkoutHistory(){

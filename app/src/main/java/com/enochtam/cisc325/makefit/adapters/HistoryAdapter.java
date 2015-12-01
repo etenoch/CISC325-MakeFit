@@ -14,6 +14,7 @@ import com.enochtam.cisc325.makefit.R;
 import com.enochtam.cisc325.makefit.fragments.HistoryDetails;
 import com.enochtam.cisc325.makefit.models.WorkoutHistoryItem;
 import com.enochtam.cisc325.makefit.util.AdapterLink;
+import com.enochtam.cisc325.makefit.util.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -130,14 +131,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         if (type == FULL_LIST){
             holder.startTime.setText(sdf.format(date));
-            holder.duration.setText(Long.toString(historyItems.get(position).duration)+"s");
+            holder.duration.setText(Utils.formatDuration(historyItems.get(position).duration));
 
             holder.setHistoryItem(historyItems.get(position));
 
             if(historyItems.get(position).selected) holder.setSelectedBackground(true);
             else holder.setSelectedBackground(false);
         }else{
-            holder.dateDuration.setText(sdf.format(date)+" - "+Long.toString(historyItems.get(position).duration)+"s");
+            holder.dateDuration.setText(sdf.format(date)+" - "+Utils.formatDuration(historyItems.get(position).duration));
         }
 
 

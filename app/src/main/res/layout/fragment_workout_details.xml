@@ -7,6 +7,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:padding="@dimen/custom_padding"
+        android:id="@+id/the_container"
         android:background="@color/white">
 
         <TextView
@@ -14,14 +15,13 @@
             android:layout_height="wrap_content"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:text="Test"
+            android:text=""
             android:id="@+id/workout_name"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:textStyle="bold"
             android:text="difficulty"
             android:id="@+id/workout_difficulty"
             android:layout_below="@+id/workout_name"
@@ -33,27 +33,28 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:text="Workout Details:"
             android:id="@+id/workout_details_label"
             android:layout_below="@+id/workout_difficulty"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="6dp" />
 
         <TextView
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="4dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:text="details"
             android:id="@+id/workout_details"
-            android:layout_below="@+id/workout_details_label"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_below="@+id/workout_difficulty"
             android:textStyle="bold"
-            android:layout_marginTop="-2dp"
             android:paddingTop="0dp"
-            android:paddingLeft="0dp"/>
+            android:paddingLeft="0dp"
+            android:layout_toRightOf="@+id/workout_details_label"
+            android:layout_toEndOf="@+id/workout_details_label" />
 
 
         <TextView
