@@ -146,7 +146,8 @@ public class Data {
                 ExerciseEntry._ID,
                 ExerciseEntry.C_EXERCISE_NAME,
                 ExerciseEntry.C_DETAILS,
-                ExerciseEntry.C_TIME
+                ExerciseEntry.C_TIME,
+                ExerciseEntry.C_PHOTO
         };
 
         String sortOrder = ExerciseEntry._ID + " ASC";
@@ -172,7 +173,13 @@ public class Data {
             String details = c.getString(c.getColumnIndexOrThrow(ExerciseEntry.C_DETAILS));
             int time = c.getInt(c.getColumnIndexOrThrow(ExerciseEntry.C_TIME));
 
-            result.add(new Exercise(id,name,details,time));
+            String photoUri = c.getString(c.getColumnIndexOrThrow(ExerciseEntry.C_PHOTO));
+            Uri imageUri;
+            if(photoUri!= null && !photoUri.isEmpty()) imageUri = Uri.parse(photoUri);
+            else imageUri= null;
+
+            Exercise e = new Exercise(id,name,details,time,imageUri);
+            result.add(e);
             c.moveToNext();
         }
         c.close();

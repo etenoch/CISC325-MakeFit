@@ -12,6 +12,9 @@ public class Exercise {
 
     public Uri imageUri;
 
+    public boolean selected =false;
+
+
     public Exercise(long exerciseID,String name, String details, int time, Uri imageUri) {
         this.exerciseID = exerciseID;
         this.imageUri = imageUri;
