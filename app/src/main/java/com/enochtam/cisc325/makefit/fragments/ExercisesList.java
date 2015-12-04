@@ -5,6 +5,8 @@ import android.app.FragmentTransaction;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -34,7 +36,7 @@ public class ExercisesList extends Fragment{
     MainActivity that;
 
     @Bind(R.id.workouts_rv) RecyclerView exercisesRecyclerView;
-    @Bind(R.id.add_workout_button) FloatingActionButton addWorkoutButton;
+    @Bind(R.id.add_workout_button) FloatingActionButton addExerciseButton;
 
     public RecyclerView.LayoutManager exercisesLayoutManager;
     public ExercisesAdapter exercisesAdatper;
@@ -69,19 +71,15 @@ public class ExercisesList extends Fragment{
 
         ButterKnife.bind(this, fragmentView);
 
-        addWorkoutButton.setClickable(true);
-        addWorkoutButton.setOnClickListener(new View.OnClickListener() {
+        addExerciseButton.setClickable(true);
+        addExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment newWorkoutFragment = new NewWorkout();
+                DialogFragment newWorkoutFragment = new NewExercise();
 
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.hide(thisInstance);
-                ft.add(R.id.fragment_container, newWorkoutFragment);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.addToBackStack(null);
-                ft.commit();
-                getFragmentManager().executePendingTransactions();
+                FragmentManager fm = that.getSupportFragmentManager();
+                newWorkoutFragment.show(fm, "new_exercise_fragment");
+                fm.executePendingTransactions();
 
             }
         });
@@ -128,6 +126,7 @@ public class ExercisesList extends Fragment{
 
     public void onEvent(NewExerciseEvent newExerciseEvent){
         exercisesAdatper.addDataItem(newExerciseEvent.exercise);
+        exercisesAdatper.notifyDataSetChanged();
     }
 
 }
