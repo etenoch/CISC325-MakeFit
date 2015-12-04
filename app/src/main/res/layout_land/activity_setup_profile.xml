@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Create your profile"
+        android:gravity="center"
+        android:textSize="40dp"
+        android:layout_marginTop="30dp">
+    </TextView>
+
+
+    <EditText
+        android:hint="First Name"
+        android:id="@+id/first_name"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:hint="Last Name"
+        android:id="@+id/last_name"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"/>
+
+    <!--<EditText-->
+        <!--android:hint="Last Name"-->
+        <!--android:id="@+id/last_name"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_marginLeft="60dp"-->
+        <!--android:layout_marginRight="60dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:textSize="20sp"/>-->
+
+</LinearLayout>
