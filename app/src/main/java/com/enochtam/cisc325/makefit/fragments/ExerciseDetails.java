@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.enochtam.cisc325.makefit.MainActivity;
 import com.enochtam.cisc325.makefit.R;
 import com.enochtam.cisc325.makefit.models.Exercise;
+import com.enochtam.cisc325.makefit.util.Utils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -105,7 +106,7 @@ public class ExerciseDetails extends Fragment {
         if(exercise!=null){
             exerciseName.setText(exercise.name);
             exerciseDetails.setText(exercise.details);
-            exerciseTime.setText(Integer.toString(exercise.time));
+            exerciseTime.setText( Utils.formatDuration(exercise.time) );
 
             if(exercise.imageUri!=null){
                 new Handler().postDelayed(new Runnable() {

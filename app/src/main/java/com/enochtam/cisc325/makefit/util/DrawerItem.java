@@ -12,8 +12,8 @@ public class DrawerItem {
             new DrawerItem(R.drawable.ic_profile,"MakeFit Profile","StartScreen"),
             new DrawerItem(R.drawable.ic_running_man,"Workouts","WorkoutList"),
             new DrawerItem(R.drawable.ic_dumb_bell,"Exercises","ExercisesList"),
-            new DrawerItem(R.drawable.ic_history_list,"History","WorkoutHistory"),
-            new DrawerItem(R.drawable.ic_settings,"Settings","StartScreen")
+            new DrawerItem(R.drawable.ic_history_list,"History","WorkoutHistory")//,
+//            new DrawerItem(R.drawable.ic_settings,"Settings","StartScreen")
     );
 
     public int icon;

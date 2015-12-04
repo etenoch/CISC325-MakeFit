@@ -302,7 +302,7 @@ public class Data {
 
         c = new ContentValues();
         c.put(ExerciseEntry.C_EXERCISE_NAME,"Test Exercise Name 1");
-        c.put(ExerciseEntry.C_DETAILS,"Details for exercise 1. Reps5");
+        c.put(ExerciseEntry.C_DETAILS,"Details for exercise 1.");
         c.put(ExerciseEntry.C_TIME, 60);
         long e_id_1 = insert(ExerciseEntry.T_NAME, c);
 
