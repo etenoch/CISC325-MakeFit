@@ -52,7 +52,7 @@ public class WorkoutDetails extends Fragment {
     @Bind(R.id.workout_details) TextView workoutDetails;
     @Bind(R.id.workout_estimated_time) TextView estimatedTime;
     @Bind(R.id.start_workout_btn) Button startButton;
-    @Bind(R.id.edit_workout_btn) Button editButton;
+//    @Bind(R.id.edit_workout_btn) Button editButton;
 
     @Bind(R.id.ll_1) LinearLayout buttonContainer;
 
@@ -73,7 +73,6 @@ public class WorkoutDetails extends Fragment {
         // Inflate the layout for this fragment
         fragmentView = inflater.inflate(R.layout.fragment_workout_details, container, false);
         ButterKnife.bind(this, fragmentView);
-
 
         return fragmentView;
     }

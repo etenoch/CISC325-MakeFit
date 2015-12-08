@@ -288,30 +288,22 @@ public class Data {
     public void createTestData(){
 
         ContentValues c = new ContentValues();
-        c.put(WorkoutEntry.C_WORKOUT_NAME, "Test Workout Name 1");
-        c.put(WorkoutEntry.C_DETAILS,"Workout Details 1");
-        c.put(WorkoutEntry.C_DIFFICULTY,"Intermediate Difficulty");
+        c.put(WorkoutEntry.C_WORKOUT_NAME, "Upper Body Workout");
+        c.put(WorkoutEntry.C_DETAILS,"A sample workout");
+        c.put(WorkoutEntry.C_DIFFICULTY,"Intermediate");
         long w_id_1 = insert(WorkoutEntry.T_NAME, c);
 
         c = new ContentValues();
-        c.put(WorkoutEntry.C_WORKOUT_NAME,"Test Workout Name 2");
-        c.put(WorkoutEntry.C_DETAILS, "Workout Details 2");
-        c.put(WorkoutEntry.C_DIFFICULTY, "Intermediate Difficulty");
-        long w_id_2 = insert(WorkoutEntry.T_NAME, c);
-
-
-        c = new ContentValues();
-        c.put(ExerciseEntry.C_EXERCISE_NAME,"Test Exercise Name 1");
-        c.put(ExerciseEntry.C_DETAILS,"Details for exercise 1.");
+        c.put(ExerciseEntry.C_EXERCISE_NAME,"20 Push Ups");
+        c.put(ExerciseEntry.C_DETAILS,"Do 20 push ups");
         c.put(ExerciseEntry.C_TIME, 60);
         long e_id_1 = insert(ExerciseEntry.T_NAME, c);
 
         c = new ContentValues();
-        c.put(ExerciseEntry.C_EXERCISE_NAME,"Test Exercise Name 2");
-        c.put(ExerciseEntry.C_DETAILS,"Details for exercise 2. Time5mins");
-        c.put(ExerciseEntry.C_TIME, 300);
+        c.put(ExerciseEntry.C_EXERCISE_NAME,"Pull ups");
+        c.put(ExerciseEntry.C_DETAILS,"Do pull ups");
+        c.put(ExerciseEntry.C_TIME, 60);
         long e_id_2 = insert(ExerciseEntry.T_NAME, c);
-
 
         c = new ContentValues();
         c.put(Workout_ExerciseEntry.C_EXERCISE_ID,e_id_1);
@@ -324,6 +316,27 @@ public class Data {
         c.put(Workout_ExerciseEntry.C_WORKOUT_ID,w_id_1);
         c.put(Workout_ExerciseEntry.C_ORDER,2);
         insert(Workout_ExerciseEntry.T_NAME, c);
+
+
+        c = new ContentValues();
+        c.put(WorkoutEntry.C_WORKOUT_NAME,"Cardio Workout");
+        c.put(WorkoutEntry.C_DETAILS, "A sample workout");
+        c.put(WorkoutEntry.C_DIFFICULTY, "Intermediate");
+        long w_id_2 = insert(WorkoutEntry.T_NAME, c);
+
+        c = new ContentValues();
+        c.put(ExerciseEntry.C_EXERCISE_NAME,"Run 5 km");
+        c.put(ExerciseEntry.C_DETAILS,"Run for 5 km");
+        c.put(ExerciseEntry.C_TIME, 60);
+        e_id_1 = insert(ExerciseEntry.T_NAME, c);
+
+
+        c = new ContentValues();
+        c.put(Workout_ExerciseEntry.C_EXERCISE_ID,e_id_1);
+        c.put(Workout_ExerciseEntry.C_WORKOUT_ID,w_id_2);
+        c.put(Workout_ExerciseEntry.C_ORDER, 1);
+        insert(Workout_ExerciseEntry.T_NAME, c);
+
 
     }
 
