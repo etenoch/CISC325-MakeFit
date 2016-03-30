@@ -1,14 +1,17 @@
 package com.enochtam.cisc325.makefit;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
@@ -62,27 +65,33 @@ public class SetupProfileActivity extends Activity {
 
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(SetupProfileActivity.this);
-                builder.setTitle("Set Profile Photo")
-                        .setItems(new String[]{"Pick Photo", "Take Photo"}, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (which == 1) {
-                                    File path = new File(getFilesDir(), "images/");
-                                    if (!path.exists()) path.mkdirs();
-                                    imagePath = "image"+java.util.UUID.randomUUID().toString()+".jpg";
-                                    File image = new File(path, imagePath);
-                                    Uri imageUri = FileProvider.getUriForFile(getApplicationContext(), CAPTURE_IMAGE_FILE_PROVIDER, image);
-                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                                    startActivityForResult(intent, 0);
-                                } else {
-                                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                    startActivityForResult(pickPhoto, 1);//one can be replaced with any action code
+                ActivityCompat.requestPermissions(SetupProfileActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
+                PackageManager pm = getApplicationContext().getPackageManager();
+                if (pm.checkPermission("android.permission.CAMERA",getApplicationContext().getPackageName()) == PackageManager.PERMISSION_GRANTED) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SetupProfileActivity.this);
+                    builder.setTitle("Set Profile Photo")
+                            .setItems(new String[]{"Pick Photo", "Take Photo"}, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (which == 1) {
+                                        File path = new File(getFilesDir(), "images/");
+                                        if (!path.exists()) path.mkdirs();
+                                        imagePath = "image"+java.util.UUID.randomUUID().toString()+".jpg";
+                                        File image = new File(path, imagePath);
+                                        Uri imageUri = FileProvider.getUriForFile(getApplicationContext(), CAPTURE_IMAGE_FILE_PROVIDER, image);
+                                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                                        startActivityForResult(intent, 0);
+                                    } else {
+                                        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                        startActivityForResult(pickPhoto, 1);//one can be replaced with any action code
+                                    }
                                 }
-                            }
-                        });
-                builder.create().show();
+                            });
+                    builder.create().show();
+                }
+
             }
         });
 
